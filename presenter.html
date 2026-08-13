@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Apresentador — Althius</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
+  <link href="styles/main.css?v=2" rel="stylesheet" type="text/css">
+  <style>
+    /* Janela privada do closer. NUNCA compartilhe esta janela. */
+    body { padding: 0; }
+    .pv { padding: 20px 22px 48px; max-width: 720px; margin-inline: auto; }
+
+    .pv_aviso {
+      border: 1px solid rgba(231,100,100,.45);
+      background-color: rgba(231,100,100,.08);
+      color: #e76464;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: .625rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .pv_top {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px; padding-bottom: 14px; margin-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .pv_nome { font-size: 1.375rem; font-weight: 700; color: var(--white); }
+    .pv_pos {
+      font-family: var(--font-mono); font-weight: 500; font-size: .75rem;
+      letter-spacing: .1em; color: var(--text-secondary-d);
+    }
+
+    .pv_nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+    .pv_num { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+    .pv_num .k {
+      font-family: var(--font-mono); font-weight: 500; font-size: .5625rem;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--text-secondary-d);
+    }
+    .pv_num .v { font-size: 1.0625rem; font-weight: 700; color: var(--orange); margin-top: 3px; }
+
+    .bloco { border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+    .bloco .rot {
+      font-family: var(--font-mono); font-weight: 500; font-size: .625rem;
+      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .bloco p { margin: 0 0 8px; font-size: .9375rem; line-height: 1.55; }
+    .bloco p:last-child { margin-bottom: 0; }
+
+    /* Código de cores do playbook (slide 2) */
+    .b-fala   { background-color: rgba(255,90,31,.1); border: 1px solid rgba(255,90,31,.4); }
+    .b-fala .rot { color: var(--orange); }
+    .b-fala p { color: var(--white); }
+
+    .b-tecnica { background-color: rgba(255,255,255,.03); border: 1px solid var(--line); }
+    .b-tecnica .rot { color: var(--text-secondary-d); }
+    .b-tecnica p { color: var(--text-d-bg); }
+
+    .b-calaboca { background-color: #08080a; border: 1px solid var(--line); }
+    .b-calaboca .rot { color: #c8ec85; }
+    .b-calaboca p { color: var(--text-d-bg); }
+
+    .b-nunca { background-color: #08080a; border: 1px solid rgba(231,100,100,.4); }
+    .b-nunca .rot { color: #e76464; }
+    .b-nunca p { color: var(--text-d-bg); }
+
+    .pv_off { text-align: center; padding: 60px 20px; color: var(--text-secondary-d); }
+  </style>
+</head>
+<body>
+  <div class="pv">
+    <div class="pv_aviso">Janela privada — não compartilhe esta tela</div>
+
+    <div class="pv_top">
+      <span class="pv_nome" id="pvNome">Aguardando…</span>
+      <span class="pv_pos" id="pvPos"></span>
+    </div>
+
+    <div class="pv_nums">
+      <div class="pv_num"><div class="k">Custo/reunião</div><div class="v" id="nCusto">—</div></div>
+      <div class="pv_num"><div class="k">Gap/mês</div><div class="v" id="nGap">—</div></div>
+      <div class="pv_num"><div class="k">Risco/mês</div><div class="v" id="nRisco">—</div></div>
+    </div>
+
+    <div id="pvNotas">
+      <div class="pv_off">Abra a apresentação e navegue — as notas aparecem aqui.</div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Notas por slide — Playbook Comercial da Althius, seção 2.
+     fala = literal · tecnica = mecanismo · calaboca = silêncio · nunca = erro */
+  var NOTAS = {
+    capa: [
+      { t: 'fala', p: ['“Eu sei que fui eu que te procurei. Você me falou que o time gera [X] reuniões/semana custando [Y] por mês, e que o vendedor novo entra sem máquina. Se você está aqui, é porque isso incomoda de verdade — então a gente vai seguir um fluxo.',
+                       'Primeiro eu vou te avaliar, porque pode ser que eu nem venda nada aqui pra você. E no fim, o combinado é: você me diz sim ou não. ‘Vou pensar’ não ajuda nem você nem eu. Fechado?”'] },
+      { t: 'tecnica', p: ['Três coisas: (1) retoma a cadeira — você correu atrás na prospecção, aqui quem avalia é você; (2) devolve o que ele falou, nunca “me conta o que te traz aqui”; (3) o acordo sim-ou-não mata o “vou pensar” duas horas antes de ele nascer.'] },
+      { t: 'nunca', p: ['Confirmar o segundo decisor só agora. Sócio/CFO foi antecipado na ligação — se não veio, pergunte na abertura.'] }
+    ],
+
+    raiox: [
+      { t: 'fala', p: ['<b>Bloco A · a meta</b> — “Primeira coisa: qual a meta de faturamento do trimestre? … E o ticket médio? … Então pra bater isso precisa de [N] vendas, correto? A planilha faz essa conta com a gente.”',
+                       '<b>Bloco B · a máquina</b> — “E o que te fez abrir essa vaga agora? O que travou pra precisar de mais gente?”',
+                       '<b>Bloco C · o custo</b> — “Vamos pros números, vou preenchendo e você me corrige: quantas pessoas no comercial? Folha? Ferramentas? … Olha o que a planilha está dizendo: cada reunião realizada custa [Z] pra vocês hoje. Esse número faz sentido? Você já tinha visto ele?”',
+                       '<b>Bloco D · o gap</b> — “Pra tua meta precisava de [N] reuniões/mês. Tua máquina gera [M]. Esse buraco é o problema que a gente está aqui pra olhar. Concorda com essa conta ou quer ajustar algum número?”',
+                       '<b>Bloco E</b> — “Já tentaram fechar esse gap antes? O que aconteceu?” · “Se não resolver agora, qual o plano?” · “Por que agora vai dar certo?”'] },
+      { t: 'calaboca', p: ['No Bloco C: ninguém nunca viu o próprio custo por reunião. Deixe ele digerir — o silêncio vale mais que qualquer argumento.',
+                           'No Bloco E: ele vai se justificar, e quem se justifica se compromete.'] },
+      { t: 'tecnica', p: ['“O que te fez abrir a vaga” é o sinal virando pergunta. Anote como ELE fala, não como você resumiria — essas palavras voltam literais no Pit 02.',
+                          'O vilão é o gap, não o time dele. Você nunca disse que a operação é amadora: mostrou um número neutro calculado com os dados dele.',
+                          'Se o alerta de incoerência acender: “Você me disse [A]%, mas os seus próprios números dizem [B]%. Qual dos dois a gente usa?”'] },
+      { t: 'tecnica', p: ['<b>Antecipação total, antes de sair do diagnóstico:</b> “Se fizer sentido avançar, quem assina com você? Sócio, CFO? … E investimento nessa faixa vocês decidem como — à vista, parcelado?” Sócio e forma de pagamento morrem AQUI.'] },
+      { t: 'nunca', p: ['Dar aula. No diagnóstico você coleta — o médico não ensina enquanto examina.'] }
+    ],
+
+    mapa: [
+      { t: 'fala', p: ['“Agora me desenha junto: como nasce uma reunião no seu comercial hoje? Passo a passo — de onde vem o nome, quem toca, por onde.”'] },
+      { t: 'tecnica', p: ['Cada vazamento que ELE declarar (“aí depende de indicação”, “aqui ninguém faz follow-up”) você marca em laranja. No fim o mapa está cheio de laranja — e quem pintou foi ele. O desenho argumenta sozinho que a máquina tem furo.'] }
+    ],
+
+    pit01: [
+      { t: 'fala', p: ['<b>Volta 1</b> — “De 0 a 10, o quanto você quer resolver esse gap?”',
+                       '<b>Volta 2 · a inversão</b> — ele responde falando da dor. Aí: “Não, você não entendeu a pergunta. Por que [nota] que EU tenho que avançar com você? Porque eu também escolho — quem entrega aqui somos eu e meu sócio, e a agenda é curta. Me convence.”',
+                       '<b>Volta 3 · antecipação nominal</b> — “Eu odeio avançar com o cara que quer agora e no fim tenta se burlar. Então já deixa combinado: não posso ouvir lá na frente ‘preciso falar com meu sócio’ — ele já está aqui. Nem ‘vou pensar’ — o combinado é sim ou não. Tamo junto?”'] },
+      { t: 'calaboca', p: ['Deixe ele argumentar. Cada frase é um prego que ELE bate na própria decisão.'] },
+      { t: 'tecnica', p: ['Resposta rápida = bom sinal. Hesitação longa = dor fraca ou desconfiança.',
+                          'Nota baixa é presente: “Sete? Interessante. O que falta pros outros três?” A trava aparece agora, não no fechamento — quando só sobraria desconto.'] }
+    ],
+
+    gap: [
+      { t: 'tecnica', p: ['Este slide é o número dele, puxado do Raio-X. Não explique o número — deixe ele olhar.',
+                          'O vilão da história é o buraco. Ninguém precisa se defender de um número.'] }
+    ],
+
+    porque: [
+      { t: 'fala', p: ['“Prospecção genérica morreu. Conta certa, no momento certo — ou nada.”'] },
+      { t: 'nunca', p: ['Estatística de mercado, estudo de terceiro, enrolação. Uma frase e segue.'] }
+    ],
+
+    maquina: [
+      { t: 'fala', p: ['<b>A transição — marque a virada</b> — “Agora virou o jogo: é a hora que você me diz sim ou não. Vou te mostrar como a gente resolve o [gap de N reuniões], o [vendedor entrando sem máquina] e o [depende só de indicação] que você me falou.”'] },
+      { t: 'tecnica', p: ['Os itens da tabela são as palavras DELE, colhidas no Mapa e no Bloco B. Use o botão “Puxar dores do Mapa”.',
+                          'Entregável é característica. Solução é a dor dele com o problema resolvido. O que ele precisa pensar: “isso foi feito pra mim”.'] }
+    ],
+
+    video: [
+      { t: 'tecnica', p: ['<b>1 ·</b> Você narra, o vídeo ilustra. Nunca dá play e fica quieto — pause em cada ponto que bate numa dor do Raio-X.',
+                          '<b>2 ·</b> Dois a três minutos, cortado. Curiosidade é combustível do fechamento — não distribua de graça.',
+                          '<b>3 ·</b> O vídeo nunca sai da reunião. O sócio vê em OUTRA reunião, com vocês na sala.'] },
+      { t: 'nunca', p: ['Mandar o vídeo antes “pra ele se preparar” ou depois “pra mostrar pro sócio”. Vídeo solto é aula grátis pro concorrente e desculpa pro “vou analisar”.'] }
+    ],
+
+    prova: [
+      { t: 'fala', p: ['“E olha — tudo isso que eu te mostrei, você já viveu. [Dia] você abriu a vaga. [Dia] eu te liguei. Essa reunião existe porque o sistema funciona. Você não precisa acreditar em mim — você é a prova.”'] },
+      { t: 'tecnica', p: ['É o golpe final da prova: demonstração de produto sem gastar um crédito. Nenhum concorrente consegue fazer isso.'] }
+    ],
+
+    plano: [
+      { t: 'tecnica', p: ['14 dias é meta perseguida e já entregue — não é cláusula. Se ele pedir garantia: “eu não vendo bola de cristal, vendo máquina. Garanto o que depende de mim: estrutura de pé e rodando.”'] },
+      { t: 'nunca', p: ['Prometer faturamento, ROI garantido ou reuniões em 14 dias como cláusula contratual.'] }
+    ],
+
+    investimento: [
+      { t: 'fala', p: ['<b>1 · a frase-âncora, antes do número, sempre</b> — “Antes do número, um princípio que eu sigo: é justo que muito custe aquilo que muito vale. Concorda?”',
+                       '<b>2 · o preço ao lado do número dele</b> — “Você me disse que cada reunião custa [Z] hoje, e que o gap te custa [R$ X]/mês. O projeto pro seu cenário é o [degrau]: R$ [valor] de implementação e R$ [valor]/mês pela plataforma.”'] },
+      { t: 'calaboca', p: ['SILÊNCIO TOTAL depois do preço. Quem fala primeiro, perde.'] },
+      { t: 'tecnica', p: ['<b>“Tá caro”</b> → “Caro comparado com o quê — com os [Z] por reunião que você paga hoje? Ou com os [X]/mês do gap?”',
+                          '<b>“Tem desconto?”</b> → “Desconto não existe, existe escopo menor. Tiro a integração e o treinamento e faz o Essencial. O que eu não faço é o mesmo projeto por menos.”',
+                          '<b>“Vou pensar”</b> → “A gente combinou sim ou não lá no começo. O que faltou pra ser sim?”',
+                          '<b>“Preciso falar com meu sócio”</b> → “A gente tratou isso no meio da reunião e você me disse que resolvia. O que mudou?”',
+                          '<b>“Já uso Apollo/Lusha”</b> → “Quantas reuniões por semana saem dele? Você tem ferramenta, não tem máquina.”'] },
+      { t: 'nunca', p: ['Preço antes da predisposição. A tela trava sozinha até a nota do Pit 01 ser registrada.'] }
+    ],
+
+    fecho: [
+      { t: 'fala', p: ['“Então está decidido. Kickoff [dia] às [hora] — te mando o contrato e o link de pagamento agora, enquanto a gente está aqui.”'] },
+      { t: 'tecnica', p: ['Cada hora entre o sim e o pagamento é espaço pro arrependimento nascer.',
+                          'Não fechou mas ficou quente: follow-up em 24h devolvendo o Mapa e o Raio-X dele — “seus números, seu desenho”. Nunca o vídeo, nunca proposta genérica. Use “Exportar Raio-X”.'] }
+    ]
+  };
+
+  var ROTULOS = { fala: 'Você fala', tecnica: 'Técnica', calaboca: '🤐 Cala a boca', nunca: 'Nunca' };
+
+  var elNome  = document.getElementById('pvNome');
+  var elPos   = document.getElementById('pvPos');
+  var elNotas = document.getElementById('pvNotas');
+
+  function render(msg) {
+    elNome.textContent = msg.nome || '—';
+    elPos.textContent  = msg.idx + ' / ' + msg.total;
+
+    var v = msg.valores || {};
+    document.getElementById('nCusto').textContent = v.custoPorReuniao || '—';
+    document.getElementById('nGap').textContent   = v.gapExibicao || '—';
+    document.getElementById('nRisco').textContent = v.receitaExibicao || '—';
+
+    var notas = NOTAS[msg.slide];
+    if (!notas) {
+      elNotas.innerHTML = '<div class="pv_off">Sem notas para este slide.</div>';
+      return;
+    }
+    elNotas.innerHTML = notas.map(function (b) {
+      return '<div class="bloco b-' + b.t + '">'
+        + '<div class="rot">' + ROTULOS[b.t] + '</div>'
+        + b.p.map(function (p) { return '<p>' + p + '</p>'; }).join('')
+        + '</div>';
+    }).join('');
+  }
+
+  if ('BroadcastChannel' in window) {
+    new BroadcastChannel('althius-deck').onmessage = function (ev) { render(ev.data); };
+  } else {
+    elNotas.innerHTML = '<div class="pv_off">Este navegador não suporta a sincronização automática.</div>';
+  }
+})();
+</script>
+</body>
+</html>

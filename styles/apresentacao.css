@@ -1,0 +1,956 @@
+/* =====================================================================
+   APRESENTAÇÃO DE REUNIÃO — Althius
+   A tela que o lead vê durante a call. Herda os tokens de main.css.
+
+   Regra que governa tudo aqui: NADA do que o closer FALA aparece na
+   tela. Script, técnica e antecipação vivem na janela do apresentador
+   (presenter.html). A tela é documento, não roteiro.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------
+   1. BASE
+   --------------------------------------------------------------- */
+html, body { height: 100%; }
+
+body.deck-body {
+  overflow: hidden;
+  background-color: var(--bg-dark);
+}
+
+.deck {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------
+   2. SLIDES
+   --------------------------------------------------------------- */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 88px 56px 104px;
+}
+.slide.is-active { display: block; animation: slide-in 0.42s var(--ease) both; }
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.slide_inner { max-width: 1280px; margin-inline: auto; min-height: 100%; }
+.slide_inner.is-narrow { max-width: 940px; }
+
+/* Slides que centralizam verticalmente (números gigantes, capa, fecho) */
+.slide.is-centered .slide_inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-tag {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin: 0 0 18px;
+}
+.slide-tag .sep { color: var(--line); margin: 0 8px; }
+.slide-tag .deck-n { color: var(--text-secondary-d); }
+
+.slide-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 0 0 12px;
+}
+.slide-sub {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--text-d-bg);
+  margin: 0 0 36px;
+  max-width: 72ch;
+}
+
+/* ---------------------------------------------------------------
+   3. CAMPOS INLINE — a tela parece documento, não formulário
+   --------------------------------------------------------------- */
+.f {
+  font: inherit;
+  color: var(--white);
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px dashed #2c3238;
+  padding: 2px 6px;
+  border-radius: 2px;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.f::placeholder { color: #454b51; }
+.f:hover  { border-bottom-color: #4a555e; background-color: rgba(255,255,255,0.02); }
+.f:focus  {
+  outline: none;
+  border-bottom-color: var(--orange);
+  background-color: rgba(255, 90, 31, 0.08);
+}
+.f.is-num { text-align: right; font-variant-numeric: tabular-nums; }
+.f.is-full { width: 100%; display: block; }
+textarea.f { resize: none; line-height: 1.5; }
+
+/* ---------------------------------------------------------------
+   4. RAIO-X — duas colunas: ENTRADAS | SAÍDAS  (slide 36 do playbook)
+   --------------------------------------------------------------- */
+.xr {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.xr_col { padding: 28px 30px; }
+.xr_col.is-in  { background-color: rgba(255,255,255,0.015); }
+.xr_col.is-out { background-color: #08080a; border-left: 1px solid var(--line); }
+
+.xr_head {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.xr_col.is-out .xr_head { color: var(--orange); }
+
+.xr_row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+}
+.xr_row + .xr_row { border-top: 1px solid rgba(51, 63, 72, 0.4); }
+.xr_row .k {
+  font-size: 0.9375rem;
+  color: var(--text-d-bg);
+  flex: 1 1 auto;
+}
+.xr_row .v {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--white);
+  font-size: 1.0625rem;
+}
+.xr_row .f { width: 148px; }
+
+/* Bloco do playbook (A–E) como etiqueta discreta */
+.xr_bloco {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--line);
+  padding: 16px 0 4px;
+}
+.xr_row:first-of-type + .xr_bloco { border-top: 0; }
+
+/* As três saídas ★ */
+.xr_row.is-star { padding: 14px 0; }
+.xr_row.is-star .k { color: var(--white); font-weight: 500; }
+.xr_row.is-star .k::before {
+  content: "★";
+  color: var(--orange);
+  margin-right: 8px;
+  font-size: 0.8em;
+}
+.xr_row.is-star .v {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--orange);
+}
+.xr_hint {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+  margin-top: 2px;
+}
+
+/* Alerta de incoerência da taxa — a melhor pergunta da call */
+.xr_alerta {
+  display: none;
+  margin-top: 18px;
+  border: 1px solid rgba(255, 90, 31, 0.45);
+  border-radius: 14px;
+  background-color: rgba(255, 90, 31, 0.07);
+  padding: 16px 18px;
+}
+.xr_alerta.is-on { display: block; }
+.xr_alerta .t {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin: 0 0 8px;
+}
+.xr_alerta p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--text-d-bg); }
+.xr_alerta b { color: var(--white); font-weight: 600; }
+.xr_alerta .acao {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------------
+   5. MAPA DA MÁQUINA — 5 colunas (slide 38)
+   --------------------------------------------------------------- */
+.mapa {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.mapa_col {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 16px;
+  background-color: #101114;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.mapa_col.is-leak {
+  border-color: var(--orange);
+  background-color: rgba(255, 90, 31, 0.1);
+}
+.mapa_n {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: var(--line);
+  line-height: 1;
+}
+.mapa_col.is-leak .mapa_n { color: var(--orange); }
+.mapa_t {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 10px 0 4px;
+}
+.mapa_h {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--text-secondary-d);
+  margin: 0 0 12px;
+}
+.mapa_col textarea.f {
+  flex: 1 1 auto;
+  min-height: 120px;
+  font-size: 0.9375rem;
+  border: 1px dashed #2c3238;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.leak-btn {
+  margin-top: 12px;
+  width: 100%;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 1600px;
+  background: transparent;
+  color: var(--text-secondary-d);
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.leak-btn:hover { border-color: var(--orange); color: var(--orange); }
+.mapa_col.is-leak .leak-btn {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
+}
+
+/* ---------------------------------------------------------------
+   6. NÚMERO GIGANTE (deck 1 — o gap)
+   --------------------------------------------------------------- */
+.big {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  font-size: clamp(4.5rem, 15vw, 13rem);
+  background-image: var(--gradient-d-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+}
+.big-unit {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(0.875rem, 1.6vw, 1.25rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-top: 18px;
+  display: block;
+}
+.big-eq {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  font-size: clamp(1.125rem, 2.2vw, 1.75rem);
+  line-height: 1.4;
+  color: var(--text-d-bg);
+  font-weight: 300;
+}
+.big-eq b { color: var(--white); font-weight: 700; }
+.big-eq .risco { color: var(--orange); font-weight: 700; }
+
+/* ---------------------------------------------------------------
+   7. PIT 01 — a nota
+   --------------------------------------------------------------- */
+.dial {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0 28px;
+}
+.dial button {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-secondary-d);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.375rem;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.dial button:hover { border-color: var(--white); color: var(--white); }
+.dial button.is-on {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
+  transform: scale(1.06);
+}
+
+.pit-note {
+  border-left: 2px solid var(--orange);
+  padding-left: 22px;
+  margin-top: 26px;
+  display: none;
+}
+.pit-note.is-on { display: block; }
+.pit-note p { margin: 0 0 6px; font-size: 1.0625rem; color: var(--text-d-bg); }
+
+/* ---------------------------------------------------------------
+   8. EMPILHAMENTO (deck 3) — dor → o que mostra → o dia dele
+   --------------------------------------------------------------- */
+.stack-table { display: grid; gap: 1px; background-color: var(--line);
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.stack-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1px;
+  background-color: var(--line);
+}
+.stack-cell { background-color: var(--bg-dark); padding: 18px 20px; }
+.stack-row.is-head .stack-cell {
+  background-color: #101114;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.stack-cell.is-dor    { color: var(--orange); }
+.stack-cell.is-dor .f { color: var(--orange); }
+.stack-cell .f { font-size: 0.9375rem; }
+
+/* Módulos ICP → Sinais → Cadência */
+.modulos { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-bottom: 20px; }
+.modulo {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  background-color: #101114;
+}
+.modulo .n {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  color: var(--orange);
+}
+.modulo h3 { margin: 10px 0 8px; font-size: 1.25rem; font-weight: 600; color: var(--white); }
+.modulo p  { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary-d); }
+
+/* ---------------------------------------------------------------
+   9. VÍDEO (deck 4)
+   --------------------------------------------------------------- */
+.video-frame {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #08080a;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  position: relative;
+  /* Cabe na altura da janela sem gerar scroll durante a call. */
+  width: 100%;
+  max-width: calc((100dvh - 300px) * 16 / 9);
+  margin-inline: auto;
+}
+.video-frame video { width: 100%; height: 100%; object-fit: contain; display: block; }
+.video-missing { text-align: center; padding: 32px; }
+.video-missing .mono {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.video-missing code {
+  color: var(--orange);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+/* ---------------------------------------------------------------
+   10. PROVA VIVA (deck 5) — "tu viveu isso"
+   --------------------------------------------------------------- */
+.prova {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 32px;
+  align-items: start;
+}
+.timeline { border-left: 2px solid var(--orange); padding-left: 26px; }
+.timeline_item { padding-bottom: 26px; position: relative; }
+.timeline_item::before {
+  content: "";
+  position: absolute;
+  left: -33px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background-color: var(--orange);
+}
+.timeline_item:last-child { padding-bottom: 0; }
+.timeline_d {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.timeline_t { font-size: 1.0625rem; color: var(--white); margin-top: 6px; }
+
+.print-frame {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #08080a;
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+}
+.print-frame img { width: 100%; display: block; }
+
+/* ---------------------------------------------------------------
+   11. PLANO 14 DIAS (deck 6)
+   --------------------------------------------------------------- */
+.plano { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+.plano_step {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px 20px;
+  background-color: #101114;
+}
+.plano_d {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.plano_t { margin: 10px 0 6px; font-size: 1.125rem; font-weight: 600; color: var(--white); }
+.plano_h { margin: 0; font-size: 0.875rem; line-height: 1.45; color: var(--text-secondary-d); }
+
+/* ---------------------------------------------------------------
+   12. INVESTIMENTO (deck 7)
+   --------------------------------------------------------------- */
+.inv { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 36px; align-items: start; }
+
+/* Coluna esquerda: os números DELE. O preço nunca aparece pelado. */
+.inv_deles {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 26px;
+  background-color: #08080a;
+}
+.inv_deles .lbl {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.inv_deles .val {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--orange);
+  margin: 6px 0 22px;
+  font-variant-numeric: tabular-nums;
+}
+.inv_deles .val:last-child { margin-bottom: 0; }
+
+/* Frase-âncora: aparece ANTES do número, sempre (slide 57, regra 3) */
+.ancora {
+  border: 1px solid rgba(255,90,31,0.4);
+  background-color: rgba(255,90,31,0.06);
+  border-radius: 16px;
+  padding: 26px 28px;
+  margin-bottom: 24px;
+}
+.ancora p {
+  margin: 0;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.degraus { display: grid; gap: 12px; }
+.degrau {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  background-color: #101114;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.degrau:hover { border-color: #4a555e; }
+.degrau.is-on { border-color: var(--orange); background-color: rgba(255,90,31,0.09); }
+.degrau_n {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.degrau.is-on .degrau_n { color: var(--orange); }
+.degrau_e { margin: 6px 0 0; font-size: 0.875rem; line-height: 1.4; color: var(--text-secondary-d); }
+.degrau_v {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.mensalidade {
+  margin-top: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.mensalidade .k { font-size: 0.9375rem; color: var(--text-d-bg); }
+.mensalidade .v { font-size: 1.25rem; font-weight: 700; color: var(--white); }
+
+/* Trava: preço não aparece antes da predisposição (slide 57, regra 1) */
+.lock {
+  border: 1px dashed var(--line);
+  border-radius: 18px;
+  padding: 56px 32px;
+  text-align: center;
+}
+.lock .ic { font-size: 2rem; }
+.lock p { margin: 14px 0 0; color: var(--text-secondary-d); font-size: 0.9375rem; }
+.lock b { color: var(--white); display: block; margin-bottom: 6px; font-size: 1.0625rem; font-weight: 600; }
+.inv-wrap.is-locked .inv { display: none; }
+.inv-wrap:not(.is-locked) .lock { display: none; }
+
+/* ---------------------------------------------------------------
+   13. HUD — os três números ficam visíveis o resto da reunião
+        (slide 42: "esse número fica visível o resto da reunião")
+   --------------------------------------------------------------- */
+.hud {
+  position: fixed;
+  left: 56px;
+  bottom: 52px;
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background-color: rgba(8, 8, 10, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  z-index: 20;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.hud.is-on { opacity: 1; transform: none; }
+.hud_cell { padding: 10px 18px; }
+.hud_cell + .hud_cell { border-left: 1px solid var(--line); }
+.hud_k {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.hud_v {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+  margin-top: 3px;
+}
+
+/* ---------------------------------------------------------------
+   14. CHROME — marca, trilho de progresso, navegação
+   --------------------------------------------------------------- */
+.deck_brand {
+  position: fixed;
+  top: 26px; left: 56px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.deck_brand img { height: 2.1rem; width: auto; }
+.deck_empresa {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+  border-left: 1px solid var(--line);
+  padding-left: 14px;
+}
+
+.deck_nav {
+  position: fixed;
+  right: 56px; bottom: 52px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.navbtn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background-color: rgba(8,8,10,0.92);
+  color: var(--text-d-bg);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.navbtn:hover { border-color: var(--white); color: var(--white); }
+.navbtn[disabled] { opacity: 0.3; pointer-events: none; }
+.deck_count {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary-d);
+  min-width: 52px;
+  text-align: center;
+}
+
+.rail {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background-color: rgba(51,63,72,0.5);
+  z-index: 20;
+}
+.rail_fill {
+  height: 100%;
+  width: 0;
+  background-image: var(--gradient-main);
+  transition: width 0.42s var(--ease);
+}
+
+/* Barra de ferramentas do closer — some da tela compartilhada com "H" */
+.tools {
+  position: fixed;
+  top: 26px; right: 56px;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+}
+.tool {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 1600px;
+  border: 1px solid var(--line);
+  background-color: rgba(8,8,10,0.9);
+  color: var(--text-secondary-d);
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.tool:hover { border-color: var(--white); color: var(--white); }
+body.is-clean .tools { display: none; }
+
+/* ---------------------------------------------------------------
+   15. CALCULADORA FLUTUANTE
+   Para fazer a conta na frente dele. Arrastável pelo cabeçalho,
+   fica por cima dos slides e não some quando a barra de
+   ferramentas é escondida com "H".
+   --------------------------------------------------------------- */
+.calc {
+  position: fixed;
+  top: 78px;
+  right: 56px;
+  z-index: 55;
+  width: 312px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background-color: rgba(8, 8, 10, 0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  user-select: none;
+}
+.calc[hidden] { display: none !important; }
+.calc.is-dragging { transition: none; cursor: grabbing; }
+
+.calc_head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px 11px 14px;
+  border-bottom: 1px solid var(--line);
+  cursor: grab;
+  touch-action: none;
+}
+.calc.is-dragging .calc_head { cursor: grabbing; }
+.calc_grip { color: var(--line); line-height: 0; flex: none; }
+.calc_title {
+  flex: 1 1 auto;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.calc_x {
+  flex: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-secondary-d);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.calc_x:hover { border-color: #e76464; color: #e76464; }
+
+/* Visor */
+.calc_visor { padding: 14px 16px 16px; }
+.calc_tape {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--text-secondary-d);
+  text-align: right;
+  min-height: 3.1em;
+  white-space: pre-line;
+  overflow: hidden;
+  word-break: break-all;
+}
+.calc_out {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+  word-break: break-all;
+}
+
+/* Atalhos para os números do Raio-X */
+.calc_chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 14px 14px;
+}
+.calc_chips:empty { display: none; }
+.calc_chip {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 1600px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-secondary-d);
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.calc_chip:hover { border-color: var(--orange); color: var(--orange); }
+
+/* Teclado */
+.calc_pad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background-color: var(--line);
+  border-top: 1px solid var(--line);
+}
+.calc_k {
+  border: 0;
+  background-color: #0e0f12;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  padding: 15px 0;
+  cursor: pointer;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+.calc_k:hover  { background-color: #191b1f; }
+.calc_k:active { background-color: var(--orange); color: var(--white); }
+.calc_k.is-fn  { color: var(--text-secondary-d); font-family: var(--font-mono); font-size: 0.875rem; }
+.calc_k.is-op  { color: var(--orange); font-size: 1.25rem; }
+.calc_k.is-op.is-armed { background-color: rgba(255, 90, 31, 0.18); }
+.calc_k.is-eq  { background-color: var(--orange); color: var(--white); }
+.calc_k.is-eq:hover { background-color: var(--orange-deep); }
+.calc_k.is-wide { grid-column: span 2; }
+
+@media (max-width: 620px) {
+  .calc { right: 12px; left: 12px; width: auto; top: 64px; }
+}
+
+/* ---------------------------------------------------------------
+   16. PRÉ-CALL (slide 39 — checklist de 10 minutos antes)
+   --------------------------------------------------------------- */
+.precall {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background-color: var(--bg-dark);
+  overflow-y: auto;
+  padding: 64px 32px;
+}
+.precall.is-done { display: none; }
+.precall_box { max-width: 640px; margin-inline: auto; }
+.precall_grid { display: grid; gap: 18px; margin: 28px 0 32px; }
+.precall_grid label {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-d-bg);
+  margin-bottom: 8px;
+}
+.precall_grid .f { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.precall_two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ---------------------------------------------------------------
+   17. RESPONSIVO — a call roda em notebook; abaixo disso é degradê
+   --------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .slide { padding: 80px 32px 100px; }
+  .deck_brand, .hud { left: 32px; }
+  .tools, .deck_nav { right: 32px; }
+  .mapa { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .plano { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 900px) {
+  .xr { grid-template-columns: 1fr; }
+  .xr_col.is-out { border-left: 0; border-top: 1px solid var(--line); }
+  .mapa { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .modulos { grid-template-columns: 1fr; }
+  .prova, .inv { grid-template-columns: 1fr; }
+  .stack-row { grid-template-columns: 1fr; }
+  .stack-row.is-head { display: none; }
+  .hud { left: 16px; right: 16px; bottom: 76px; }
+  .hud_cell { flex: 1 1 0; padding: 8px 12px; }
+  .precall_two { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 620px) {
+  .slide { padding: 72px 18px 108px; }
+  .deck_brand { left: 18px; top: 18px; }
+  .tools { right: 18px; top: 18px; }
+  .deck_nav { right: 18px; bottom: 44px; }
+  .mapa, .plano { grid-template-columns: 1fr; }
+  .mapa_col { min-height: 0; }
+  .dial button { width: 52px; height: 52px; font-size: 1.125rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-active { animation: none; }
+  .hud, .rail_fill { transition: none; }
+}

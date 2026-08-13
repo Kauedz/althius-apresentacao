@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="js">
+<head>
+  <meta charset="utf-8">
+  <title>Apresentação de reunião — Althius</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
+  <!-- ?v= força o navegador a buscar a versão nova depois de cada edição.
+       Suba o número ao mexer em CSS/JS. Mesma convenção do site institucional. -->
+  <link href="styles/main.css?v=2" rel="stylesheet" type="text/css">
+  <link href="styles/apresentacao.css?v=2" rel="stylesheet" type="text/css">
+</head>
+<body class="deck-body">
+
+<!-- =================================================================
+     PRÉ-CALL — 10 minutos antes (slide 39 do playbook).
+     Só o closer vê. Some antes de compartilhar a tela.
+     ================================================================= -->
+<div class="precall" id="precall">
+  <div class="precall_box">
+    <p class="eyebrow">Checklist pré-call · 10 minutos antes</p>
+    <h1 class="heading-h2" style="margin:14px 0 10px">Preencha o que <span class="gradient-text">já veio da ligação</span></h1>
+    <p class="text-regular text-color-body">
+      Entrar na reunião sem os números da ligação preenchidos custa 10 minutos perguntando
+      de novo o que ele já contou — e quanto mais sênior, menos paciência para repetir.
+    </p>
+
+    <div class="precall_grid">
+      <div>
+        <label for="pc_empresa">Empresa</label>
+        <input class="f" type="text" id="pc_empresa" data-k="empresa" placeholder="Nome da conta" autocomplete="off">
+      </div>
+      <div class="precall_two">
+        <div>
+          <label for="pc_reunioes">Reuniões/semana (da ligação)</label>
+          <input class="f" type="text" id="pc_reunioes" data-k="reunioesSemana" data-mask="number" placeholder="0" autocomplete="off">
+        </div>
+        <div>
+          <label for="pc_custo">Custo mensal que ele citou</label>
+          <input class="f" type="text" id="pc_custo" data-k="custoCitado" data-mask="currency" placeholder="R$ 0" autocomplete="off">
+        </div>
+      </div>
+      <div class="precall_two">
+        <div>
+          <label for="pc_detec">Data em que a vaga foi detectada</label>
+          <input class="f" type="text" id="pc_detec" data-k="dataDeteccao" placeholder="quinta, 12/03" autocomplete="off">
+        </div>
+        <div>
+          <label for="pc_ligacao">Data da sua ligação</label>
+          <input class="f" type="text" id="pc_ligacao" data-k="dataLigacao" placeholder="segunda, 16/03" autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button type="button" class="button is-primary" id="pcAbrir">
+        <div class="label">abrir apresentação</div>
+      </button>
+      <button type="button" class="button is-ghost" id="pcLimpar">
+        <div class="label">limpar sessão anterior</div>
+      </button>
+    </div>
+
+    <p class="text-small text-color-secondary" style="margin-top:28px">
+      Atalhos: <b>→ ←</b> navega · <b>N</b> abre a janela do apresentador ·
+      <b>F</b> tela cheia · <b>H</b> esconde a barra de ferramentas ·
+      <b>P</b> volta a esta tela.
+    </p>
+  </div>
+</div>
+
+<!-- ================================ CHROME ================================ -->
+<div class="deck_brand">
+  <img src="assets/img/althius-logo-transparent.png" alt="Althius">
+  <span class="deck_empresa" id="brandEmpresa"></span>
+</div>
+
+<div class="tools">
+  <button type="button" class="tool" data-tool="calc">Calculadora</button>
+  <button type="button" class="tool" data-tool="presenter">Apresentador</button>
+  <button type="button" class="tool" data-tool="export">Exportar Raio-X</button>
+  <button type="button" class="tool" data-tool="fullscreen">Tela cheia</button>
+  <button type="button" class="tool" data-tool="precall">Pré-call</button>
+</div>
+
+<div class="hud" id="hud">
+  <div class="hud_cell"><div class="hud_k">Custo por reunião</div><div class="hud_v" data-out="custoPorReuniao">—</div></div>
+  <div class="hud_cell"><div class="hud_k">Gap de reuniões/mês</div><div class="hud_v" data-out="gapExibicao">—</div></div>
+  <div class="hud_cell"><div class="hud_k">Receita em risco/mês</div><div class="hud_v" data-out="receitaExibicao">—</div></div>
+</div>
+
+<div class="deck_nav">
+  <button type="button" class="navbtn" id="navPrev" aria-label="Anterior">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <span class="deck_count" id="deckCount">1 / 12</span>
+  <button type="button" class="navbtn" id="navNext" aria-label="Próximo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+<div class="rail"><div class="rail_fill" id="railFill"></div></div>
+
+<!-- ============ CALCULADORA FLUTUANTE ============ -->
+<div class="calc" id="calc" hidden role="dialog" aria-label="Calculadora">
+  <div class="calc_head" id="calcHead">
+    <span class="calc_grip" aria-hidden="true">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="3" cy="2" r="1"/><circle cx="9" cy="2" r="1"/><circle cx="3" cy="6" r="1"/><circle cx="9" cy="6" r="1"/><circle cx="3" cy="10" r="1"/><circle cx="9" cy="10" r="1"/></svg>
+    </span>
+    <span class="calc_title">Calculadora</span>
+    <button type="button" class="calc_x" id="calcFechar" aria-label="Fechar calculadora">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="calc_visor">
+    <div class="calc_tape" id="calcTape" aria-hidden="true"></div>
+    <div class="calc_out" id="calcOut" role="status" aria-live="polite">0</div>
+  </div>
+
+  <div class="calc_chips" id="calcChips"></div>
+
+  <div class="calc_pad" id="calcPad">
+    <button type="button" class="calc_k is-fn" data-calc="limpar">C</button>
+    <button type="button" class="calc_k is-fn" data-calc="apagar">⌫</button>
+    <button type="button" class="calc_k is-fn" data-calc="porcento">%</button>
+    <button type="button" class="calc_k is-op" data-op="/">÷</button>
+
+    <button type="button" class="calc_k" data-num="7">7</button>
+    <button type="button" class="calc_k" data-num="8">8</button>
+    <button type="button" class="calc_k" data-num="9">9</button>
+    <button type="button" class="calc_k is-op" data-op="*">×</button>
+
+    <button type="button" class="calc_k" data-num="4">4</button>
+    <button type="button" class="calc_k" data-num="5">5</button>
+    <button type="button" class="calc_k" data-num="6">6</button>
+    <button type="button" class="calc_k is-op" data-op="-">−</button>
+
+    <button type="button" class="calc_k" data-num="1">1</button>
+    <button type="button" class="calc_k" data-num="2">2</button>
+    <button type="button" class="calc_k" data-num="3">3</button>
+    <button type="button" class="calc_k is-op" data-op="+">+</button>
+
+    <button type="button" class="calc_k is-wide" data-num="0">0</button>
+    <button type="button" class="calc_k" data-calc="virgula">,</button>
+    <button type="button" class="calc_k is-eq" data-calc="igual">=</button>
+  </div>
+</div>
+
+<!-- ================================ SLIDES ================================ -->
+<main class="deck" id="deck">
+
+  <!-- 1 · CAPA ------------------------------------------------------------ -->
+  <section class="slide is-centered is-active" data-slide="capa" data-nome="Abertura">
+    <div class="slide_inner is-narrow">
+      <p class="slide-tag">Diagnóstico comercial</p>
+      <h1 class="display" style="font-size:clamp(2.5rem,6vw,4.5rem)">
+        <span data-out="empresaTitulo">Sua operação</span>
+        <span class="gradient-text">em números</span>
+      </h1>
+      <p class="slide-sub" style="margin-top:22px">
+        Primeiro a avaliação, depois a solução. Pode ser que no fim não faça sentido —
+        e nesse caso a gente encerra na hora.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 · RAIO-X ---------------------------------------------------------- -->
+  <section class="slide" data-slide="raiox" data-nome="Raio-X ao vivo">
+    <div class="slide_inner">
+      <p class="slide-tag">Diagnóstico<span class="sep">/</span>Raio-X Comercial</p>
+      <h2 class="slide-title">Os números da sua operação</h2>
+      <p class="slide-sub">Eu vou preenchendo aqui e você me corrige.</p>
+
+      <div class="xr">
+        <!-- ENTRADAS -->
+        <div class="xr_col is-in">
+          <div class="xr_head">Entradas</div>
+
+          <div class="xr_bloco">Bloco A · a meta</div>
+          <div class="xr_row">
+            <span class="k">Meta de faturamento do trimestre</span>
+            <input class="f is-num" type="text" data-k="metaTrimestre" data-mask="currency" placeholder="R$ 0" autocomplete="off">
+          </div>
+          <div class="xr_row">
+            <span class="k">Ticket médio</span>
+            <input class="f is-num" type="text" data-k="ticketMedio" data-mask="currency" placeholder="R$ 0" autocomplete="off">
+          </div>
+
+          <div class="xr_bloco">Bloco B · a máquina atual</div>
+          <div class="xr_row">
+            <span class="k">Reuniões realizadas por semana</span>
+            <input class="f is-num" type="text" data-k="reunioesSemana" data-mask="number" placeholder="0" autocomplete="off">
+          </div>
+          <div class="xr_row">
+            <span class="k">Vendas fechadas por mês</span>
+            <input class="f is-num" type="text" data-k="vendasMes" data-mask="number" placeholder="0" autocomplete="off">
+          </div>
+          <div class="xr_row">
+            <span class="k">Taxa reunião → venda (estimada)</span>
+            <input class="f is-num" type="text" data-k="taxaConversao" data-mask="number" placeholder="30" autocomplete="off">
+          </div>
+
+          <div class="xr_bloco">Bloco C · o custo</div>
+          <div class="xr_row">
+            <span class="k">Pessoas no comercial</span>
+            <input class="f is-num" type="text" data-k="pessoasComercial" data-mask="number" placeholder="0" autocomplete="off">
+          </div>
+          <div class="xr_row">
+            <span class="k">Folha bruta mensal</span>
+            <input class="f is-num" type="text" data-k="folhaBruta" data-mask="currency" placeholder="R$ 0" autocomplete="off">
+          </div>
+          <div class="xr_row">
+            <span class="k">Ferramentas/mês</span>
+            <input class="f is-num" type="text" data-k="ferramentasMes" data-mask="currency" placeholder="R$ 0" autocomplete="off">
+          </div>
+          <div class="xr_row">
+            <span class="k">Salário da vaga aberta</span>
+            <input class="f is-num" type="text" data-k="salarioNovo" data-mask="currency" placeholder="R$ 0" autocomplete="off">
+          </div>
+
+          <div class="xr_bloco">Bloco B · nas palavras dele</div>
+          <div class="xr_row" style="display:block">
+            <span class="k" style="display:block;margin-bottom:8px">O que fez abrir essa vaga agora</span>
+            <textarea class="f is-full" rows="2" data-k="dorLiteral" placeholder="anotar literal, não resumido"></textarea>
+          </div>
+        </div>
+
+        <!-- SAÍDAS -->
+        <div class="xr_col is-out">
+          <div class="xr_head">Saídas · calculado</div>
+
+          <div class="xr_row">
+            <span class="k">Custo mensal do comercial
+              <span class="xr_hint">folha × 1,7 (encargos CLT) + ferramentas</span>
+            </span>
+            <span class="v" data-out="custoMensalTotal">—</span>
+          </div>
+          <div class="xr_row">
+            <span class="k">Reuniões/mês hoje
+              <span class="xr_hint">reuniões/semana × 4,33</span>
+            </span>
+            <span class="v" data-out="reunioesMesAtual">—</span>
+          </div>
+
+          <div class="xr_row is-star">
+            <span class="k">Custo por reunião realizada</span>
+            <span class="v" data-out="custoPorReuniao">—</span>
+          </div>
+
+          <div class="xr_row">
+            <span class="k">Custo por venda · CAC comercial</span>
+            <span class="v" data-out="custoPorVenda">—</span>
+          </div>
+          <div class="xr_row">
+            <span class="k">Vendas necessárias p/ a meta</span>
+            <span class="v" data-out="vendasNecessariasMes">—</span>
+          </div>
+          <div class="xr_row">
+            <span class="k">Reuniões necessárias p/ a meta</span>
+            <span class="v" data-out="reunioesNecessariasMes">—</span>
+          </div>
+
+          <div class="xr_row is-star">
+            <span class="k">O gap</span>
+            <span class="v" data-out="gapExibicao">—</span>
+          </div>
+          <div class="xr_row is-star">
+            <span class="k">Receita em risco/mês</span>
+            <span class="v" data-out="receitaExibicao">—</span>
+          </div>
+
+          <div class="xr_row">
+            <span class="k">Rampagem da vaga sem máquina
+              <span class="xr_hint">(salário × 1,7 + ferramentas) × 3 meses</span>
+            </span>
+            <span class="v" data-out="custoRampagem">—</span>
+          </div>
+          <div class="xr_row" data-show="custoCitado">
+            <span class="k">Você citou na ligação
+              <span class="xr_hint">confere com o calculado?</span>
+            </span>
+            <span class="v" data-out="custoCitado">—</span>
+          </div>
+
+          <!-- A melhor pergunta da call: a taxa que ele declara contra a
+               taxa que os números dele dizem. -->
+          <div class="xr_alerta" id="xrAlerta">
+            <p class="t">Incoerência nos números</p>
+            <p>
+              Taxa declarada: <b data-out="incDeclarada">—</b>.
+              Taxa que os seus números dizem: <b data-out="incImplicita">—</b>.
+              Com a taxa real, o gap vira <b data-out="incGap">—</b> reuniões/mês e a receita
+              em risco vira <b data-out="incRisco">—</b>.
+            </p>
+            <div class="acao">
+              <button type="button" class="tool" data-inc="usar">Usar a taxa real</button>
+              <button type="button" class="tool" data-inc="manter">Manter a declarada</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · MAPA DA MÁQUINA ------------------------------------------------- -->
+  <section class="slide" data-slide="mapa" data-nome="Mapa da Máquina">
+    <div class="slide_inner">
+      <p class="slide-tag">Diagnóstico<span class="sep">/</span>Mapa da Máquina</p>
+      <h2 class="slide-title">Como nasce uma reunião hoje</h2>
+      <p class="slide-sub">Me desenha junto — passo a passo, de onde vem o nome, quem toca, por onde.</p>
+
+      <div class="mapa" id="mapa">
+        <div class="mapa_col" data-col="origem">
+          <div class="mapa_n">1</div>
+          <div class="mapa_t">Origem</div>
+          <p class="mapa_h">De onde vem lead hoje</p>
+          <textarea class="f" data-k="mapaOrigem" placeholder="…"></textarea>
+          <button type="button" class="leak-btn" data-leak="origem">Marcar vazamento</button>
+        </div>
+        <div class="mapa_col" data-col="abordagem">
+          <div class="mapa_n">2</div>
+          <div class="mapa_t">Abordagem</div>
+          <p class="mapa_h">Quem toca, como</p>
+          <textarea class="f" data-k="mapaAbordagem" placeholder="…"></textarea>
+          <button type="button" class="leak-btn" data-leak="abordagem">Marcar vazamento</button>
+        </div>
+        <div class="mapa_col" data-col="reuniao">
+          <div class="mapa_n">3</div>
+          <div class="mapa_t">Reunião</div>
+          <p class="mapa_h">Quantas, no-show</p>
+          <textarea class="f" data-k="mapaReuniao" placeholder="…"></textarea>
+          <button type="button" class="leak-btn" data-leak="reuniao">Marcar vazamento</button>
+        </div>
+        <div class="mapa_col" data-col="proposta">
+          <div class="mapa_n">4</div>
+          <div class="mapa_t">Proposta</div>
+          <p class="mapa_h">Conversão</p>
+          <textarea class="f" data-k="mapaProposta" placeholder="…"></textarea>
+          <button type="button" class="leak-btn" data-leak="proposta">Marcar vazamento</button>
+        </div>
+        <div class="mapa_col" data-col="contrato">
+          <div class="mapa_n">5</div>
+          <div class="mapa_t">Contrato</div>
+          <p class="mapa_h">Fechamento</p>
+          <textarea class="f" data-k="mapaContrato" placeholder="…"></textarea>
+          <button type="button" class="leak-btn" data-leak="contrato">Marcar vazamento</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · PIT 01 ---------------------------------------------------------- -->
+  <section class="slide is-centered" data-slide="pit01" data-nome="Pit 01">
+    <div class="slide_inner is-narrow">
+      <p class="slide-tag">Predisposição</p>
+      <h2 class="slide-title" style="font-size:clamp(2rem,4.5vw,3.5rem)">
+        De 0 a 10, o quanto você quer <span class="gradient-text">resolver isso</span>?
+      </h2>
+
+      <div class="dial" id="dial" role="group" aria-label="Nota de 0 a 10"></div>
+
+      <div class="pit-note" id="pitNote">
+        <p class="mono" style="font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)">
+          Registrado
+        </p>
+        <p>Nota <b data-out="notaPit" style="color:var(--white)">—</b><span data-out="notaFalta"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · DECK 1 · O GAP -------------------------------------------------- -->
+  <section class="slide is-centered" data-slide="gap" data-deck="1" data-nome="O gap deles">
+    <div class="slide_inner">
+      <p class="slide-tag">O gap<span class="sep">/</span><span class="deck-n">deck 1 de 7</span></p>
+      <span class="big" data-out="gapBig">—</span>
+      <span class="big-unit" data-out="gapUnidade">reuniões/mês faltando</span>
+      <p class="big-eq">
+        São <b data-out="reunioesNecessariasMes">—</b> reuniões/mês para a meta.
+        Sua máquina gera <b data-out="reunioesMesAtual">—</b>.
+        Esse buraco custa <span class="risco" data-out="receitaExibicao">—</span> por mês em receita que não entra.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6 · DECK 2 · POR QUE O GAP EXISTE ----------------------------------- -->
+  <section class="slide is-centered" data-slide="porque" data-deck="2" data-nome="Por que o gap existe">
+    <div class="slide_inner is-narrow">
+      <p class="slide-tag">Por que o gap existe<span class="sep">/</span><span class="deck-n">deck 2 de 7</span></p>
+      <h2 class="slide-title" style="font-size:clamp(2rem,4.6vw,3.5rem);text-transform:none">
+        <textarea class="f is-full" rows="3" data-k="fraseGap"
+          style="font:inherit;color:var(--white)">Prospecção genérica morreu. Conta certa, no momento certo — ou nada.</textarea>
+      </h2>
+    </div>
+  </section>
+
+  <!-- 7 · DECK 3 · A MÁQUINA ---------------------------------------------- -->
+  <section class="slide" data-slide="maquina" data-deck="3" data-nome="A máquina — 3 módulos">
+    <div class="slide_inner">
+      <p class="slide-tag">A máquina<span class="sep">/</span><span class="deck-n">deck 3 de 7</span></p>
+      <h2 class="slide-title">Três módulos, na ordem</h2>
+
+      <div class="modulos">
+        <div class="modulo">
+          <div class="n">01 · ICP</div>
+          <h3>Quem realmente compra</h3>
+          <p>Setor, porte, estrutura comercial e histórico de fechamento. A lista deixa de ser palpite.</p>
+        </div>
+        <div class="modulo">
+          <div class="n">02 · SINAIS</div>
+          <h3>Conta certa, no momento certo</h3>
+          <p>A conta só entra quando se mexe — vaga comercial aberta, expansão, movimento real. E o sistema mapeia todos os sócios e decisores da conta: contato direto, sem recepção no caminho.</p>
+        </div>
+        <div class="modulo">
+          <div class="n">03 · CADÊNCIA</div>
+          <h3>Nada esfria por esquecimento</h3>
+          <p>Ligação puxa, WhatsApp acompanha, e-mail sustenta. Sequência organizada por conta, com revisão humana.</p>
+        </div>
+      </div>
+
+      <div class="stack-table" id="stackTable">
+        <div class="stack-row is-head">
+          <div class="stack-cell">Dor que você declarou</div>
+          <div class="stack-cell">O que a plataforma faz</div>
+          <div class="stack-cell">Como fica o seu dia</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · DECK 4 · O VÍDEO ------------------------------------------------ -->
+  <section class="slide" data-slide="video" data-deck="4" data-nome="O vídeo da plataforma">
+    <div class="slide_inner">
+      <p class="slide-tag">A plataforma<span class="sep">/</span><span class="deck-n">deck 4 de 7</span></p>
+      <h2 class="slide-title">Por dentro</h2>
+
+      <div class="video-frame" id="videoFrame">
+        <div class="video-missing" id="videoMissing">
+          <p class="mono">Vídeo da plataforma</p>
+          <p class="text-small text-color-secondary" style="margin:12px 0 0">
+            Coloque o arquivo em <code>assets/video/plataforma.mp4</code><br>
+            ou abra esta página com <code>?video=URL</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · DECK 5 · TU VIVEU ISSO ------------------------------------------ -->
+  <section class="slide" data-slide="prova" data-deck="5" data-nome="Você viveu isso">
+    <div class="slide_inner">
+      <p class="slide-tag">A prova<span class="sep">/</span><span class="deck-n">deck 5 de 7</span></p>
+      <h2 class="slide-title">Você já viveu isso</h2>
+      <p class="slide-sub">Esta reunião existe porque o sistema funcionou — em você, antes de você saber que ele existe.</p>
+
+      <div class="prova">
+        <div class="timeline">
+          <div class="timeline_item">
+            <div class="timeline_d">Detecção do sinal</div>
+            <div class="timeline_t"><span data-out="dataDeteccao">—</span> · a vaga comercial foi publicada e o sistema marcou a conta</div>
+          </div>
+          <div class="timeline_item">
+            <div class="timeline_d">Decisores mapeados</div>
+            <div class="timeline_t">Sócios e responsáveis pelo comercial, com contato direto — sem lista comprada</div>
+          </div>
+          <div class="timeline_item">
+            <div class="timeline_d">Primeiro toque</div>
+            <div class="timeline_t"><span data-out="dataLigacao">—</span> · a ligação que trouxe você até aqui</div>
+          </div>
+          <div class="timeline_item">
+            <div class="timeline_d">Hoje</div>
+            <div class="timeline_t">Esta reunião</div>
+          </div>
+        </div>
+
+        <div class="print-frame" id="printFrame">
+          <p class="text-small text-color-secondary" style="text-align:center;padding:24px">
+            Print do sinal — coloque em <code style="color:var(--orange)">assets/img/sinal.png</code>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · DECK 6 · PLANO DE 14 DIAS -------------------------------------- -->
+  <section class="slide" data-slide="plano" data-deck="6" data-nome="Plano de 14 dias">
+    <div class="slide_inner">
+      <p class="slide-tag">Implementação<span class="sep">/</span><span class="deck-n">deck 6 de 7</span></p>
+      <h2 class="slide-title">Os primeiros 14 dias</h2>
+
+      <div class="plano">
+        <div class="plano_step">
+          <div class="plano_d">Dia 0</div>
+          <p class="plano_t">Kickoff</p>
+          <p class="plano_h">Acesso, contexto do time e definição do que conta como conta certa.</p>
+        </div>
+        <div class="plano_step">
+          <div class="plano_d">Dias 1–3</div>
+          <p class="plano_t">ICP e segmento</p>
+          <p class="plano_h">Recorte fechado a partir de quem já fecha com vocês.</p>
+        </div>
+        <div class="plano_step">
+          <div class="plano_d">Dias 4–7</div>
+          <p class="plano_t">Sinais e cadência no ar</p>
+          <p class="plano_h">Detecção ligada, decisores mapeados, sequência rodando.</p>
+        </div>
+        <div class="plano_step">
+          <div class="plano_d">Dias 8–14</div>
+          <p class="plano_t">Primeiras reuniões</p>
+          <p class="plano_h">Agenda começando a encher com conta que se mexeu.</p>
+        </div>
+      </div>
+
+      <p class="text-small text-color-secondary" style="margin-top:22px">
+        É a meta que a gente persegue e já entregou — não é cláusula de contrato.
+        O que garantimos é a estrutura de pé e rodando.
+      </p>
+    </div>
+  </section>
+
+  <!-- 11 · DECK 7 · INVESTIMENTO ------------------------------------------ -->
+  <section class="slide" data-slide="investimento" data-deck="7" data-nome="Investimento">
+    <div class="slide_inner">
+      <p class="slide-tag">Investimento<span class="sep">/</span><span class="deck-n">deck 7 de 7</span></p>
+
+      <div class="inv-wrap is-locked" id="invWrap">
+
+        <!-- Trava: preço nunca antes da predisposição -->
+        <div class="lock">
+          <div class="ic">🔒</div>
+          <p><b>Predisposição não registrada</b>
+            O preço só aparece depois do Pit 01. Volte, registre a nota e siga.</p>
+        </div>
+
+        <div class="inv">
+          <div class="inv_deles">
+            <div class="lbl">Cada reunião custa hoje</div>
+            <div class="val" data-out="custoPorReuniao">—</div>
+            <div class="lbl">Receita em risco por mês</div>
+            <div class="val" data-out="receitaExibicao">—</div>
+            <div class="lbl">Custo de rampagem da vaga</div>
+            <div class="val" data-out="custoRampagem">—</div>
+          </div>
+
+          <div>
+            <div class="ancora">
+              <p>É justo que muito custe aquilo que muito vale.</p>
+            </div>
+
+            <div class="degraus" id="degraus">
+              <div class="degrau" data-degrau="essencial">
+                <div>
+                  <div class="degrau_n">Essencial</div>
+                  <p class="degrau_e">1 ICP · 1 segmento · setup de sinais e cadência · acompanhamento 30 dias</p>
+                </div>
+                <div class="degrau_v">R$ 5.000</div>
+              </div>
+              <div class="degrau" data-degrau="growth">
+                <div>
+                  <div class="degrau_n">Growth</div>
+                  <p class="degrau_e">2 ICPs · integração com CRM · treinamento do time · acompanhamento 90 dias</p>
+                </div>
+                <div class="degrau_v">R$ 9–12 mil</div>
+              </div>
+              <div class="degrau" data-degrau="scale">
+                <div>
+                  <div class="degrau_n">Scale</div>
+                  <p class="degrau_e">Multi-segmento · RevOps completo · recalibragem trimestral</p>
+                </div>
+                <div class="degrau_v">R$ 18–25 mil</div>
+              </div>
+            </div>
+
+            <div class="mensalidade">
+              <span class="k">Plataforma · mensalidade a partir de</span>
+              <span class="v">R$ 1.000/mês</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · FECHO ---------------------------------------------------------- -->
+  <section class="slide is-centered" data-slide="fecho" data-nome="Fechamento">
+    <div class="slide_inner is-narrow">
+      <p class="slide-tag">Próximo passo</p>
+      <h2 class="slide-title" style="font-size:clamp(2rem,5vw,3.75rem)">Kickoff</h2>
+      <p class="slide-sub" style="font-size:1.375rem;margin-top:18px">
+        <input class="f" type="text" data-k="kickoffDia" placeholder="segunda, 23/03" autocomplete="off" style="width:220px">
+        às
+        <input class="f" type="text" data-k="kickoffHora" placeholder="10h" autocomplete="off" style="width:90px">
+      </p>
+      <p class="text-regular text-color-body" style="max-width:52ch">
+        Contrato e link de pagamento saem agora, enquanto a gente ainda está aqui.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script src="scripts/raiox-engine.js?v=2" defer></script>
+<script src="scripts/apresentacao.js?v=2" defer></script>
+<script src="scripts/calculadora.js?v=2" defer></script>
+</body>
+</html>

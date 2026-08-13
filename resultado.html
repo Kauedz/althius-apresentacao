@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="js">
+<head>
+  <meta charset="utf-8">
+  <title>Seu Raio-X Comercial — Althius</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="description" content="O resultado do seu Raio-X Comercial: gap de reuniões, receita em risco por mês e custo por reunião realizada.">
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
+  <link href="styles/main.css?v=2" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <!-- ============ OVERLAY DE PROCESSAMENTO ============ -->
+  <div class="processing" id="processing" role="status" aria-live="polite">
+    <div class="processing_inner">
+      <div class="processing_ring" aria-hidden="true"></div>
+      <p class="processing_log" id="processingLog">Lendo os números da operação…</p>
+    </div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <div class="nav-component is-scrolled" id="nav">
+    <div class="nav-background"></div>
+    <div class="padding-global">
+      <div class="container-medium">
+        <div class="nav_container">
+          <a href="https://althius.com.br/" class="nav_logo">
+            <img src="assets/img/althius-logo-transparent.png" alt="Althius" class="logo-image is-althius" loading="eager">
+          </a>
+          <div class="nav_menu">
+            <div class="nav_list">
+              <a href="https://althius.com.br/servicos" class="nav_link">Serviços</a>
+              <a href="https://althius.com.br/sobre" class="nav_link">Sobre</a>
+              <a href="apresentacao.html" class="nav_link is-current">Apresentação</a>
+            </div>
+            <a href="https://althius.com.br/contato" class="button">
+              <div class="label">fale conosco</div>
+              <div class="button_ic is-default">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="8" height="8" rx="4" fill="currentcolor"/></svg>
+              </div>
+              <div class="button_ic is-hover">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70017 8.70011L8.70017 9.86331L13.3076 9.86743L8.28769 14.8873L9.11265 15.7123L14.1325 10.6924L14.1284 15.2998L15.2998 15.2998L15.2998 8.70011L8.70017 8.70011Z" fill="currentcolor"/><rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="currentcolor"/></svg>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ ESTADO SEM DADOS ============ -->
+    <section class="section-large" id="semDados" hidden>
+      <div class="padding-global">
+        <div class="container-small empty-state stack">
+          <p class="eyebrow">Raio-X Comercial</p>
+          <h1 class="heading-h2">Não encontramos seus números</h1>
+          <p class="text-regular text-color-body" style="margin-inline:auto;max-width:52ch">
+            Esta página é gerada pelo botão <b>Exportar Raio-X</b> da apresentação e vive
+            só nesta sessão do navegador. Volte à reunião e exporte de novo.
+          </p>
+          <div class="button-row" style="justify-content:center">
+            <a href="apresentacao.html" class="button is-primary">
+              <div class="label">abrir a apresentação</div>
+              <div class="button_ic is-default">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="8" height="8" rx="4" fill="currentcolor"/></svg>
+              </div>
+              <div class="button_ic is-hover">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70017 8.70011L8.70017 9.86331L13.3076 9.86743L8.28769 14.8873L9.11265 15.7123L14.1325 10.6924L14.1284 15.2998L15.2998 15.2998L15.2998 8.70011L8.70017 8.70011Z" fill="currentcolor"/><rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="currentcolor"/></svg>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESULTADO ============ -->
+    <div id="resultado" hidden>
+
+      <!-- Cabeçalho -->
+      <section class="result_head" style="padding-top:180px;padding-bottom:56px">
+        <div class="padding-global">
+          <div class="container-medium stack">
+            <p class="eyebrow">Relatório gerado · cálculo local</p>
+            <h1 class="display">Seu <span class="gradient-text">Raio-X Comercial</span></h1>
+            <p class="text-regular text-color-body measure">
+              Três números fazem o trabalho todo: quanto custa cada reunião, qual o buraco entre a
+              sua máquina e a sua meta, e o preço em reais de deixar esse buraco aberto.
+            </p>
+            <p class="eyebrow is-muted" id="seloEstimativa" hidden>
+              ⚠ Conversão reunião→venda não informada — cálculo usa a estimativa padrão de 30%
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloco 1 · O gap -->
+      <section style="padding-bottom:24px">
+        <div class="padding-global">
+          <div class="container-medium">
+            <div class="metric is-hero" id="blocoGap" data-anim="reveal">
+              <p class="eyebrow metric_label" id="tituloGap">Seu gap comercial</p>
+              <span class="metric_value is-orange" id="valorGap">—</span>
+              <span class="metric_unit" id="unidadeGap">reuniões/mês faltando</span>
+              <p class="text-regular text-color-body metric_note" id="notaGap"></p>
+              <p class="metric_footnote" id="rodapeGap"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Blocos 2 e 3 · Receita em risco + custo por reunião -->
+      <section style="padding-bottom:24px">
+        <div class="padding-global">
+          <div class="container-medium">
+            <div class="metric-pair">
+
+              <div class="metric" id="blocoRisco" data-anim="reveal">
+                <p class="eyebrow metric_label" id="tituloRisco">Receita em risco por mês</p>
+                <span class="metric_value is-orange" id="valorRisco">—</span>
+                <span class="metric_unit">por mês, enquanto o gap existir</span>
+                <p class="text-small text-color-secondary metric_note" id="notaRisco"></p>
+              </div>
+
+              <div class="metric" id="blocoCusto" data-anim="reveal">
+                <p class="eyebrow metric_label">Quanto custa cada reunião hoje</p>
+                <span class="metric_value" id="valorCusto">—</span>
+                <span class="metric_unit">por reunião realizada</span>
+                <p class="text-small text-color-secondary metric_note" id="notaCusto"></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Números de apoio -->
+      <section class="section-small">
+        <div class="padding-global">
+          <div class="container-medium" data-anim="reveal">
+            <p class="eyebrow is-muted" style="margin-bottom:20px">Contexto de apoio</p>
+            <dl class="support-grid">
+              <div class="support-cell">
+                <dt>Custo por venda (CAC comercial)</dt>
+                <dd id="apoioCustoVenda">—</dd>
+              </div>
+              <div class="support-cell">
+                <dt>Custo mensal do comercial</dt>
+                <dd id="apoioCustoMensal">—</dd>
+              </div>
+              <div class="support-cell">
+                <dt>Reuniões necessárias p/ a meta</dt>
+                <dd id="apoioReunioesNec">—</dd>
+              </div>
+              <div class="support-cell">
+                <dt>Vendas necessárias p/ a meta</dt>
+                <dd id="apoioVendasNec">—</dd>
+              </div>
+              <div class="support-cell" id="celulaRampagem" hidden>
+                <dt id="rotuloRampagem">Rampagem sem máquina</dt>
+                <dd id="apoioRampagem">—</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloco 4 · Diagnóstico textual -->
+      <section class="section-medium">
+        <div class="padding-global">
+          <div class="container-small" data-anim="reveal">
+            <p class="eyebrow" style="margin-bottom:16px">A leitura</p>
+            <h2 class="heading-h2" style="margin-bottom:32px">O que esses números <span class="gradient-text">estão dizendo</span></h2>
+            <div class="diagnosis" id="diagnosticoTexto"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloco 5 · CTA -->
+      <section style="padding-bottom:96px">
+        <div class="padding-global">
+          <div class="container-medium" data-anim="reveal">
+            <div class="cta-panel">
+              <p class="eyebrow" style="color:var(--orange)">O próximo passo</p>
+              <h2 class="heading-h2" style="margin:16px 0 20px">O que fazer com esse número</h2>
+              <p class="text-regular measure" style="margin:0 0 32px">
+                Este diagnóstico é o primeiro passo — ele usa estimativas suas e uma régua padrão de
+                mercado. Na reunião, a gente abre o cenário com os dados reais da sua operação:
+                de onde nasce uma reunião hoje, onde ela vaza, e qual o caminho mais curto para
+                fechar esse gap sem simplesmente contratar mais gente.
+              </p>
+              <div class="button-row">
+                <a href="https://althius.com.br/contato" class="button is-primary">
+                  <div class="label">agendar diagnóstico completo com a Althius</div>
+                  <div class="button_ic is-default">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="8" height="8" rx="4" fill="currentcolor"/></svg>
+                  </div>
+                  <div class="button_ic is-hover">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70017 8.70011L8.70017 9.86331L13.3076 9.86743L8.28769 14.8873L9.11265 15.7123L14.1325 10.6924L14.1284 15.2998L15.2998 15.2998L15.2998 8.70011L8.70017 8.70011Z" fill="currentcolor"/><rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="currentcolor"/></svg>
+                  </div>
+                </a>
+                <button type="button" class="button is-gray no-print" id="btnRefazer">
+                  <div class="label">voltar para a apresentação</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recap das entradas -->
+      <section class="recap section-small">
+        <div class="padding-global">
+          <div class="container-medium">
+            <p class="eyebrow is-muted" style="margin-bottom:24px">Os números que você informou</p>
+            <dl class="recap_grid" id="recapGrid"></dl>
+            <p class="text-small text-color-secondary" style="margin-top:32px;max-width:64ch">
+              Método de cálculo: folha bruta × 1,7 (encargos CLT) + ferramentas = custo mensal do
+              comercial; 4,33 semanas por mês; meta do trimestre ÷ 3 para a meta mensal. O gap é
+              exibido arredondado em múltiplos de 0,5 — o valor exato aparece abaixo do número.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="padding-global">
+      <div class="container-medium">
+        <div class="footer_top">
+          <div>
+            <h2 class="display-xl">PRONTO PARA ESCALAR?</h2>
+            <p class="footer_subtext text-regular">
+              Trabalhar com a Althius é uma ótima maneira de melhorar a aquisição
+              para o seu negócio.
+            </p>
+          </div>
+          <a href="https://althius.com.br/contato" class="button is-gray">
+            <div class="label">fale conosco</div>
+            <div class="button_ic is-default">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="8" height="8" rx="4" fill="currentcolor"/></svg>
+            </div>
+            <div class="button_ic is-hover">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.70017 8.70011L8.70017 9.86331L13.3076 9.86743L8.28769 14.8873L9.11265 15.7123L14.1325 10.6924L14.1284 15.2998L15.2998 15.2998L15.2998 8.70011L8.70017 8.70011Z" fill="currentcolor"/><rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="currentcolor"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="footer_bottom">
+          <a href="https://althius.com.br/" class="footer_logo">
+            <img src="assets/img/althius-mark.png" alt="Althius" loading="lazy">
+          </a>
+          <p class="text-small">© Althius. Raio-X Comercial — cálculo executado no seu navegador.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/raiox-engine.js?v=2" defer></script>
+  <script src="scripts/animations.js?v=2" defer></script>
+  <script src="scripts/diagnostico.js?v=2" defer></script>
+</body>
+</html>
