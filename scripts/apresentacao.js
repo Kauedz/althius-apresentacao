@@ -45,25 +45,65 @@
     fraseGap: '',
     stack: JSON.parse(JSON.stringify(STACK_PADRAO)),
     degrau: null,
-    kickoffDia: '', kickoffHora: ''
+    kickoffDia: '', kickoffHora: '',
+    // Print do sinal, subido no pré-call (data URL já redimensionada).
+    sinalImagem: '', sinalMeta: '',
+    // Taxa veio do benchmark de mercado em vez da boca do lead.
+    taxaDoMercado: false,
+    // Funil de mercado (deck 4) — editável na call.
+    somTam: null, somSam: null, somSom: null, somSinal: null,
+    motions: []
   };
 
   var TEXTO = { empresa: 1, dataDeteccao: 1, dataLigacao: 1, dorLiteral: 1, fraseGap: 1,
                 mapaOrigem: 1, mapaAbordagem: 1, mapaReuniao: 1, mapaProposta: 1, mapaContrato: 1,
                 kickoffDia: 1, kickoffHora: 1 };
 
+  /* As 14 motions de Go-to-Market do documento Revenue OS. */
+  var MOTIONS = [
+    'Outbound Sales', 'Inbound Marketing', 'Tráfego Pago', 'SEO',
+    'Newsletter', 'PLG — Product-Led Growth', 'Comunidade', 'ABM',
+    'Parcerias e Channel', 'Eventos e Webinars', 'Conteúdo de fundo de funil',
+    'Social Selling', 'Customer Marketing', 'Demand Generation'
+  ];
+
+  /* A imagem do sinal vive numa chave à parte: ela pesa centenas de KB e
+     `salvar()` roda a cada tecla do diagnóstico — serializar o data URL
+     junto travaria a digitação. */
+  var SINAL_KEY = 'althius_deck_sinal_v1';
+
   function salvar() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(estado)); } catch (err) { /* ok */ }
+    try {
+      var copia = {};
+      Object.keys(estado).forEach(function (k) {
+        if (k !== 'sinalImagem') copia[k] = estado[k];
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(copia));
+    } catch (err) { /* ok */ }
+  }
+
+  function salvarSinal() {
+    try {
+      if (estado.sinalImagem) localStorage.setItem(SINAL_KEY, estado.sinalImagem);
+      else localStorage.removeItem(SINAL_KEY);
+    } catch (err) {
+      // Cota estourada: mantém em memória para esta call e avisa no console.
+      console.warn('Sinal não coube no localStorage — vale só nesta aba.');
+    }
   }
 
   function carregar() {
     try {
       var bruto = localStorage.getItem(STORAGE_KEY);
-      if (!bruto) return;
-      var d = JSON.parse(bruto);
-      Object.keys(estado).forEach(function (k) {
-        if (d[k] !== undefined && d[k] !== null) estado[k] = d[k];
-      });
+      if (bruto) {
+        var d = JSON.parse(bruto);
+        Object.keys(estado).forEach(function (k) {
+          if (d[k] !== undefined && d[k] !== null) estado[k] = d[k];
+        });
+      }
+    } catch (err) { /* ok */ }
+    try {
+      estado.sinalImagem = localStorage.getItem(SINAL_KEY) || '';
     } catch (err) { /* ok */ }
   }
 
@@ -117,6 +157,13 @@
     v.incGap       = i ? E.num(Math.max(i.gapReunioes, 0), 1) : '—';
     v.incRisco     = i ? E.moeda(Math.max(i.receitaEmRiscoMes, 0)) : '—';
 
+    // Funil de mercado (deck 4)
+    v.somSinalEco  = estado.somSinal !== null ? E.num(estado.somSinal, 0) : '650';
+    var som = estado.somSom, sinal = estado.somSinal;
+    v.somRestante = (som !== null && sinal !== null && som > sinal)
+      ? E.num(som - sinal, 0)
+      : '7.350';
+
     return v;
   }
 
@@ -162,6 +209,9 @@
     invWrap.classList.toggle('is-locked', estado.notaPit === null);
     brandEmpresa.textContent = estado.empresa || '';
 
+    sincronizarTaxa();
+    atualizarMercado();
+
     // O HUD só entra depois do Raio-X: ali os números já estão na tela em
     // tamanho grande, e a barra cobriria a coluna de entradas.
     var temNumeros = r.custoPorReuniao !== null || r.gapReunioes !== null;
@@ -201,6 +251,15 @@
      ----------------------------------------------------------------- */
   var canal = ('BroadcastChannel' in window) ? new BroadcastChannel(CANAL) : null;
   var janelaPresenter = null;
+
+  // O apresentador pode ser aberto a qualquer momento (inclusive numa aba
+  // separada). Ao carregar, ele pede o estado — senão ficaria em branco até
+  // a próxima troca de slide.
+  if (canal) {
+    canal.onmessage = function (ev) {
+      if (ev.data && ev.data.pedido) render();
+    };
+  }
 
   function transmitir(v) {
     if (!canal) return;
@@ -353,12 +412,243 @@
     frame.appendChild(video);
   }
 
-  function montarPrintSinal() {
-    var frame = document.getElementById('printFrame');
-    var img = new Image();
-    img.onload = function () { frame.innerHTML = ''; frame.appendChild(img); };
-    img.alt = 'Sinal detectado';
-    img.src = 'assets/img/sinal.png';
+  /* -----------------------------------------------------------------
+     BENCHMARK DE MERCADO
+     O sócio quase nunca sabe a própria taxa de conversão. Em vez de
+     inventar 30%, aplica a referência de mercado — com a fonte na tela.
+     ----------------------------------------------------------------- */
+  function montarNaoSei() {
+    var botao = document.getElementById('btnNaoSei');
+    if (!botao || !window.Benchmarks) return;
+
+    botao.addEventListener('click', function () {
+      if (estado.taxaDoMercado) {
+        estado.taxaDoMercado = false;
+        estado.taxaConversao = null;
+      } else {
+        estado.taxaDoMercado = true;
+        estado.taxaConversao = window.Benchmarks.TAXA_REFERENCIA;
+      }
+      render();
+    });
+  }
+
+  function sincronizarTaxa() {
+    var botao = document.getElementById('btnNaoSei');
+    var credito = document.getElementById('taxaCredito');
+    if (!botao || !window.Benchmarks) return;
+
+    botao.classList.toggle('is-on', estado.taxaDoMercado);
+    if (credito) {
+      credito.textContent = estado.taxaDoMercado
+        ? 'referência de mercado · ' + window.Benchmarks.credito('reuniaoVenda')
+        : '';
+    }
+  }
+
+  /** Os cards do banho de mercado (deck 2). */
+  function montarMercado() {
+    var grid = document.getElementById('mercadoGrid');
+    if (!grid || !window.Benchmarks) return;
+    var B = window.Benchmarks;
+
+    var ordem = ['winRate', 'metaPerdida', 'cicloCurto', 'decisorCedo', 'rampagem', 'quotaSdr'];
+
+    grid.innerHTML = ordem.map(function (chave) {
+      var d = B.DADOS[chave];
+      if (!d) return '';
+      // O detalhe da amostra vai no title, não numa linha extra: em 900px
+      // de altura cada linha de crédito empurra o grid para o scroll.
+      var link = d.ref.url
+        ? '<a href="' + d.ref.url + '" target="_blank" rel="noopener" title="'
+          + (d.ref.detalhe || '') + '">' + d.ref.fonte + '</a>'
+        : '<span title="' + (d.ref.detalhe || '') + '">' + d.ref.fonte + '</span>';
+      return '<div class="mercado_card">'
+        + '<div class="mercado_k">' + d.rotulo + '</div>'
+        + '<div class="mercado_v">' + d.faixa + '</div>'
+        + '<p class="mercado_l">' + d.leitura + '</p>'
+        + (d.validado ? '' : '<span class="mercado_pendente">fonte a confirmar</span>')
+        + '<span class="fonte">' + link + ' · ' + d.ref.ano + '</span>'
+        + '</div>';
+    }).join('');
+  }
+
+  /** Marca no card o número DELE, quando existe, para o contraste. */
+  function atualizarMercado() {
+    var grid = document.getElementById('mercadoGrid');
+    if (!grid || !window.Benchmarks) return;
+
+    var antigo = grid.querySelector('.is-dele');
+    if (antigo) antigo.remove();
+
+    if (estado.taxaConversao === null || estado.taxaDoMercado) return;
+
+    var B = window.Benchmarks;
+    var ref = B.DADOS.winRate.valor;
+    var dele = estado.taxaConversao;
+    var diff = dele - ref;
+    var card = document.createElement('div');
+    card.className = 'mercado_card is-dele';
+    card.innerHTML =
+      '<div class="mercado_k">A sua conversão declarada</div>'
+      + '<div class="mercado_v">' + E.num(dele, 1) + '%</div>'
+      + '<p class="mercado_l">'
+      + (Math.abs(diff) < 2
+          ? 'Praticamente colada na média do mercado. O gargalo não está na conversão — está no volume de conta certa chegando na frente do time.'
+          : diff > 0
+            ? 'Acima da média de mercado em ' + E.num(diff, 1) + ' pontos. Cada reunião que falta na sua agenda vale mais do que valeria na média — o que torna o gap mais caro, não menos.'
+            : 'Abaixo da média de mercado em ' + E.num(Math.abs(diff), 1) + ' pontos. Aqui existem duas frentes: mais reunião e melhor reunião.')
+      + '</p><span class="fonte">Número declarado por você nesta reunião</span>';
+    grid.insertBefore(card, grid.firstChild);
+  }
+
+  /** As 14 motions de GTM (deck 5). */
+  function montarMotions() {
+    var grid = document.getElementById('motionsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = MOTIONS.map(function (nome, i) {
+      return '<div class="motion" data-motion="' + i + '">'
+        + '<div class="motion_n">' + String(i + 1).padStart(2, '0') + '</div>'
+        + '<p class="motion_t">' + nome + '</p></div>';
+    }).join('');
+
+    grid.addEventListener('click', function (ev) {
+      var m = ev.target.closest('[data-motion]');
+      if (!m) return;
+      var i = parseInt(m.getAttribute('data-motion'), 10);
+      var pos = estado.motions.indexOf(i);
+      if (pos >= 0) estado.motions.splice(pos, 1); else estado.motions.push(i);
+      sincronizarMotions();
+      salvar();
+    });
+  }
+
+  function sincronizarMotions() {
+    document.querySelectorAll('[data-motion]').forEach(function (m) {
+      var i = parseInt(m.getAttribute('data-motion'), 10);
+      m.classList.toggle('is-on', estado.motions.indexOf(i) >= 0);
+    });
+  }
+
+  /* -----------------------------------------------------------------
+     PRINT DO SINAL — subido no pré-call, exibido no deck 8
+     Redimensiona no canvas antes de guardar: um print de tela cru
+     estoura a cota do localStorage.
+     ----------------------------------------------------------------- */
+  var LARGURA_MAX = 1280;
+  var PROPORCAO_ALVO = 1.6;   // 16:10
+
+  function montarUploadSinal() {
+    var zona = document.getElementById('sinalDrop');
+    var input = document.getElementById('sinalInput');
+    var remover = document.getElementById('sinalRemover');
+    if (!zona || !input) return;
+
+    input.addEventListener('change', function () {
+      if (input.files && input.files[0]) processarSinal(input.files[0]);
+    });
+
+    ['dragenter', 'dragover'].forEach(function (ev) {
+      zona.addEventListener(ev, function (e) {
+        e.preventDefault(); zona.classList.add('is-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      zona.addEventListener(ev, function (e) {
+        e.preventDefault(); zona.classList.remove('is-over');
+      });
+    });
+    zona.addEventListener('drop', function (e) {
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) processarSinal(f);
+    });
+
+    if (remover) {
+      remover.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        estado.sinalImagem = '';
+        estado.sinalMeta = '';
+        input.value = '';
+        sincronizarSinal();
+        salvarSinal();
+        salvar();
+      });
+    }
+  }
+
+  function processarSinal(arquivo) {
+    if (!/^image\//.test(arquivo.type)) return;
+
+    var leitor = new FileReader();
+    leitor.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var escala = Math.min(1, LARGURA_MAX / img.naturalWidth);
+        var w = Math.round(img.naturalWidth * escala);
+        var h = Math.round(img.naturalHeight * escala);
+
+        var tela = document.createElement('canvas');
+        tela.width = w; tela.height = h;
+        var ctx = tela.getContext('2d');
+        ctx.fillStyle = '#0c0d0f';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+
+        estado.sinalImagem = tela.toDataURL('image/jpeg', 0.85);
+
+        var proporcao = img.naturalWidth / img.naturalHeight;
+        var kb = Math.round(estado.sinalImagem.length * 0.75 / 1024);
+        var perto = Math.abs(proporcao - PROPORCAO_ALVO) <= 0.35;
+        estado.sinalMeta = JSON.stringify({
+          txt: img.naturalWidth + ' × ' + img.naturalHeight + ' px · ' + kb + ' KB'
+             + (perto ? '' : ' · proporção ' + proporcao.toFixed(2) + ':1, o ideal é 1,60:1'),
+          ok: perto
+        });
+
+        sincronizarSinal();
+        salvarSinal();
+        salvar();
+      };
+      img.src = leitor.result;
+    };
+    leitor.readAsDataURL(arquivo);
+  }
+
+  function sincronizarSinal() {
+    var previa = document.getElementById('sinalPrevia');
+    var img = document.getElementById('sinalImg');
+    var meta = document.getElementById('sinalMeta');
+    var zona = document.getElementById('sinalDrop');
+    var quadro = document.getElementById('printFrame');
+
+    var tem = !!estado.sinalImagem;
+    if (previa) previa.classList.toggle('is-on', tem);
+    if (zona) zona.hidden = tem;
+    if (img && tem) img.src = estado.sinalImagem;
+
+    if (meta) {
+      var m = { txt: '', ok: true };
+      try { m = JSON.parse(estado.sinalMeta || '{}'); } catch (err) { /* ok */ }
+      meta.textContent = m.txt || '';
+      meta.classList.toggle('is-ok', !!m.ok);
+      meta.classList.toggle('is-alerta', m.ok === false);
+    }
+
+    // Espelha no deck 8
+    if (quadro) {
+      if (tem) {
+        quadro.innerHTML = '';
+        var grande = new Image();
+        grande.src = estado.sinalImagem;
+        grande.alt = 'Sinal detectado';
+        quadro.appendChild(grande);
+      } else {
+        quadro.innerHTML = '<p class="text-small text-color-secondary" '
+          + 'style="text-align:center;padding:24px">Print do sinal — suba no pré-call '
+          + '(<b>P</b>)</p>';
+      }
+    }
   }
 
   /* -----------------------------------------------------------------
@@ -375,6 +665,8 @@
         } else if (mask === 'number') {
           el.value = E.mascaraNumero(el.value);
           estado[k] = E.parseBR(el.value);
+          // Digitou a taxa na mão: o número passa a ser dele, não do mercado.
+          if (k === 'taxaConversao') estado.taxaDoMercado = false;
         } else {
           estado[k] = el.value;
         }
@@ -425,7 +717,10 @@
       document.getElementById('precall').classList.add('is-done');
     });
     document.getElementById('pcLimpar').addEventListener('click', function () {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (err) { /* ok */ }
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(SINAL_KEY);
+      } catch (err) { /* ok */ }
       location.reload();
     });
 
@@ -493,13 +788,18 @@
     montarMapa();
     montarDegraus();
     montarVideo();
-    montarPrintSinal();
+    montarUploadSinal();
+    montarNaoSei();
+    montarMercado();
+    montarMotions();
     montarFerramentas();
     montarTeclado();
 
     sincronizarDial();
     sincronizarMapa();
     sincronizarDegraus();
+    sincronizarSinal();
+    sincronizarMotions();
     atualizarChrome();
     render();
 

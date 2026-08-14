@@ -31,25 +31,34 @@ se for publicar atrás de um servidor que cacheia.
 
 ---
 
-## A sequência (12 telas)
+## A sequência (15 telas)
 
-| # | Tela | Playbook | O que o lead vê |
+| # | Tela | Origem | O que o lead vê |
 |---|---|---|---|
-| 1 | Abertura | slide 40 | Nome da conta. O acordo sim-ou-não você **fala**. |
+| 1 | Abertura | playbook 40 | Nome da conta. O acordo sim-ou-não você **fala**. |
 | 2 | **Raio-X ao vivo** | 36, 41–44 | Entradas que você digita, saídas que calculam sozinhas. |
 | 3 | **Mapa da Máquina** | 38 | 5 colunas. Cada vazamento vira laranja com um clique. |
 | 4 | Pit 01 | 45–46 | Só a pergunta e o dial de 0 a 10. |
-| 5 | O gap — deck 1/7 | 49 | Número gigante laranja, fundo preto. |
-| 6 | Por que o gap existe — 2/7 | 49 | Uma frase, editável. |
-| 7 | A máquina — 3/7 | 47, 49 | ICP → Sinais → Cadência + empilhamento com as palavras dele. |
-| 8 | O vídeo — 4/7 | 48, 49 | Vídeo da plataforma, 2–3 min. |
-| 9 | Você viveu isso — 5/7 | 48, 49 | Detecção → decisores → ligação → hoje. |
-| 10 | Plano de 14 dias — 6/7 | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
-| 11 | Investimento — 7/7 | 50, 55, 57 | Degraus **ao lado dos números dele**. |
-| 12 | Fechamento | 50 | Kickoff, dia e hora. |
+| 5 | O gap — deck 1/10 | 49 | Número gigante laranja, fundo preto. |
+| 6 | **O que o mercado faz** — 2/10 | benchmarks | Os números do setor, com fonte em cada um. |
+| 7 | Por que o gap existe — 3/10 | 49 | Uma frase, editável. |
+| 8 | **TAM · SAM · SOM** — 4/10 | Revenue OS | O funil antes do funil + as duas frentes (650 / 7.350). |
+| 9 | **Dado × orquestração** — 5/10 | Revenue OS | Ferramenta de lista contra Revenue OS + as 14 motions. |
+| 10 | A máquina — 6/10 | 47, 49 | ICP → Sinais → Cadência + empilhamento com as palavras dele. |
+| 11 | O vídeo — 7/10 | 48, 49 | Vídeo da plataforma, 2–3 min. |
+| 12 | Você viveu isso — 8/10 | 48, 49 | Detecção → decisores → ligação → hoje, com o print do sinal. |
+| 13 | Plano de 14 dias — 9/10 | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
+| 14 | Investimento — 10/10 | 50, 55, 57 | Degraus **ao lado dos números dele**. |
+| 15 | Fechamento | 50 | Kickoff, dia e hora. |
 
 Pit 01 vem **antes** do deck porque o deck só existe no Pit 02 (slide 49: *"da abertura
 ao Pit 01, a tela é o Raio-X e o Mapa"*).
+
+> **Tensão com o playbook:** o slide 49 pede *"7 slides, nem um a mais"* e o slide 48
+> avisa que ninguém aguenta tour de 10 minutos. As três telas novas (mercado, TAM/SAM/SOM
+> e orquestração) levam o deck a 10. Elas ganham a conversa quando o lead não conhece os
+> próprios números — mas se a reunião estiver curta ou o lead já estiver quente,
+> **pule 8 e 9** com as setas: a sequência continua fechando sem elas.
 
 ### O que a tela não mostra
 
@@ -77,14 +86,59 @@ logos de tecnologia. A autoridade é provada na tela 9, pelo produto.
 ## Pré-call (slide 39)
 
 Ao abrir, a primeira tela pede o que já veio da ligação: empresa, reuniões/semana, custo
-mensal citado, data da detecção da vaga e data da ligação. Os dois primeiros alimentam o
-Raio-X; os dois últimos, a linha do tempo da tela 9.
+mensal citado, data da detecção da vaga, data da ligação — e o **print do sinal**.
 
 O custo citado aparece ao lado do calculado, para reconciliar ao vivo — *"você me falou
 70 mil, a planilha deu 71.500, bate?"*
 
+### O print do sinal
+
+É a prova viva da tela 12: a vaga que ele abriu, com as datas. Sem ela, o slide vira
+promessa em vez de prova.
+
+- **Tamanho ideal: 1280 × 800 px, proporção 16:10.** Fora disso ainda entra — só fica
+  mais alto ou mais baixo no quadro.
+- Arraste na área ou clique para escolher. PNG, JPG ou WebP.
+- A imagem é **redimensionada no navegador** para 1280 px de largura e recomprimida antes
+  de guardar; um print de tela cru estouraria a cota do `localStorage`.
+- A prévia mostra as dimensões originais, o peso final e avisa em laranja se a proporção
+  estiver longe de 16:10.
+- Fica numa chave separada (`althius_deck_sinal_v1`), fora do JSON principal — senão o
+  data URL seria reserializado a cada tecla do diagnóstico e travaria a digitação.
+
 O estado inteiro fica em `localStorage`: dá para preparar a conta 10 minutos antes e
-fechar a aba. "Limpar sessão anterior" zera para a próxima call.
+fechar a aba. "Limpar sessão anterior" zera tudo, imagem inclusive.
+
+---
+
+## Quando o lead não sabe os próprios números
+
+A maioria dos sócios não tem a taxa de conversão na cabeça. Em vez de chutar 30%, o campo
+tem o botão **"Não sei · usar mercado"**: aplica a referência de mercado, recalcula o gap
+na hora e escreve a fonte ao lado do campo. Digitar por cima desliga o botão — o número
+volta a ser dele.
+
+E a tela 6 é o banho de mercado: seis números do setor com a fonte visível em cada card,
+mais um sétimo card com a conversão que ELE declarou, comparada com a média.
+
+Os dados vivem em [`scripts/benchmarks.js`](scripts/benchmarks.js). **Regra do arquivo:
+nenhum número entra sem `fonte`, `ano` e `url`.** Quem aparece hoje:
+
+| Número | Valor | Fonte |
+|---|---|---|
+| Oportunidade → venda | 19% | Ebsta × Pavilion · 2025 GTM Benchmarks |
+| Vendedores que não bateram meta | 78% | Ebsta × Pavilion · 2025 |
+| Fechado em até 50 dias | 47% × 20% | Ebsta × Pavilion · 2025 |
+| Decisor envolvido desde o início | +55% de win rate | Ebsta × Pavilion · 2025 |
+| Rampagem até 80% da meta | 3,9 meses | The Bridge Group · 2025 |
+| SDRs rampados que batem meta | 68% | The Bridge Group · 2025 |
+
+Três entradas do arquivo estão marcadas `validado: false` — reunião→venda, ligação fria →
+reunião e no-show. São faixas convergentes entre publicações do setor, **sem confirmação
+na fonte primária**. Elas não entram no grid da tela 6; a de reunião→venda é usada só como
+referência do botão "não sei". Confirme a fonte ou troque por dado da própria carteira da
+Althius antes de tratá-las como fato numa call. Um card marcado `validado: false` que
+chegue à tela exibe o selo laranja *"fonte a confirmar"*.
 
 ---
 
@@ -137,10 +191,10 @@ o resultado pronto.
 
 | O quê | Onde | Estado |
 |---|---|---|
-| Vídeo da plataforma (2–3 min, cortado) | `assets/video/plataforma.mp4` | **pendente** — a tela 8 mostra um placeholder. Alternativa: abrir com `?video=URL`. |
-| Print do sinal (a vaga + datas) | `assets/img/sinal.png` | **pendente** — troque a cada conta. |
+| Vídeo da plataforma (2–3 min, cortado) | `assets/video/plataforma.mp4` | **pendente** — a tela 11 mostra um placeholder. Alternativa: abrir com `?video=URL`. |
+| Print do sinal (a vaga + datas) | subido no pré-call | por conta — troque a cada call. |
 
-Nenhum dos dois quebra a apresentação. Se o mp4 passar de 100 MB, o GitHub recusa —
+O vídeo não quebra a apresentação se faltar. Se o mp4 passar de 100 MB, o GitHub recusa —
 use Git LFS ou hospede o vídeo e passe `?video=`.
 
 ---
@@ -205,6 +259,7 @@ styles/
   apresentacao.css      layout de deck + calculadora
 scripts/
   raiox-engine.js       FONTE ÚNICA das fórmulas
+  benchmarks.js         dados de mercado + fontes
   apresentacao.js       runtime do deck
   calculadora.js        calculadora flutuante
   diagnostico.js        renderização do relatório de follow-up
@@ -221,6 +276,9 @@ assets/video/           coloque plataforma.mp4 aqui
 |---|---|
 | Degraus e mensalidade | `apresentacao.html` → `#degraus`, `.mensalidade` |
 | Módulos da plataforma | `apresentacao.html` → `.modulos` |
+| Dados de mercado e fontes | `scripts/benchmarks.js` → `DADOS` |
+| As 14 motions de GTM | `scripts/apresentacao.js` → `MOTIONS` |
+| Tamanho recomendado do print | `scripts/apresentacao.js` → `LARGURA_MAX`, `PROPORCAO_ALVO` |
 | Empilhamento padrão | `scripts/apresentacao.js` → `STACK_PADRAO` |
 | Notas do closer | `presenter.html` → objeto `NOTAS` |
 | Chips da calculadora | `scripts/calculadora.js` → `montarChips()` |

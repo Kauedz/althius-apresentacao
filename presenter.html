@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
-  <link href="styles/main.css?v=2" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=4" rel="stylesheet" type="text/css">
   <style>
     /* Janela privada do closer. NUNCA compartilhe esta janela. */
     body { padding: 0; }
@@ -144,6 +144,33 @@
                           'O vilão da história é o buraco. Ninguém precisa se defender de um número.'] }
     ],
 
+    mercado: [
+      { t: 'fala', p: ['“Antes de eu te mostrar o que a gente faz, deixa eu te mostrar onde você está. Esses números não são meus — são de estudo público, com a fonte do lado.”',
+                       '“Uma em cada cinco oportunidades vira contrato no mercado. Em 2024 eram três em dez. E 78% dos vendedores não bateram meta ano passado.”',
+                       '“Repara nesse aqui: quem envolve o decisor desde o começo ganha 55% mais. E quem fecha em até 50 dias ganha 47%, contra 20% de quem arrasta.”'] },
+      { t: 'calaboca', p: ['Depois de mostrar o card do decisor, para. Esse número é o que justifica a plataforma inteira — deixa ele fazer a ligação sozinho.'] },
+      { t: 'tecnica', p: ['O objetivo aqui não é assustar: é tirar o problema do colo dele. O gap não é incompetência do time — é o mercado inteiro apertando. Isso baixa a defesa e libera a conversa.',
+                          'Se ele declarou a própria conversão, ela aparece como primeiro card, comparada com a média. Use: "olha onde você está".',
+                          'Se ele NÃO sabia a conversão e você usou a referência de mercado, diga isso em voz alta: "a gente está usando a média do mercado porque você não tinha o número — e não ter esse número já é parte do diagnóstico".'] },
+      { t: 'nunca', p: ['Citar número sem dizer de onde veio. A fonte está na tela justamente para você poder apontar. Um dado que ele não pode conferir vira desconfiança.'] }
+    ],
+
+    som: [
+      { t: 'fala', p: ['“Deixa eu te mostrar como a gente enxerga o seu mercado. Tudo que existe é o TAM. O que você consegue atender é o SAM. O que dá pra conquistar agora é o SOM.”',
+                       '“Dentro desse SOM, nem todo mundo está no momento de comprar. Alguns estão se mexendo agora — abriram vaga, captaram, trocaram de sistema. Esses são os que entram na fila.”',
+                       '“E os outros? Não são lixo. São o pipeline do ano que vem. Enquanto uma frente captura quem já está pronto, a outra constrói demanda em quem ainda não está.”'] },
+      { t: 'tecnica', p: ['Os quatro números são editáveis — ajuste ao mercado dele antes ou durante a call. Número redondo genérico enfraquece; número que parece o mercado dele convence.',
+                          'A frase que fecha o slide: "a maioria das operações trabalha só a primeira coluna — e no mês em que os sinais secam, a agenda seca junto." É o argumento contra comprar só ferramenta de lista.'] }
+    ],
+
+    orquestracao: [
+      { t: 'fala', p: ['“Dado não vira receita. Uma base de contatos só vira oportunidade quando está ligada a ICP, sinal, persona certa, cadência e processo. Essa ligação é o que a gente faz.”',
+                       '“Ferramenta te dá lista e te deixa sozinho decidindo quem, quando e como. O que a gente monta decide isso com você e muda conforme a conta reage.”'] },
+      { t: 'tecnica', p: ['Este é o slide que responde "já uso Apollo / Lusha / Cortex". Não ataque a ferramenta — mostre a camada que falta.',
+                          'Marque no grid só as motions que fazem sentido pro cenário dele. Marcar as 14 vira catálogo e perde força. Duas ou três, escolhidas na frente dele, viram plano.'] },
+      { t: 'nunca', p: ['Passar as 14 motions uma a uma. Isso é o menu da cozinha, não o prato. Ele escolhe onde olhar.'] }
+    ],
+
     porque: [
       { t: 'fala', p: ['“Prospecção genérica morreu. Conta certa, no momento certo — ou nada.”'] },
       { t: 'nunca', p: ['Estatística de mercado, estudo de terceiro, enrolação. Uma frase e segue.'] }
@@ -164,7 +191,9 @@
 
     prova: [
       { t: 'fala', p: ['“E olha — tudo isso que eu te mostrei, você já viveu. [Dia] você abriu a vaga. [Dia] eu te liguei. Essa reunião existe porque o sistema funciona. Você não precisa acreditar em mim — você é a prova.”'] },
-      { t: 'tecnica', p: ['É o golpe final da prova: demonstração de produto sem gastar um crédito. Nenhum concorrente consegue fazer isso.'] }
+      { t: 'tecnica', p: ['É o golpe final da prova: demonstração de produto sem gastar um crédito. Nenhum concorrente consegue fazer isso.',
+                          'Amarre com o card do deck 2: envolver o decisor cedo vale +55% de win rate. Você chegou direto nele, na semana do sinal. Foi isso que acabou de acontecer.'] },
+      { t: 'nunca', p: ['Chegar aqui sem o print da vaga. Suba no pré-call (tecla P) antes da call — sem a imagem, o slide vira promessa em vez de prova.'] }
     ],
 
     plano: [
@@ -220,7 +249,13 @@
   }
 
   if ('BroadcastChannel' in window) {
-    new BroadcastChannel('althius-deck').onmessage = function (ev) { render(ev.data); };
+    var canal = new BroadcastChannel('althius-deck');
+    canal.onmessage = function (ev) {
+      if (ev.data && ev.data.pedido) return;   // eco do próprio pedido
+      render(ev.data);
+    };
+    // Pede o estado atual — vale para quando esta janela abre no meio da call.
+    canal.postMessage({ pedido: true });
   } else {
     elNotas.innerHTML = '<div class="pv_off">Este navegador não suporta a sincronização automática.</div>';
   }

@@ -13,8 +13,8 @@
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
   <!-- ?v= força o navegador a buscar a versão nova depois de cada edição.
        Suba o número ao mexer em CSS/JS. Mesma convenção do site institucional. -->
-  <link href="styles/main.css?v=2" rel="stylesheet" type="text/css">
-  <link href="styles/apresentacao.css?v=2" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=4" rel="stylesheet" type="text/css">
+  <link href="styles/apresentacao.css?v=4" rel="stylesheet" type="text/css">
 </head>
 <body class="deck-body">
 
@@ -54,6 +54,31 @@
         <div>
           <label for="pc_ligacao">Data da sua ligação</label>
           <input class="f" type="text" id="pc_ligacao" data-k="dataLigacao" placeholder="segunda, 16/03" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Print do sinal — vai para a tela "Você viveu isso" (deck 5) -->
+      <div>
+        <label>Print do sinal — a vaga que ele abriu</label>
+
+        <label class="upload" id="sinalDrop" for="sinalInput">
+          <input type="file" id="sinalInput" accept="image/png,image/jpeg,image/webp">
+          <span class="upload_ic">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <p class="upload_t">Arraste o print aqui ou clique para escolher</p>
+          <p class="upload_h">
+            Tamanho ideal: <b>1280 × 800 px</b> · proporção <b>16:10</b><br>
+            PNG ou JPG · fora dessa proporção ainda entra, só fica mais alto ou mais baixo
+          </p>
+        </label>
+
+        <div class="upload-previa" id="sinalPrevia">
+          <img id="sinalImg" alt="Print do sinal">
+          <div class="upload-previa_pe">
+            <span class="upload-previa_meta" id="sinalMeta"></span>
+            <button type="button" class="tool" id="sinalRemover">Remover</button>
+          </div>
         </div>
       </div>
     </div>
@@ -202,8 +227,11 @@
             <span class="k">Vendas fechadas por mês</span>
             <input class="f is-num" type="text" data-k="vendasMes" data-mask="number" placeholder="0" autocomplete="off">
           </div>
-          <div class="xr_row">
-            <span class="k">Taxa reunião → venda (estimada)</span>
+          <div class="xr_row is-taxa">
+            <span class="k">Taxa reunião → venda
+              <span class="xr_hint" id="taxaCredito"></span>
+            </span>
+            <button type="button" class="nao-sei" id="btnNaoSei">Não sei · usar mercado</button>
             <input class="f is-num" type="text" data-k="taxaConversao" data-mask="number" placeholder="30" autocomplete="off">
           </div>
 
@@ -389,10 +417,24 @@
     </div>
   </section>
 
-  <!-- 6 · DECK 2 · POR QUE O GAP EXISTE ----------------------------------- -->
-  <section class="slide is-centered" data-slide="porque" data-deck="2" data-nome="Por que o gap existe">
+  <!-- 6 · DECK 2 · O BANHO DE MERCADO -------------------------------------- -->
+  <section class="slide" data-slide="mercado" data-deck="2" data-nome="O que o mercado faz">
+    <div class="slide_inner">
+      <p class="slide-tag">O mercado<span class="sep">/</span><span class="deck-n">deck 2 de 10</span></p>
+      <h2 class="slide-title">Os números que ninguém te mostrou</h2>
+      <p class="slide-sub" style="margin-bottom:24px">
+        O seu gap não é um problema seu — é o mercado inteiro. Estudo público,
+        fonte em cada número.
+      </p>
+
+      <div class="mercado" id="mercadoGrid"></div>
+    </div>
+  </section>
+
+  <!-- 7 · DECK 3 · POR QUE O GAP EXISTE ----------------------------------- -->
+  <section class="slide is-centered" data-slide="porque" data-deck="3" data-nome="Por que o gap existe">
     <div class="slide_inner is-narrow">
-      <p class="slide-tag">Por que o gap existe<span class="sep">/</span><span class="deck-n">deck 2 de 7</span></p>
+      <p class="slide-tag">Por que o gap existe<span class="sep">/</span><span class="deck-n">deck 3 de 10</span></p>
       <h2 class="slide-title" style="font-size:clamp(2rem,4.6vw,3.5rem);text-transform:none">
         <textarea class="f is-full" rows="3" data-k="fraseGap"
           style="font:inherit;color:var(--white)">Prospecção genérica morreu. Conta certa, no momento certo — ou nada.</textarea>
@@ -400,10 +442,109 @@
     </div>
   </section>
 
-  <!-- 7 · DECK 3 · A MÁQUINA ---------------------------------------------- -->
-  <section class="slide" data-slide="maquina" data-deck="3" data-nome="A máquina — 3 módulos">
+  <!-- 8 · DECK 4 · ONDE ESTÁ O SEU MERCADO (TAM/SAM/SOM) ------------------ -->
+  <section class="slide" data-slide="som" data-deck="4" data-nome="TAM · SAM · SOM">
     <div class="slide_inner">
-      <p class="slide-tag">A máquina<span class="sep">/</span><span class="deck-n">deck 3 de 7</span></p>
+      <p class="slide-tag">Onde está o seu mercado<span class="sep">/</span><span class="deck-n">deck 4 de 10</span></p>
+      <h2 class="slide-title">O funil antes do funil</h2>
+      <p class="slide-sub">
+        Antes de falar de reunião, é preciso saber com quem falar. Os números abaixo são
+        editáveis — a gente calibra com o seu mercado na implementação.
+      </p>
+
+      <div class="funil-mercado">
+        <div class="fm_faixa is-tam">
+          <span class="fm_t">TAM</span>
+          <span class="fm_d">Mercado total. Tudo que existe na sua categoria.</span>
+          <input class="f is-num fm_n" type="text" data-k="somTam" data-mask="number" placeholder="100.000">
+        </div>
+        <div class="fm_faixa is-sam">
+          <span class="fm_t">SAM</span>
+          <span class="fm_d">O que você consegue atender de verdade.</span>
+          <input class="f is-num fm_n" type="text" data-k="somSam" data-mask="number" placeholder="50.000">
+        </div>
+        <div class="fm_faixa is-som">
+          <span class="fm_t">SOM</span>
+          <span class="fm_d">O que dá para conquistar no curto e médio prazo.</span>
+          <input class="f is-num fm_n" type="text" data-k="somSom" data-mask="number" placeholder="8.000">
+        </div>
+        <div class="fm_faixa is-sinal">
+          <span class="fm_t">Com sinal</span>
+          <span class="fm_d">Dentro do SOM, quem está se mexendo agora.</span>
+          <input class="f is-num fm_n" type="text" data-k="somSinal" data-mask="number" placeholder="650">
+        </div>
+      </div>
+
+      <div class="frentes">
+        <div class="frente is-agora">
+          <div class="frente_n" data-out="somSinalEco">650</div>
+          <p class="frente_t">Capturar a demanda que já existe</p>
+          <p>As contas que deram sinal entram em prospecção ativa, priorizadas pela força
+             do sinal. É aqui que a agenda enche nas próximas semanas.</p>
+        </div>
+        <div class="frente">
+          <div class="frente_n" data-out="somRestante">7.350</div>
+          <p class="frente_t">Construir a demanda que ainda não existe</p>
+          <p>O resto não é descartado. Vai para conteúdo, SEO, mídia, newsletter, comunidade,
+             eventos e social selling — até dar sinal. É o pipeline do ano que vem.</p>
+        </div>
+      </div>
+
+      <p class="text-small text-color-secondary" style="margin-top:20px">
+        A maioria das operações trabalha só a primeira coluna — e no mês em que os sinais
+        secam, a agenda seca junto.
+      </p>
+    </div>
+  </section>
+
+  <!-- 9 · DECK 5 · DADO NÃO VIRA RECEITA ---------------------------------- -->
+  <section class="slide" data-slide="orquestracao" data-deck="5" data-nome="Dado × orquestração">
+    <div class="slide_inner">
+      <p class="slide-tag">O que muda<span class="sep">/</span><span class="deck-n">deck 5 de 10</span></p>
+      <h2 class="slide-title">Dado não vira receita</h2>
+      <p class="slide-sub">
+        Uma base de contatos só vira oportunidade quando está ligada a ICP, sinal, persona
+        certa, cadência e processo. Essa ligação é o produto.
+      </p>
+
+      <div class="contraste">
+        <div class="contraste_lado">
+          <h3>Ferramenta de dados</h3>
+          <ul>
+            <li>Entrega lista</li>
+            <li>Todo mundo recebe a mesma coisa</li>
+            <li>Você decide quem, quando e como</li>
+            <li>Cadência fixa, igual para toda conta</li>
+            <li>O contexto morre na cabeça do vendedor</li>
+          </ul>
+        </div>
+        <div class="contraste_seta" aria-hidden="true">→</div>
+        <div class="contraste_lado is-forte">
+          <h3>Revenue OS</h3>
+          <ul>
+            <li>Entrega conta certa, no momento certo</li>
+            <li>ICP construído sobre quem já fecha com você</li>
+            <li>Sinal define a prioridade da fila</li>
+            <li>Cadência muda conforme a conta reage</li>
+            <li>Processo, SLA e manual de objeções de pé</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="eyebrow is-muted" style="margin:34px 0 14px">
+        As motions que a operação pode rodar — coordenadas, não soltas
+      </p>
+      <div class="motions-grid" id="motionsGrid"></div>
+      <p class="text-small text-color-secondary" style="margin-top:16px">
+        Clique para marcar as que fazem sentido no seu cenário.
+      </p>
+    </div>
+  </section>
+
+  <!-- 10 · DECK 6 · A MÁQUINA --------------------------------------------- -->
+  <section class="slide" data-slide="maquina" data-deck="6" data-nome="A máquina — 3 módulos">
+    <div class="slide_inner">
+      <p class="slide-tag">A máquina<span class="sep">/</span><span class="deck-n">deck 6 de 10</span></p>
       <h2 class="slide-title">Três módulos, na ordem</h2>
 
       <div class="modulos">
@@ -434,10 +575,10 @@
     </div>
   </section>
 
-  <!-- 8 · DECK 4 · O VÍDEO ------------------------------------------------ -->
-  <section class="slide" data-slide="video" data-deck="4" data-nome="O vídeo da plataforma">
+  <!-- 11 · DECK 7 · O VÍDEO ------------------------------------------------ -->
+  <section class="slide" data-slide="video" data-deck="7" data-nome="O vídeo da plataforma">
     <div class="slide_inner">
-      <p class="slide-tag">A plataforma<span class="sep">/</span><span class="deck-n">deck 4 de 7</span></p>
+      <p class="slide-tag">A plataforma<span class="sep">/</span><span class="deck-n">deck 7 de 10</span></p>
       <h2 class="slide-title">Por dentro</h2>
 
       <div class="video-frame" id="videoFrame">
@@ -452,10 +593,10 @@
     </div>
   </section>
 
-  <!-- 9 · DECK 5 · TU VIVEU ISSO ------------------------------------------ -->
-  <section class="slide" data-slide="prova" data-deck="5" data-nome="Você viveu isso">
+  <!-- 12 · DECK 8 · TU VIVEU ISSO ------------------------------------------ -->
+  <section class="slide" data-slide="prova" data-deck="8" data-nome="Você viveu isso">
     <div class="slide_inner">
-      <p class="slide-tag">A prova<span class="sep">/</span><span class="deck-n">deck 5 de 7</span></p>
+      <p class="slide-tag">A prova<span class="sep">/</span><span class="deck-n">deck 8 de 10</span></p>
       <h2 class="slide-title">Você já viveu isso</h2>
       <p class="slide-sub">Esta reunião existe porque o sistema funcionou — em você, antes de você saber que ele existe.</p>
 
@@ -488,10 +629,10 @@
     </div>
   </section>
 
-  <!-- 10 · DECK 6 · PLANO DE 14 DIAS -------------------------------------- -->
-  <section class="slide" data-slide="plano" data-deck="6" data-nome="Plano de 14 dias">
+  <!-- 13 · DECK 9 · PLANO DE 14 DIAS -------------------------------------- -->
+  <section class="slide" data-slide="plano" data-deck="9" data-nome="Plano de 14 dias">
     <div class="slide_inner">
-      <p class="slide-tag">Implementação<span class="sep">/</span><span class="deck-n">deck 6 de 7</span></p>
+      <p class="slide-tag">Implementação<span class="sep">/</span><span class="deck-n">deck 9 de 10</span></p>
       <h2 class="slide-title">Os primeiros 14 dias</h2>
 
       <div class="plano">
@@ -524,10 +665,10 @@
     </div>
   </section>
 
-  <!-- 11 · DECK 7 · INVESTIMENTO ------------------------------------------ -->
-  <section class="slide" data-slide="investimento" data-deck="7" data-nome="Investimento">
+  <!-- 14 · DECK 10 · INVESTIMENTO ------------------------------------------ -->
+  <section class="slide" data-slide="investimento" data-deck="10" data-nome="Investimento">
     <div class="slide_inner">
-      <p class="slide-tag">Investimento<span class="sep">/</span><span class="deck-n">deck 7 de 7</span></p>
+      <p class="slide-tag">Investimento<span class="sep">/</span><span class="deck-n">deck 10 de 10</span></p>
 
       <div class="inv-wrap is-locked" id="invWrap">
 
@@ -587,7 +728,7 @@
     </div>
   </section>
 
-  <!-- 12 · FECHO ---------------------------------------------------------- -->
+  <!-- 15 · FECHO ---------------------------------------------------------- -->
   <section class="slide is-centered" data-slide="fecho" data-nome="Fechamento">
     <div class="slide_inner is-narrow">
       <p class="slide-tag">Próximo passo</p>
@@ -605,8 +746,9 @@
 
 </main>
 
-<script src="scripts/raiox-engine.js?v=2" defer></script>
-<script src="scripts/apresentacao.js?v=2" defer></script>
-<script src="scripts/calculadora.js?v=2" defer></script>
+<script src="scripts/raiox-engine.js?v=4" defer></script>
+<script src="scripts/benchmarks.js?v=4" defer></script>
+<script src="scripts/apresentacao.js?v=4" defer></script>
+<script src="scripts/calculadora.js?v=4" defer></script>
 </body>
 </html>
