@@ -667,8 +667,8 @@ textarea.f { resize: none; line-height: 1.5; }
    13. HUD — os três números ficam visíveis o resto da reunião
         (slide 42: "esse número fica visível o resto da reunião")
    --------------------------------------------------------------- */
-/* Mora dentro do .deck_brand, na faixa de topo que o slide já reserva
-   com o padding-top. No rodapé ele cobria o conteúdo das telas cheias. */
+/* Mora no canto superior direito, ao lado das ferramentas, na faixa que
+   o slide já reserva com o padding-top. No rodapé cobria o conteúdo. */
 .hud {
   display: flex;
   gap: 0;
@@ -682,6 +682,8 @@ textarea.f { resize: none; line-height: 1.5; }
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
 }
 .hud.is-on { opacity: 1; transform: none; }
+/* Sem números ainda, o espaço não fica reservado à toa. */
+.hud:not(.is-on) { display: none; }
 .hud_cell { padding: 5px 13px; }
 .hud_cell + .hud_cell { border-left: 1px solid var(--line); }
 .hud_k {
@@ -775,14 +777,18 @@ textarea.f { resize: none; line-height: 1.5; }
   transition: width 0.42s var(--ease);
 }
 
-/* Barra de ferramentas do closer — some da tela compartilhada com "H" */
-.tools {
+/* Canto superior direito: números + ferramentas na mesma linha */
+.topo-dir {
   position: fixed;
   top: 26px; right: 56px;
   z-index: 20;
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 14px;
 }
+
+/* Barra de ferramentas do closer — some da tela compartilhada com "H" */
+.tools { display: flex; gap: 8px; }
 .tool {
   font-family: var(--font-mono);
   font-weight: 500;
@@ -1703,9 +1709,9 @@ ul.densa { margin: 0; padding: 0; }
    23. RESPONSIVO — a call roda em notebook; abaixo disso é degradê
    --------------------------------------------------------------- */
 @media (max-width: 1200px) {
-  .slide { padding: 80px 32px 100px; }
-  .deck_brand, .hud { left: 32px; }
-  .tools, .deck_nav { right: 32px; }
+  .slide { padding: 80px 32px 104px; }
+  .deck_brand { left: 32px; }
+  .topo-dir, .deck_nav { right: 32px; }
   .mapa { grid-template-columns: repeat(3, minmax(0,1fr)); }
   .plano { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
@@ -1736,7 +1742,7 @@ ul.densa { margin: 0; padding: 0; }
 @media (max-width: 620px) {
   .slide { padding: 72px 18px 108px; }
   .deck_brand { left: 18px; top: 18px; }
-  .tools { right: 18px; top: 18px; }
+  .topo-dir { right: 18px; top: 18px; }
   .deck_nav { right: 18px; bottom: 44px; }
   .mapa, .plano { grid-template-columns: 1fr; }
   .mapa_col { min-height: 0; }
