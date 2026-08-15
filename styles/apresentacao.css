@@ -46,6 +46,49 @@ body.deck-body {
 .slide_inner { max-width: 1280px; margin-inline: auto; min-height: 100%; }
 .slide_inner.is-narrow { max-width: 940px; }
 
+/* -----------------------------------------------------------------
+   RITMO VERTICAL — uma escala só, usada em todas as telas.
+   Nada de margem solta no HTML: se precisa de espaço, usa uma classe.
+   ----------------------------------------------------------------- */
+:root {
+  --s1: 8px;    /* dentro de um bloco     */
+  --s2: 12px;   /* rótulo → conteúdo      */
+  --s3: 16px;   /* entre blocos irmãos    */
+  --s4: 24px;   /* entre grupos           */
+  --s5: 34px;   /* entre seções da tela   */
+}
+
+/* Cabeçalho padrão de toda tela: tag → título → subtítulo → conteúdo */
+.slide-tag   { margin: 0 0 var(--s3); }
+.slide-title { margin: 0 0 var(--s2); }
+.slide-sub   { margin: 0 0 var(--s4); max-width: 78ch; }
+/* Título e subtítulo são um par: pouco espaço entre eles. Sem subtítulo,
+   o título assume a folga maior antes do conteúdo. */
+.slide-title:not(:has(+ .slide-sub)) { margin-bottom: var(--s4); }
+
+/* Rótulo de subseção dentro de uma tela */
+.secao {
+  display: block;
+  margin: var(--s5) 0 var(--s2);
+}
+.secao:first-of-type { margin-top: 0; }
+
+/* Nota de rodapé de tela — sempre o último elemento */
+.nota-tela {
+  margin: var(--s4) 0 0;
+  max-width: 84ch;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-secondary-d);
+}
+
+/* Espaçadores pontuais, quando a estrutura não cobre */
+.mt-3 { margin-top: var(--s3) !important; }
+.mt-4 { margin-top: var(--s4) !important; }
+.mb-3 { margin-bottom: var(--s3) !important; }
+.mb-4 { margin-bottom: var(--s4) !important; }
+.medida { max-width: 78ch; }
+
 /* Slides que centralizam verticalmente (números gigantes, capa, fecho) */
 .slide.is-centered .slide_inner {
   display: flex;
@@ -1287,66 +1330,100 @@ body.is-clean .tools { display: none; }
 /* ---------------------------------------------------------------
    20. REVENUE OS — TAM/SAM/SOM, orquestração e motions
    --------------------------------------------------------------- */
-.funil-mercado { display: grid; gap: 12px; }
-.fm_faixa {
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 16px 22px;
-  background-color: #101114;
-  display: grid;
-  grid-template-columns: 92px 1fr auto;
-  gap: 20px;
-  align-items: center;
-  margin-inline: auto;
+/* TAM · SAM · SOM — anéis concêntricos, com o núcleo de sinal em destaque.
+   A hierarquia visual é invertida de propósito: o anel externo (TAM) é o
+   mais apagado, e o peso cresce para dentro, até o que importa. */
+.som-wrap { width: 100%; }
+.som-svg {
   width: 100%;
+  height: auto;
+  display: block;
+  margin-inline: auto;
+  /* A altura do SVG é a largura ÷ 2,11 (razão do viewBox). Limitar pela
+     largura é o que realmente controla a altura e evita o scroll na call. */
+  max-width: calc((100dvh - 452px) * 2.11);
 }
-.fm_faixa.is-tam { max-width: 100%; }
-.fm_faixa.is-sam { max-width: 84%; }
-.fm_faixa.is-som { max-width: 68%; }
-.fm_faixa.is-sinal {
-  max-width: 52%;
-  border-color: var(--orange);
-  background-color: rgba(255, 90, 31, 0.1);
-}
-.fm_t {
+
+.anel { fill: none; stroke-width: 1.5; }
+.anel.is-tam   { stroke: #2b3238; }
+.anel.is-sam   { stroke: #3c4750; }
+.anel.is-som   { stroke: var(--orange); stroke-width: 2; fill: rgba(255, 90, 31, 0.05); }
+.anel.is-sinal { stroke: var(--orange); stroke-width: 2; fill: rgba(255, 90, 31, 0.22); }
+
+.an-t {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  fill: var(--text-secondary-d);
+  text-anchor: middle;
+}
+.an-t.is-forte { fill: var(--orange); }
+.an-n {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  fill: var(--white);
+  text-anchor: middle;
+}
+.an-n.is-forte { fill: var(--orange); font-weight: 800; }
+
+.fio { fill: none; stroke: #3c4750; stroke-width: 1.5; }
+.fio.is-forte { stroke: var(--orange); }
+.no { fill: #3c4750; }
+
+.ram-n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  fill: var(--white);
+}
+.ram-n.is-forte { fill: var(--orange); }
+.ram-t {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: var(--text-secondary-d);
+}
+.ram-t.is-forte { fill: var(--orange); }
+.ram-d {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 14px;
+  fill: var(--text-d-bg);
+}
+
+/* Os quatro números do funil, editáveis na call */
+.som-campos {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: var(--s3);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--line);
+}
+.som-campos label { display: block; }
+.som-campos label span {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary-d);
+  margin-bottom: 5px;
 }
-.fm_faixa.is-sinal .fm_t { color: var(--orange); }
-.fm_d { font-size: 0.9375rem; line-height: 1.45; color: var(--text-d-bg); }
-.fm_n {
-  font-size: 1.375rem;
-  font-weight: 700;
-  color: var(--white);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+.som-campos .f { width: 104px; }
+.som-dica {
+  flex: 1 1 300px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-secondary-d);
 }
-.fm_faixa.is-sinal .fm_n { color: var(--orange); }
-
-/* Duas frentes: capturar × construir demanda */
-.frentes { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; margin-top: 22px; }
-.frente {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 22px;
-  background-color: #101114;
-}
-.frente.is-agora { border-color: var(--orange); background-color: rgba(255,90,31,0.08); }
-.frente_n {
-  font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--white);
-  font-variant-numeric: tabular-nums;
-}
-.frente.is-agora .frente_n { color: var(--orange); }
-.frente_t {
-  font-family: var(--font-mono); font-weight: 500; font-size: 0.6875rem;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary-d);
-  margin: 8px 0 6px;
-}
-.frente p { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--text-d-bg); }
 
 /* Dados × orquestração */
 .contraste { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center; }

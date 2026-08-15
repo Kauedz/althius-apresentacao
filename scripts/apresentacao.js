@@ -159,8 +159,16 @@
     v.incGap       = i ? E.num(Math.max(i.gapReunioes, 0), 1) : '—';
     v.incRisco     = i ? E.moeda(Math.max(i.receitaEmRiscoMes, 0)) : '—';
 
-    // Funil de mercado (deck 4)
-    v.somSinalEco  = estado.somSinal !== null ? E.num(estado.somSinal, 0) : '650';
+    // Funil de mercado — os anéis do deck TAM/SAM/SOM.
+    // Sem número informado, o diagrama fica com o exemplo do playbook.
+    var eco = function (valor, padrao) {
+      return (valor !== null && valor !== undefined) ? E.num(valor, 0) : padrao;
+    };
+    v.somTamEco   = eco(estado.somTam,   '100.000');
+    v.somSamEco   = eco(estado.somSam,   '50.000');
+    v.somSomEco   = eco(estado.somSom,   '8.000');
+    v.somSinalEco = eco(estado.somSinal, '650');
+
     var som = estado.somSom, sinal = estado.somSinal;
     v.somRestante = (som !== null && sinal !== null && som > sinal)
       ? E.num(som - sinal, 0)

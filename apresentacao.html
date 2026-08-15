@@ -217,7 +217,7 @@
         <span data-out="empresaTitulo">Sua operação</span>
         <span class="gradient-text">em números</span>
       </h1>
-      <p class="slide-sub" style="margin-top:22px">
+      <p class="slide-sub mt-4">
         Primeiro a avaliação, depois a solução. Pode ser que no fim não faça sentido —
         e nesse caso a gente encerra na hora.
       </p>
@@ -465,7 +465,7 @@
     <div class="slide_inner">
       <p class="slide-tag">O mercado<span class="sep">/</span><span class="deck-n">deck 2 de 16</span></p>
       <h2 class="slide-title">Os números que ninguém te mostrou</h2>
-      <p class="slide-sub" style="margin-bottom:24px">
+      <p class="slide-sub">
         O seu gap não é um problema seu — é o mercado inteiro. Estudo público,
         fonte em cada número.
       </p>
@@ -495,48 +495,62 @@
         editáveis — a gente calibra com o seu mercado na implementação.
       </p>
 
-      <div class="funil-mercado">
-        <div class="fm_faixa is-tam">
-          <span class="fm_t">TAM</span>
-          <span class="fm_d">Mercado total. Tudo que existe na sua categoria.</span>
-          <input class="f is-num fm_n" type="text" data-k="somTam" data-mask="number" placeholder="100.000">
-        </div>
-        <div class="fm_faixa is-sam">
-          <span class="fm_t">SAM</span>
-          <span class="fm_d">O que você consegue atender de verdade.</span>
-          <input class="f is-num fm_n" type="text" data-k="somSam" data-mask="number" placeholder="50.000">
-        </div>
-        <div class="fm_faixa is-som">
-          <span class="fm_t">SOM</span>
-          <span class="fm_d">O que dá para conquistar no curto e médio prazo.</span>
-          <input class="f is-num fm_n" type="text" data-k="somSom" data-mask="number" placeholder="8.000">
-        </div>
-        <div class="fm_faixa is-sinal">
-          <span class="fm_t">Com sinal</span>
-          <span class="fm_d">Dentro do SOM, quem está se mexendo agora.</span>
-          <input class="f is-num fm_n" type="text" data-k="somSinal" data-mask="number" placeholder="650">
-        </div>
+      <div class="som-wrap">
+        <svg class="som-svg" viewBox="0 0 1180 560" role="img"
+             aria-label="TAM, SAM, SOM e contas com sinal, em círculos concêntricos">
+          <!-- anéis, do maior para o menor -->
+          <circle cx="248" cy="300" r="215" class="anel is-tam"/>
+          <circle cx="248" cy="300" r="160" class="anel is-sam"/>
+          <circle cx="248" cy="300" r="105" class="anel is-som"/>
+          <circle cx="248" cy="300" r="46"  class="anel is-sinal"/>
+
+          <!-- rótulos, cada um dentro do seu anel -->
+          <text x="248" y="120" class="an-t">TAM</text>
+          <text x="248" y="146" class="an-n" data-out="somTamEco">100.000</text>
+
+          <text x="248" y="176" class="an-t">SAM</text>
+          <text x="248" y="202" class="an-n" data-out="somSamEco">50.000</text>
+
+          <text x="248" y="228" class="an-t">SOM</text>
+          <text x="248" y="252" class="an-n is-forte" data-out="somSomEco">8.000</text>
+
+          <text x="248" y="296" class="an-t is-forte">COM SINAL</text>
+          <text x="248" y="320" class="an-n is-forte" data-out="somSinalEco">650</text>
+
+          <!-- ramificação: do SOM saem as duas frentes -->
+          <path d="M 353 300 L 560 300" class="fio"/>
+          <path d="M 560 300 L 560 176 L 636 176" class="fio is-forte"/>
+          <path d="M 560 300 L 560 424 L 636 424" class="fio"/>
+
+          <circle cx="560" cy="300" r="4" class="no"/>
+
+          <text x="652" y="150" class="ram-n is-forte" data-out="somSinalEco">650</text>
+          <text x="652" y="180" class="ram-t is-forte">contas se mexendo agora</text>
+          <text x="652" y="204" class="ram-d">Prospecção ativa, na ordem da força do sinal.</text>
+          <text x="652" y="226" class="ram-d">É aqui que a agenda enche nas próximas semanas.</text>
+
+          <text x="652" y="398" class="ram-n" data-out="somRestante">7.350</text>
+          <text x="652" y="428" class="ram-t">ainda não deram sinal</text>
+          <text x="652" y="452" class="ram-d">Conteúdo, SEO, mídia, newsletter, comunidade,</text>
+          <text x="652" y="474" class="ram-d">eventos e social selling — até darem sinal.</text>
+          <text x="652" y="496" class="ram-d">É o pipeline do ano que vem.</text>
+        </svg>
       </div>
 
-      <div class="frentes">
-        <div class="frente is-agora">
-          <div class="frente_n" data-out="somSinalEco">650</div>
-          <p class="frente_t">Capturar a demanda que já existe</p>
-          <p>As contas que deram sinal entram em prospecção ativa, priorizadas pela força
-             do sinal. É aqui que a agenda enche nas próximas semanas.</p>
-        </div>
-        <div class="frente">
-          <div class="frente_n" data-out="somRestante">7.350</div>
-          <p class="frente_t">Construir a demanda que ainda não existe</p>
-          <p>O resto não é descartado. Vai para conteúdo, SEO, mídia, newsletter, comunidade,
-             eventos e social selling — até dar sinal. É o pipeline do ano que vem.</p>
-        </div>
+      <div class="som-campos">
+        <label><span>TAM</span>
+          <input class="f is-num" type="text" data-k="somTam" data-mask="number" placeholder="100.000"></label>
+        <label><span>SAM</span>
+          <input class="f is-num" type="text" data-k="somSam" data-mask="number" placeholder="50.000"></label>
+        <label><span>SOM</span>
+          <input class="f is-num" type="text" data-k="somSom" data-mask="number" placeholder="8.000"></label>
+        <label><span>Com sinal</span>
+          <input class="f is-num" type="text" data-k="somSinal" data-mask="number" placeholder="650"></label>
+        <span class="som-dica">
+          A maioria trabalha só a frente de cima — e no mês em que os sinais secam,
+          a agenda seca junto.
+        </span>
       </div>
-
-      <p class="text-small text-color-secondary" style="margin-top:20px">
-        A maioria das operações trabalha só a primeira coluna — e no mês em que os sinais
-        secam, a agenda seca junto.
-      </p>
     </div>
   </section>
 
@@ -568,7 +582,7 @@
         </tbody>
       </table>
 
-      <p class="eyebrow is-muted" style="margin:28px 0 12px">
+      <p class="eyebrow is-muted secao">
         As motions que a operação pode rodar — coordenadas, não soltas
       </p>
       <div class="motions-grid" id="motionsGrid"></div>
@@ -583,14 +597,14 @@
         A Althius não é uma plataforma de prospecção.<br>
         É um <span class="gradient-text">Revenue Operating System</span>.
       </h2>
-      <p class="slide-sub" style="margin-bottom:26px;max-width:76ch">
+      <p class="slide-sub">
         Plataforma de dados entrega lista e vai embora. Revenue OS estrutura, automatiza e
         opera a jornada inteira — da definição de mercado e ICP à prospecção, qualificação,
         fechamento, geração de demanda e expansão de receita. Tecnologia própria mais time
         executando.
       </p>
 
-      <p class="eyebrow is-muted" style="margin:0 0 12px">O modelo que a gente combate</p>
+      <p class="eyebrow is-muted secao">O modelo que a gente combate</p>
       <ul class="densa">
         <li>SDR prospectando no escuro, sem saber quem está no momento de compra</li>
         <li>Closer recebendo oportunidade mal qualificada e queimando agenda</li>
@@ -606,7 +620,7 @@
         <li>Ninguém sabe qual canal gerou qual contrato</li>
       </ul>
 
-      <p class="text-regular text-color-body" style="margin-top:24px;max-width:78ch">
+      <p class="text-regular text-color-body mt-4 medida">
         O resultado é sempre o mesmo: <b style="color:var(--white)">CAC alto, ciclo longo,
         conversão baixa e receita imprevisível</b>. Não porque o time é ruim — porque
         ninguém montou o sistema embaixo dele.
@@ -619,7 +633,7 @@
     <div class="slide_inner">
       <p class="slide-tag">O que construímos<span class="sep">/</span><span class="deck-n">deck 7 de 16</span></p>
       <h2 class="slide-title">Não é uma lista. É a operação inteira.</h2>
-      <p class="slide-sub" style="margin-bottom:22px">
+      <p class="slide-sub">
         Isto é o que entra em pé na <span id="escopoEmpresa">sua empresa</span> — construído
         do zero se não existir, mapeado e otimizado se já existir.
       </p>
@@ -684,7 +698,7 @@
       <p class="slide-tag">A inteligência<span class="sep">/</span><span class="deck-n">deck 8 de 16</span></p>
       <h2 class="slide-title">O ICP não vem pronto. A gente constrói o seu.</h2>
 
-      <p class="eyebrow is-muted" style="margin:0 0 12px">Quem é a empresa que compra de você</p>
+      <p class="eyebrow is-muted secao">Quem é a empresa que compra de você</p>
       <ul class="densa">
         <li>Número de colaboradores, por faixa</li>
         <li>Segmento de mercado</li>
@@ -703,7 +717,7 @@
         <li>O que faz uma conta dar certo com você</li>
       </ul>
 
-      <p class="eyebrow is-muted" style="margin:26px 0 12px">Por que essa empresa compraria</p>
+      <p class="eyebrow is-muted secao">Por que essa empresa compraria</p>
       <ul class="densa">
         <li>Dor macro que trava o crescimento</li>
         <li>Objetivo real da contratação</li>
@@ -719,7 +733,7 @@
         <li>Percepção de preço contra valor</li>
       </ul>
 
-      <p class="text-small text-color-secondary" style="margin-top:22px;max-width:80ch">
+      <p class="nota-tela">
         Cada variável dessas muda a lista, a mensagem e a ordem da fila. É esse cruzamento
         que separa a conta que fecha da conta que consome três meses e some.
       </p>
@@ -760,7 +774,7 @@
         </div>
       </div>
 
-      <p class="eyebrow is-muted" style="margin:26px 0 12px">
+      <p class="eyebrow is-muted secao">
         E a dor entra numa matriz de quatro dimensões
       </p>
       <div class="matriz">
@@ -786,7 +800,7 @@
         </div>
       </div>
 
-      <p class="text-small text-color-secondary" style="margin-top:18px;max-width:84ch">
+      <p class="nota-tela">
         Dor urgente, consciente, grave e frequente vende sozinha. Dor latente exige educar
         antes de vender — e é aí que a maioria das operações queima a conta cedo demais.
       </p>
@@ -798,7 +812,7 @@
     <div class="slide_inner">
       <p class="slide-tag">O que quase ninguém mapeia<span class="sep">/</span><span class="deck-n">deck 10 de 16</span></p>
       <h2 class="slide-title">Como a compra acontece de verdade</h2>
-      <p class="slide-sub" style="margin-bottom:22px;max-width:80ch">
+      <p class="slide-sub">
         Muita empresa não vende por um motivo simples: nunca mapeou isto. Sem esse mapa,
         a abordagem não consegue ligar o produto à dor — e o vendedor improvisa toda call.
       </p>
@@ -948,7 +962,7 @@
 
         <div class="print-frame" id="printFrame">
           <p class="text-small text-color-secondary" style="text-align:center;padding:24px">
-            Print do sinal — coloque em <code style="color:var(--orange)">assets/img/sinal.png</code>
+            Print do sinal — suba no pré-call (tecla <b>P</b>)
           </p>
         </div>
       </div>
@@ -984,7 +998,7 @@
         </div>
       </div>
 
-      <p class="text-small text-color-secondary" style="margin-top:22px">
+      <p class="nota-tela">
         É a meta que a gente persegue e já entregou — não é cláusula de contrato.
         O que garantimos é a estrutura de pé e rodando.
       </p>

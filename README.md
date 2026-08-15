@@ -61,6 +61,36 @@ nota do apresentador traz a frase pronta e o aviso de tom.
 
 ---
 
+## Espaçamento
+
+Todo o ritmo vertical sai de **uma escala só**, no topo de `apresentacao.css`:
+
+```css
+--s1: 8px    --s2: 12px    --s3: 16px    --s4: 24px    --s5: 34px
+```
+
+O cabeçalho de toda tela segue a mesma regra: `tag` → 16px → `título` → 12px →
+`subtítulo` → 24px → conteúdo. Sem subtítulo, o título assume os 24px.
+
+Rótulos de subseção usam `.secao` (34px acima, 12px abaixo). A nota final de tela usa
+`.nota-tela`. **Nada de margem solta no HTML** — se precisar de espaço, é `.mt-3`,
+`.mt-4`, `.mb-3` ou `.mb-4`.
+
+---
+
+## O funil de mercado (tela 8)
+
+TAM, SAM, SOM e as contas com sinal desenhados como **anéis concêntricos** em SVG, com a
+hierarquia visual invertida de propósito: o anel externo (TAM) é o mais apagado, e o peso
+cresce para dentro — o SOM ganha contorno laranja e o núcleo de sinal vem preenchido.
+Quem olha vai direto ao que importa.
+
+Do SOM saem os dois ramos: as contas com sinal (prospecção ativa agora) e o restante
+(geração de demanda). Os quatro números são editáveis na linha abaixo do diagrama e o
+SVG recalcula ao vivo, inclusive o restante (SOM − sinal).
+
+---
+
 ## Índice para saltar telas (tecla `I`)
 
 São 21 telas. Nem toda call comporta todas. O índice lista tudo, marca as **opcionais**
@@ -81,7 +111,7 @@ o lead já está quente.
 | 5 | O gap | 49 | Número gigante laranja, fundo preto. |
 | 6 | O que o mercado faz | benchmarks | Os números do setor, com fonte em cada um. |
 | 7 | Por que o gap existe | 49 | Uma frase, editável. |
-| 8 | TAM · SAM · SOM | Revenue OS | O funil antes do funil + as duas frentes. |
+| 8 | TAM · SAM · SOM | Revenue OS | Anéis concêntricos + as duas frentes saindo do SOM. |
 | 9 | Dado × orquestração | Revenue OS | Comparativo com ferramenta de dados + as 14 motions. |
 | 10 | **O que é a Althius** | Revenue OS | A definição e os 12 itens do modelo que combatemos. |
 | 11 | O que construímos ᵒᵖᶜ | Revenue OS | 40 variáveis · 5 personas · 9 processos · 14 motions. |
