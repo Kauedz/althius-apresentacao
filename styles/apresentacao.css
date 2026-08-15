@@ -543,54 +543,45 @@ textarea.f { resize: none; line-height: 1.5; }
 /* ---------------------------------------------------------------
    9. VÍDEO (deck 4)
    --------------------------------------------------------------- */
-/* ---- Demonstração ao vivo, no lugar do vídeo gravado ---- */
-.demo {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--s4);
-  align-items: start;
-}
+/* ---- Demonstração ao vivo, no lugar do vídeo gravado ----
+   A tela do lead tem só a porta de entrada. O roteiro do percurso é do
+   closer e vive no presenter.html — aqui ele seria instrução exposta. */
 .demo_btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--s3);
-  width: 100%;
+  gap: var(--s4);
   text-align: left;
   border: 1px solid var(--orange);
-  border-radius: var(--r2);
+  border-radius: var(--r3);
   background-color: rgba(255, 90, 31, 0.09);
-  padding: var(--cp3);
+  padding: 28px 40px 28px 32px;
   color: var(--white);
   cursor: pointer;
   transition: var(--t-button);
+  align-self: flex-start;
 }
-.demo_btn:hover { background-color: rgba(255, 90, 31, 0.18); transform: translateY(-1px); }
+.demo_btn:hover {
+  background-color: rgba(255, 90, 31, 0.18);
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+.demo_btn:active { transform: translateY(0); }
 .demo_ic { color: var(--orange); line-height: 0; flex: none; }
-.demo_t { display: block; font-size: 1.25rem; font-weight: 600; }
+.demo_t {
+  display: block;
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
 .demo_d {
   display: block;
-  margin-top: 4px;
+  margin-top: 6px;
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.06em;
   color: var(--text-secondary-d);
-  word-break: break-all;
 }
-.demo_roteiro {
-  border: 1px solid var(--line);
-  border-radius: var(--r2);
-  background-color: #101114;
-  padding: var(--cp3);
-}
-.demo_passos { margin: 0; padding-left: 20px; }
-.demo_passos li {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--text-d-bg);
-  margin-bottom: 6px;
-}
-.demo_passos li:last-child { margin-bottom: 0; color: var(--text-secondary-d); }
 
 /* ---------------------------------------------------------------
    10. PROVA VIVA (deck 5) — "tu viveu isso"
@@ -1891,7 +1882,7 @@ ul.densa { margin: 0; padding: 0; }
   /* Abaixo disso o topo não comporta marca + números + ferramentas.
      Os três números seguem visíveis no Raio-X. */
   .hud { display: none; }
-  .mercado, .frentes, .demo { grid-template-columns: 1fr; }
+  .mercado, .frentes { grid-template-columns: 1fr; }
   .contraste { grid-template-columns: 1fr; }
   .contraste_seta { transform: rotate(90deg); justify-self: center; }
   .fm_faixa { grid-template-columns: 1fr; gap: 8px; max-width: 100% !important; }
@@ -1912,6 +1903,7 @@ ul.densa { margin: 0; padding: 0; }
   .deck_nav { right: 18px; bottom: 44px; }
   .mapa, .plano { grid-template-columns: 1fr; }
   .mapa_col { min-height: 0; }
+  .demo_btn { width: 100%; padding: 22px 24px; gap: var(--s3); }
   .dial button { width: 52px; height: 52px; font-size: 1.125rem; }
 }
 
