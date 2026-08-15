@@ -37,6 +37,9 @@ body.deck-body {
   /* O rodapé reserva a faixa da navegação (52px de base + 44px do botão)
      para o conteúdo nunca terminar por baixo dela. */
   padding: 88px 56px 108px;
+  /* Sem isto, a barra de rolagem das telas longas encolhe o container e
+     o conteúdo salta 8px para a esquerda ao trocar de tela. */
+  scrollbar-gutter: stable;
 }
 .slide.is-active { display: block; animation: slide-in 0.42s var(--ease) both; }
 
@@ -46,7 +49,11 @@ body.deck-body {
 }
 
 .slide_inner { max-width: 1280px; margin-inline: auto; min-height: 100%; }
-.slide_inner.is-narrow { max-width: 940px; }
+/* As telas de "momento" (capa, Pit 01, a frase, o fecho) limitam a largura
+   da linha para leitura — mas o CONTAINER é o mesmo das demais, para o
+   cabeçalho não saltar na horizontal a cada troca de tela. Quem encolhe é
+   o conteúdo, não a régua. A centralização que importa aqui é a vertical. */
+.slide_inner.is-narrow > * { max-width: 940px; }
 
 /* -----------------------------------------------------------------
    RITMO VERTICAL — uma escala só, usada em todas as telas.
@@ -58,6 +65,17 @@ body.deck-body {
   --s3: 16px;   /* entre blocos irmãos    */
   --s4: 24px;   /* entre grupos           */
   --s5: 34px;   /* entre seções da tela   */
+
+  /* Raio de borda — três níveis, pelo tamanho do elemento */
+  --r1: 12px;   /* chips, pílulas, itens densos       */
+  --r2: 16px;   /* cards                              */
+  --r3: 20px;   /* painéis, modais, containers        */
+
+  /* Respiro interno de card — quatro níveis */
+  --cp1: 12px 14px;   /* denso: grade de muitos itens  */
+  --cp2: 16px 18px;   /* padrão                        */
+  --cp3: 20px 22px;   /* espaçoso                      */
+  --cp4: 26px 28px;   /* destaque: números grandes     */
 }
 
 /* Cabeçalho padrão de toda tela: tag → título → subtítulo → conteúdo */
@@ -160,7 +178,7 @@ textarea.f { resize: none; line-height: 1.5; }
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   gap: 0;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r3);
   overflow: hidden;
 }
 .xr_col { padding: 28px 30px; }
@@ -182,7 +200,7 @@ textarea.f { resize: none; line-height: 1.5; }
 
 .xr_row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 9px 0;
@@ -244,13 +262,15 @@ textarea.f { resize: none; line-height: 1.5; }
   display: none;
   margin-top: 18px;
   /* É o último elemento da coluna e cai bem onde ficam os botões de
-     navegação. A folga tira ele de baixo deles — é o gancho mais
-     importante do diagnóstico, não pode ficar escondido. */
-  margin-bottom: 56px;
+     navegação. A folga embaixo tira ele da faixa deles, e a folga à
+     direita impede que a última linha do texto passe por trás — é o
+     gancho mais importante do diagnóstico, não pode ficar escondido. */
+  margin-bottom: 72px;
+  margin-right: 96px;
   border: 1px solid rgba(255, 90, 31, 0.45);
-  border-radius: 14px;
+  border-radius: var(--r2);
   background-color: rgba(255, 90, 31, 0.07);
-  padding: 16px 18px;
+  padding: var(--cp2);
 }
 .xr_alerta.is-on { display: block; }
 .xr_alerta .t {
@@ -281,8 +301,8 @@ textarea.f { resize: none; line-height: 1.5; }
 }
 .mapa_col {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px 16px;
+  border-radius: var(--r2);
+  padding: var(--cp2);
   background-color: #101114;
   display: flex;
   flex-direction: column;
@@ -428,7 +448,7 @@ textarea.f { resize: none; line-height: 1.5; }
    8. EMPILHAMENTO (deck 3) — dor → o que mostra → o dia dele
    --------------------------------------------------------------- */
 .stack-table { display: grid; gap: 1px; background-color: var(--line);
-  border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  border: 1px solid var(--line); border-radius: var(--r2); overflow: hidden; }
 .stack-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
@@ -450,11 +470,11 @@ textarea.f { resize: none; line-height: 1.5; }
 .stack-cell .f { font-size: 0.9375rem; }
 
 /* Módulos ICP → Sinais → Cadência */
-.modulos { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-bottom: 20px; }
+.modulos { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--s2); margin-bottom: var(--s3); }
 .modulo {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px 20px;
+  border-radius: var(--r2);
+  padding: var(--cp3);
   background-color: #101114;
 }
 .modulo .n {
@@ -472,7 +492,7 @@ textarea.f { resize: none; line-height: 1.5; }
    --------------------------------------------------------------- */
 .video-frame {
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r3);
   overflow: hidden;
   background-color: #08080a;
   aspect-ratio: 16 / 9;
@@ -481,7 +501,7 @@ textarea.f { resize: none; line-height: 1.5; }
   position: relative;
   /* Cabe na altura da janela sem gerar scroll durante a call. */
   width: 100%;
-  max-width: calc((100dvh - 300px) * 16 / 9);
+  max-width: calc((100dvh - 330px) * 16 / 9);
   margin-inline: auto;
 }
 .video-frame video { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -530,7 +550,7 @@ textarea.f { resize: none; line-height: 1.5; }
 
 .print-frame {
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r2);
   overflow: hidden;
   background-color: #08080a;
   min-height: 260px;
@@ -568,8 +588,8 @@ textarea.f { resize: none; line-height: 1.5; }
 /* Coluna esquerda: os números DELE. O preço nunca aparece pelado. */
 .inv_deles {
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 26px;
+  border-radius: var(--r3);
+  padding: var(--cp4);
   background-color: #08080a;
 }
 .inv_deles .lbl {
@@ -594,8 +614,8 @@ textarea.f { resize: none; line-height: 1.5; }
 .ancora {
   border: 1px solid rgba(255,90,31,0.4);
   background-color: rgba(255,90,31,0.06);
-  border-radius: 16px;
-  padding: 26px 28px;
+  border-radius: var(--r2);
+  padding: var(--cp4);
   margin-bottom: 24px;
 }
 .ancora p {
@@ -613,8 +633,8 @@ textarea.f { resize: none; line-height: 1.5; }
   gap: 16px;
   align-items: center;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 18px 20px;
+  border-radius: var(--r2);
+  padding: var(--cp3);
   background-color: #101114;
   cursor: pointer;
   transition: var(--t-button);
@@ -653,7 +673,7 @@ textarea.f { resize: none; line-height: 1.5; }
 /* Trava: preço não aparece antes da predisposição (slide 57, regra 1) */
 .lock {
   border: 1px dashed var(--line);
-  border-radius: 18px;
+  border-radius: var(--r3);
   padding: 56px 32px;
   text-align: center;
 }
@@ -673,7 +693,7 @@ textarea.f { resize: none; line-height: 1.5; }
   display: flex;
   gap: 0;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--r1);
   background-color: rgba(8, 8, 10, 0.92);
   overflow: hidden;
   opacity: 0;
@@ -819,7 +839,7 @@ body.is-clean .tools { display: none; }
   z-index: 55;
   width: 312px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: var(--r3);
   background-color: rgba(8, 8, 10, 0.97);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -979,8 +999,8 @@ body.is-clean .tools { display: none; }
    --------------------------------------------------------------- */
 .upload {
   border: 1px dashed var(--line);
-  border-radius: 14px;
-  padding: 22px;
+  border-radius: var(--r2);
+  padding: var(--cp3);
   text-align: center;
   cursor: pointer;
   transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
@@ -1013,7 +1033,7 @@ body.is-clean .tools { display: none; }
 .upload-previa {
   display: none;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: var(--r2);
   overflow: hidden;
   background-color: #08080a;
 }
@@ -1085,12 +1105,12 @@ body.is-clean .tools { display: none; }
 .mercado {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--s1);
 }
 .mercado_card {
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 16px 18px;
+  border-radius: var(--r2);
+  padding: var(--cp2);
   background-color: #101114;
   display: flex;
   flex-direction: column;
@@ -1198,7 +1218,7 @@ body.is-clean .tools { display: none; }
   max-height: 86vh;
   overflow-y: auto;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r3);
   background-color: #0e0f12;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
@@ -1306,8 +1326,8 @@ body.is-clean .tools { display: none; }
 .confianca {
   margin-top: 18px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 18px;
+  border-radius: var(--r2);
+  padding: var(--cp2);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1457,8 +1477,8 @@ body.is-clean .tools { display: none; }
 .contraste { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center; }
 .contraste_lado {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px 22px;
+  border-radius: var(--r2);
+  padding: var(--cp3);
   background-color: #101114;
 }
 .contraste_lado.is-forte { border-color: var(--orange); background-color: rgba(255,90,31,0.08); }
@@ -1475,12 +1495,12 @@ body.is-clean .tools { display: none; }
 .motions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
-  gap: 8px;
+  gap: var(--s1);
 }
 .motion {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 9px 12px;
+  border-radius: var(--r1);
+  padding: var(--cp1);
   background-color: #101114;
   cursor: pointer;
   transition: var(--t-button);
@@ -1502,8 +1522,8 @@ body.is-clean .tools { display: none; }
 .escopo { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 26px; }
 .escopo_item {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: var(--r2);
+  padding: var(--cp3);
   background-color: #101114;
 }
 .escopo_n {
@@ -1550,8 +1570,8 @@ ul.densa { margin: 0; padding: 0; }
 .blocos-aula { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
 .bloco-aula {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px 20px;
+  border-radius: var(--r2);
+  padding: var(--cp3);
   background-color: #101114;
 }
 .bloco-aula h3 {
@@ -1575,8 +1595,8 @@ ul.densa { margin: 0; padding: 0; }
 .matriz { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
 .matriz_c {
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: var(--r2);
+  padding: var(--cp2);
   background-color: #101114;
 }
 .matriz_c .d {
@@ -1594,8 +1614,8 @@ ul.densa { margin: 0; padding: 0; }
 .processos { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
 .processo {
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 14px 16px;
+  border-radius: var(--r1);
+  padding: var(--cp2);
   background-color: #101114;
 }
 .processo_t { font-size: 0.9375rem; font-weight: 600; color: var(--white); margin: 0; }
@@ -1626,7 +1646,7 @@ ul.densa { margin: 0; padding: 0; }
 /* Comparativo Althius × ferramenta de dados */
 .versus { width: 100%; border-collapse: collapse; }
 .versus th, .versus td {
-  padding: 8px 12px;
+  padding: 7px 12px;
   border-bottom: 1px solid var(--line);
   text-align: left;
   font-size: 0.8125rem;
@@ -1666,9 +1686,9 @@ ul.densa { margin: 0; padding: 0; }
   max-height: 82vh;
   overflow-y: auto;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--r3);
   background-color: #0e0f12;
-  padding: 24px;
+  padding: var(--cp4);
 }
 .indice_lista { display: grid; gap: 6px; margin-top: 18px; }
 .indice_item {
