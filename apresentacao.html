@@ -487,69 +487,73 @@
 
   <!-- 8 · DECK 4 · ONDE ESTÁ O SEU MERCADO (TAM/SAM/SOM) ------------------ -->
   <section class="slide" data-slide="som" data-deck="4" data-nome="TAM · SAM · SOM">
-    <div class="slide_inner">
-      <p class="slide-tag">Onde está o seu mercado<span class="sep">/</span><span class="deck-n">deck 4 de 16</span></p>
-      <h2 class="slide-title">O funil antes do funil</h2>
-      <p class="slide-sub">
-        Antes de falar de reunião, é preciso saber com quem falar. Os números abaixo são
-        editáveis — a gente calibra com o seu mercado na implementação.
-      </p>
+    <div class="slide_inner som-tela">
 
-      <div class="som-wrap">
-        <svg class="som-svg" viewBox="0 0 1180 560" role="img"
-             aria-label="TAM, SAM, SOM e contas com sinal, em círculos concêntricos">
-          <!-- anéis, do maior para o menor -->
-          <circle cx="248" cy="300" r="215" class="anel is-tam"/>
-          <circle cx="248" cy="300" r="160" class="anel is-sam"/>
-          <circle cx="248" cy="300" r="105" class="anel is-som"/>
-          <circle cx="248" cy="300" r="46"  class="anel is-sinal"/>
+      <div class="som-texto">
+        <p class="slide-tag">Onde está o seu mercado<span class="sep">/</span><span class="deck-n">deck 4 de 16</span></p>
+        <h2 class="slide-title">O funil antes do funil</h2>
+        <p class="slide-sub">
+          Antes de falar de reunião, é preciso saber com quem falar.
+        </p>
 
-          <!-- rótulos, cada um dentro do seu anel -->
-          <text x="248" y="120" class="an-t">TAM</text>
-          <text x="248" y="146" class="an-n" data-out="somTamEco">100.000</text>
+        <div class="som-campos">
+          <label><span>TAM</span>
+            <input class="f is-num" type="text" data-k="somTam" data-mask="number" placeholder="100.000"></label>
+          <label><span>SAM</span>
+            <input class="f is-num" type="text" data-k="somSam" data-mask="number" placeholder="50.000"></label>
+          <label><span>SOM</span>
+            <input class="f is-num" type="text" data-k="somSom" data-mask="number" placeholder="8.000"></label>
+          <label><span>Com sinal</span>
+            <input class="f is-num" type="text" data-k="somSinal" data-mask="number" placeholder="650"></label>
+        </div>
 
-          <text x="248" y="176" class="an-t">SAM</text>
-          <text x="248" y="202" class="an-n" data-out="somSamEco">50.000</text>
-
-          <text x="248" y="228" class="an-t">SOM</text>
-          <text x="248" y="252" class="an-n is-forte" data-out="somSomEco">8.000</text>
-
-          <text x="248" y="296" class="an-t is-forte">COM SINAL</text>
-          <text x="248" y="320" class="an-n is-forte" data-out="somSinalEco">650</text>
-
-          <!-- ramificação: do SOM saem as duas frentes -->
-          <path d="M 353 300 L 560 300" class="fio"/>
-          <path d="M 560 300 L 560 176 L 636 176" class="fio is-forte"/>
-          <path d="M 560 300 L 560 424 L 636 424" class="fio"/>
-
-          <circle cx="560" cy="300" r="4" class="no"/>
-
-          <text x="652" y="150" class="ram-n is-forte" data-out="somSinalEco">650</text>
-          <text x="652" y="180" class="ram-t is-forte">contas se mexendo agora</text>
-          <text x="652" y="204" class="ram-d">Prospecção ativa, na ordem da força do sinal.</text>
-          <text x="652" y="226" class="ram-d">É aqui que a agenda enche nas próximas semanas.</text>
-
-          <text x="652" y="398" class="ram-n" data-out="somRestante">7.350</text>
-          <text x="652" y="428" class="ram-t">ainda não deram sinal</text>
-          <text x="652" y="452" class="ram-d">Conteúdo, SEO, mídia, newsletter, comunidade,</text>
-          <text x="652" y="474" class="ram-d">eventos e social selling — até darem sinal.</text>
-          <text x="652" y="496" class="ram-d">É o pipeline do ano que vem.</text>
-        </svg>
+        <p class="som-dica">
+          Números editáveis — a gente calibra com o seu mercado na implementação.
+        </p>
+        <p class="som-dica is-forte">
+          A maioria trabalha só a frente de cima. No mês em que os sinais secam,
+          a agenda seca junto.
+        </p>
       </div>
 
-      <div class="som-campos">
-        <label><span>TAM</span>
-          <input class="f is-num" type="text" data-k="somTam" data-mask="number" placeholder="100.000"></label>
-        <label><span>SAM</span>
-          <input class="f is-num" type="text" data-k="somSam" data-mask="number" placeholder="50.000"></label>
-        <label><span>SOM</span>
-          <input class="f is-num" type="text" data-k="somSom" data-mask="number" placeholder="8.000"></label>
-        <label><span>Com sinal</span>
-          <input class="f is-num" type="text" data-k="somSinal" data-mask="number" placeholder="650"></label>
-        <span class="som-dica">
-          A maioria trabalha só a frente de cima — e no mês em que os sinais secam,
-          a agenda seca junto.
-        </span>
+      <div class="som-wrap">
+        <svg class="som-svg" viewBox="0 0 840 800" role="img"
+             aria-label="TAM, SAM, SOM e contas com sinal, em círculos concêntricos">
+          <!-- anéis, do maior para o menor -->
+          <circle cx="420" cy="300" r="285" class="anel is-tam"/>
+          <circle cx="420" cy="300" r="212" class="anel is-sam"/>
+          <circle cx="420" cy="300" r="140" class="anel is-som"/>
+          <circle cx="420" cy="300" r="62"  class="anel is-sinal"/>
+
+          <!-- rótulos, cada um dentro do seu anel -->
+          <text x="420" y="50"  class="an-t">TAM</text>
+          <text x="420" y="78"  class="an-n" data-out="somTamEco">100.000</text>
+
+          <text x="420" y="122" class="an-t">SAM</text>
+          <text x="420" y="150" class="an-n" data-out="somSamEco">50.000</text>
+
+          <text x="420" y="194" class="an-t is-forte">SOM</text>
+          <text x="420" y="222" class="an-n is-forte" data-out="somSomEco">8.000</text>
+
+          <text x="420" y="292" class="an-t is-forte">COM SINAL</text>
+          <text x="420" y="324" class="an-n is-nucleo" data-out="somSinalEco">650</text>
+
+          <!-- ramificação: do SOM descem as duas frentes -->
+          <path d="M 420 585 L 420 638" class="fio"/>
+          <path d="M 420 638 L 196 638 L 196 668" class="fio is-forte"/>
+          <path d="M 420 638 L 644 638 L 644 668" class="fio"/>
+          <circle cx="420" cy="638" r="4" class="no"/>
+
+          <text x="196" y="712" class="ram-n is-forte" data-out="somSinalEco">650</text>
+          <text x="196" y="740" class="ram-t is-forte">se mexendo agora</text>
+          <text x="196" y="764" class="ram-d">Prospecção ativa, na ordem</text>
+          <text x="196" y="786" class="ram-d">da força do sinal.</text>
+
+          <text x="644" y="712" class="ram-n" data-out="somRestante">7.350</text>
+          <text x="644" y="740" class="ram-t">ainda sem sinal</text>
+          <text x="644" y="764" class="ram-d">Conteúdo, SEO, mídia, eventos</text>
+          <text x="644" y="786" class="ram-d">e comunidade — até darem sinal.</text>
+        </svg>
       </div>
     </div>
   </section>
