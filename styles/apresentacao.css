@@ -1082,7 +1082,210 @@ body.is-clean .tools { display: none; }
 }
 
 /* ---------------------------------------------------------------
-   19. REVENUE OS — TAM/SAM/SOM, orquestração e motions
+   19. ESTIMADORES — o caminho quando ele não sabe o número
+   --------------------------------------------------------------- */
+.nsei {
+  flex: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-secondary-d);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.nsei:hover { border-color: var(--orange); color: var(--orange); }
+
+/* Campo cujo valor foi estimado, não declarado */
+.f.is-estimado {
+  border-bottom-color: var(--orange);
+  border-bottom-style: dashed;
+  color: var(--orange);
+}
+.xr_row.is-estimada .k { color: var(--text-secondary-d); }
+.selo-est {
+  display: none;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid rgba(255, 90, 31, 0.45);
+  border-radius: 1600px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+.xr_row.is-estimada .selo-est { display: inline-block; }
+
+/* Modal do estimador */
+.est {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  background-color: rgba(4, 4, 6, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 24px;
+}
+.est[hidden] { display: none !important; }
+.est_caixa {
+  width: min(620px, 100%);
+  max-height: 86vh;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background-color: #0e0f12;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.est_topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.est_t { font-size: 1.375rem; font-weight: 700; color: var(--white); margin: 6px 0 0; }
+.est_corpo { padding: 20px 24px 24px; }
+
+.est_caminho { border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+.est_caminho:last-of-type { margin-bottom: 0; }
+.est_cab {
+  width: 100%;
+  text-align: left;
+  padding: 14px 18px;
+  background: transparent;
+  border: 0;
+  color: var(--white);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  transition: background-color 0.2s var(--ease);
+}
+.est_cab:hover { background-color: rgba(255,255,255,0.03); }
+.est_cab::after { content: "+"; color: var(--orange); font-size: 1.125rem; line-height: 1; }
+.est_caminho.is-aberto .est_cab::after { content: "−"; }
+.est_caminho.is-aberto { border-color: var(--orange); }
+.est_painel { display: none; padding: 0 18px 18px; }
+.est_caminho.is-aberto .est_painel { display: block; }
+
+.est_pergunta { font-size: 0.875rem; color: var(--text-d-bg); margin: 0 0 12px; }
+
+.est_opcoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.est_op {
+  border: 1px solid var(--line);
+  border-radius: 1600px;
+  padding: 9px 16px;
+  background: transparent;
+  color: var(--text-d-bg);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.est_op:hover { border-color: var(--orange); color: var(--orange); }
+
+.est_campos { display: grid; gap: 12px; }
+.est_campo label {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+  margin-bottom: 6px;
+}
+.est_campo .f {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.est_previa {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.est_res { font-size: 1.5rem; font-weight: 800; color: var(--orange); font-variant-numeric: tabular-nums; }
+.est_exp { font-size: 0.8125rem; line-height: 1.45; color: var(--text-secondary-d); flex: 1 1 220px; }
+
+/* Composição por perfil (folha) */
+.est_comp { display: grid; gap: 8px; }
+.est_linha {
+  display: grid;
+  grid-template-columns: 1fr 78px auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.est_linha .nome { font-size: 0.875rem; color: var(--text-d-bg); }
+.est_linha .val {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-secondary-d);
+  white-space: nowrap;
+}
+
+/* Medidor de confiança do diagnóstico */
+.confianca {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.confianca.is-baixa { border-color: rgba(224, 160, 60, 0.5); background-color: rgba(224,160,60,0.07); }
+.confianca_n {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.confianca.is-baixa .confianca_n { color: #e0a03c; }
+.confianca_t {
+  flex: 1 1 260px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-d-bg);
+}
+.confianca_barra {
+  flex: 1 1 100%;
+  height: 4px;
+  border-radius: 4px;
+  background-color: var(--line);
+  overflow: hidden;
+}
+.confianca_fill {
+  height: 100%;
+  width: 0;
+  background-image: var(--gradient-main);
+  transition: width 0.5s var(--ease);
+}
+
+/* ---------------------------------------------------------------
+   20. REVENUE OS — TAM/SAM/SOM, orquestração e motions
    --------------------------------------------------------------- */
 .funil-mercado { display: grid; gap: 12px; }
 .fm_faixa {
@@ -1189,7 +1392,216 @@ body.is-clean .tools { display: none; }
 }
 
 /* ---------------------------------------------------------------
-   20. RESPONSIVO — a call roda em notebook; abaixo disso é degradê
+   21. A AULA — o que construímos para a empresa dele
+   --------------------------------------------------------------- */
+.escopo { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 26px; }
+.escopo_item {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #101114;
+}
+.escopo_n {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background-image: var(--gradient-d-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.escopo_t {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+  line-height: 1.6;
+}
+
+/* Listas densas de variáveis (ICP, personas, processos) */
+.densa { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px 24px; }
+.densa li {
+  list-style: none;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-d-bg);
+  padding-left: 16px;
+  position: relative;
+}
+.densa li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.5em;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background-color: var(--orange);
+}
+ul.densa { margin: 0; padding: 0; }
+
+.blocos-aula { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+.bloco-aula {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  background-color: #101114;
+}
+.bloco-aula h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+}
+.bloco-aula .papel {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.bloco-aula ul { margin: 10px 0 0; padding-left: 16px; }
+.bloco-aula li { font-size: 0.8125rem; line-height: 1.5; color: var(--text-secondary-d); }
+
+/* Matriz de dor */
+.matriz { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+.matriz_c {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  background-color: #101114;
+}
+.matriz_c .d {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.matriz_c p { margin: 8px 0 0; font-size: 0.8125rem; line-height: 1.5; color: var(--text-d-bg); }
+.matriz_c .q { margin-top: 8px; color: var(--text-secondary-d); font-style: italic; }
+
+/* Os processos, com o toggle "já tem / não tem" */
+.processos { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+.processo {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background-color: #101114;
+}
+.processo_t { font-size: 0.9375rem; font-weight: 600; color: var(--white); margin: 0; }
+.processo_d { margin: 6px 0 0; font-size: 0.75rem; line-height: 1.45; color: var(--text-secondary-d); }
+
+.toggle-modo { display: flex; gap: 8px; margin-bottom: 18px; }
+.toggle-modo button {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 1600px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-secondary-d);
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.toggle-modo button:hover { border-color: var(--white); color: var(--white); }
+.toggle-modo button.is-on {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
+}
+
+/* Comparativo Althius × ferramenta de dados */
+.versus { width: 100%; border-collapse: collapse; }
+.versus th, .versus td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 0.8125rem;
+}
+.versus thead th {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.versus thead th:last-child { color: var(--orange); }
+.versus td:first-child { color: var(--text-d-bg); }
+.versus td.nao { color: #75787b; }
+.versus td.sim { color: var(--white); }
+.versus tbody tr:hover { background-color: rgba(255,255,255,0.02); }
+.versus .marca { font-weight: 700; }
+
+/* ---------------------------------------------------------------
+   22. ÍNDICE DE TELAS (tecla I)
+   --------------------------------------------------------------- */
+.indice {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  background-color: rgba(4, 4, 6, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+.indice[hidden] { display: none !important; }
+.indice_caixa {
+  width: min(760px, 100%);
+  max-height: 82vh;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background-color: #0e0f12;
+  padding: 24px;
+}
+.indice_lista { display: grid; gap: 6px; margin-top: 18px; }
+.indice_item {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-d-bg);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  transition: var(--t-button);
+}
+.indice_item:hover { border-color: var(--line); background-color: rgba(255,255,255,0.03); color: var(--white); }
+.indice_item.is-atual { border-color: var(--orange); color: var(--white); }
+.indice_item .num {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  color: var(--text-secondary-d);
+}
+.indice_item.is-atual .num { color: var(--orange); }
+.indice_item .cap {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.indice_item.is-opcional .cap { color: #e0a03c; }
+
+/* ---------------------------------------------------------------
+   23. RESPONSIVO — a call roda em notebook; abaixo disso é degradê
    --------------------------------------------------------------- */
 @media (max-width: 1200px) {
   .slide { padding: 80px 32px 100px; }
@@ -1209,6 +1621,9 @@ body.is-clean .tools { display: none; }
   .contraste { grid-template-columns: 1fr; }
   .contraste_seta { transform: rotate(90deg); justify-self: center; }
   .fm_faixa { grid-template-columns: 1fr; gap: 8px; max-width: 100% !important; }
+  .escopo, .matriz { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .densa, .blocos-aula, .processos { grid-template-columns: 1fr; }
+  .est_linha { grid-template-columns: 1fr 70px auto; }
   .stack-row { grid-template-columns: 1fr; }
   .stack-row.is-head { display: none; }
   .hud { left: 16px; right: 16px; bottom: 76px; }

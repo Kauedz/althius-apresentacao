@@ -31,7 +31,46 @@ se for publicar atrás de um servidor que cacheia.
 
 ---
 
-## A sequência (15 telas)
+## Quando ele não sabe o número — e ele quase nunca sabe
+
+Cada campo do Raio-X tem um **`?`** ao lado. Clicar abre os caminhos para chegar num
+número defensável na frente dele, em três modos:
+
+| Modo | Como funciona | Exemplo |
+|---|---|---|
+| **Escada** | Faixas para ele escolher — a escada de ancoragem do playbook | Ticket: *até 5 mil · 5 a 15 · 15 a 50 · 50 a 150 · acima* |
+| **Derivar** | Calcula a partir do que ele já respondeu, com a explicação em texto | *4 pessoas × 3 reuniões/semana = 12 no time* |
+| **Composição** | Monta somando perfis | *2 SDR júnior + 2 closers = R$ 15.000 de folha* |
+
+Os campos de derivação **se pré-preenchem** com o que já está no diagnóstico. Reuniões
+por semana tem três caminhos, incluindo o reverso (a partir das vendas) e o chute
+assistido — porque esse é o número que mais falta.
+
+Todo valor que sai daí marca o campo em **laranja tracejado**. Digitar por cima devolve
+o número para ele.
+
+### O medidor de confiança
+
+No rodapé do Raio-X: quantos números vieram dele contra quantos foram estimados juntos.
+
+> *"3 de 3 números a gente estimou junto porque não estavam na ponta da língua. Isso não
+> invalida a conta — mas já é parte do diagnóstico: o que não é medido não é gerenciado."*
+
+O medidor fica âmbar quando metade ou mais é estimativa. **É argumento, não deboche** — a
+nota do apresentador traz a frase pronta e o aviso de tom.
+
+---
+
+## Índice para saltar telas (tecla `I`)
+
+São 21 telas. Nem toda call comporta todas. O índice lista tudo, marca as **opcionais**
+em âmbar e salta com um clique. As cinco telas de aprofundamento do método (escopo, ICP,
+personas, processo de compra e processos) são as puláveis quando a reunião está curta ou
+o lead já está quente.
+
+---
+
+## A sequência (21 telas)
 
 | # | Tela | Origem | O que o lead vê |
 |---|---|---|---|
@@ -39,26 +78,43 @@ se for publicar atrás de um servidor que cacheia.
 | 2 | **Raio-X ao vivo** | 36, 41–44 | Entradas que você digita, saídas que calculam sozinhas. |
 | 3 | **Mapa da Máquina** | 38 | 5 colunas. Cada vazamento vira laranja com um clique. |
 | 4 | Pit 01 | 45–46 | Só a pergunta e o dial de 0 a 10. |
-| 5 | O gap — deck 1/10 | 49 | Número gigante laranja, fundo preto. |
-| 6 | **O que o mercado faz** — 2/10 | benchmarks | Os números do setor, com fonte em cada um. |
-| 7 | Por que o gap existe — 3/10 | 49 | Uma frase, editável. |
-| 8 | **TAM · SAM · SOM** — 4/10 | Revenue OS | O funil antes do funil + as duas frentes (650 / 7.350). |
-| 9 | **Dado × orquestração** — 5/10 | Revenue OS | Ferramenta de lista contra Revenue OS + as 14 motions. |
-| 10 | A máquina — 6/10 | 47, 49 | ICP → Sinais → Cadência + empilhamento com as palavras dele. |
-| 11 | O vídeo — 7/10 | 48, 49 | Vídeo da plataforma, 2–3 min. |
-| 12 | Você viveu isso — 8/10 | 48, 49 | Detecção → decisores → ligação → hoje, com o print do sinal. |
-| 13 | Plano de 14 dias — 9/10 | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
-| 14 | Investimento — 10/10 | 50, 55, 57 | Degraus **ao lado dos números dele**. |
-| 15 | Fechamento | 50 | Kickoff, dia e hora. |
+| 5 | O gap | 49 | Número gigante laranja, fundo preto. |
+| 6 | O que o mercado faz | benchmarks | Os números do setor, com fonte em cada um. |
+| 7 | Por que o gap existe | 49 | Uma frase, editável. |
+| 8 | TAM · SAM · SOM | Revenue OS | O funil antes do funil + as duas frentes. |
+| 9 | Dado × orquestração | Revenue OS | Comparativo com ferramenta de dados + as 14 motions. |
+| 10 | **O que é a Althius** | Revenue OS | A definição e os 12 itens do modelo que combatemos. |
+| 11 | O que construímos ᵒᵖᶜ | Revenue OS | 40 variáveis · 5 personas · 9 processos · 14 motions. |
+| 12 | Construção do ICP ᵒᵖᶜ | Revenue OS | Quem compra e por que compraria, em 27 variáveis. |
+| 13 | Personas e matriz de dor ᵒᵖᶜ | Revenue OS | Os 5 papéis + urgência/consciência/gravidade/frequência. |
+| 14 | O processo de compra ᵒᵖᶜ | Revenue OS | Objeções, alternativas, riscos percebidos, posicionamento. |
+| 15 | Os 9 processos ᵒᵖᶜ | Revenue OS | Com alternador *construímos* / *otimizamos*. |
+| 16 | A máquina | 47, 49 | ICP → Sinais → Cadência + empilhamento com as palavras dele. |
+| 17 | O vídeo | 48, 49 | Vídeo da plataforma, 2–3 min. |
+| 18 | Você viveu isso | 48, 49 | Detecção → decisores → ligação → hoje, com o print do sinal. |
+| 19 | Plano de 14 dias | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
+| 20 | Investimento | 50, 55, 57 | Degraus **ao lado dos números dele**. |
+| 21 | Fechamento | 50 | Kickoff, dia e hora. |
+
+ᵒᵖᶜ = marcada como opcional no índice.
 
 Pit 01 vem **antes** do deck porque o deck só existe no Pit 02 (slide 49: *"da abertura
 ao Pit 01, a tela é o Raio-X e o Mapa"*).
 
-> **Tensão com o playbook:** o slide 49 pede *"7 slides, nem um a mais"* e o slide 48
-> avisa que ninguém aguenta tour de 10 minutos. As três telas novas (mercado, TAM/SAM/SOM
-> e orquestração) levam o deck a 10. Elas ganham a conversa quando o lead não conhece os
-> próprios números — mas se a reunião estiver curta ou o lead já estiver quente,
-> **pule 8 e 9** com as setas: a sequência continua fechando sem elas.
+> **Tensão com o playbook, declarada:** o slide 49 pede *"7 slides, nem um a mais"* e o
+> slide 48 avisa que ninguém aguenta tour de 10 minutos. O deck agora tem 16 telas de
+> Pit 02. O aprofundamento ganha o lead que não conhece o próprio mercado nem o próprio
+> processo — mas **é o oposto do que o método prescreve para uma call curta**. Use o
+> índice (`I`) para montar a versão da reunião: o caminho enxuto é pular as cinco
+> opcionais, e a sequência fecha do mesmo jeito.
+
+### Uma escolha de tom que fiz de propósito
+
+O pedido era deixar o lead sem chão. As telas entregam a profundidade inteira, mas a
+carga é o **tamanho do escopo**, não o insulto — o playbook é explícito no slide 43:
+*o vilão é o gap, não o time dele*. As notas do apresentador reforçam isso em cada tela
+nova ("quem diz que não conseguiria fazer é ele; se você disser, ele defende"). Ele chega
+à conclusão sozinho, e chega sem estar na defensiva.
 
 ### O que a tela não mostra
 
@@ -178,6 +234,7 @@ o resultado pronto.
 | Tecla | Ação |
 |---|---|
 | `→` `←` `Espaço` | Navega (desativado enquanto digita num campo) |
+| `I` | Índice das 21 telas — salta para qualquer uma |
 | `C` | Abre/fecha a calculadora |
 | `N` | Abre a janela do apresentador |
 | `F` | Tela cheia |
@@ -260,6 +317,7 @@ styles/
 scripts/
   raiox-engine.js       FONTE ÚNICA das fórmulas
   benchmarks.js         dados de mercado + fontes
+  estimadores.js        caminhos para quando ele não sabe o número
   apresentacao.js       runtime do deck
   calculadora.js        calculadora flutuante
   diagnostico.js        renderização do relatório de follow-up
@@ -277,6 +335,9 @@ assets/video/           coloque plataforma.mp4 aqui
 | Degraus e mensalidade | `apresentacao.html` → `#degraus`, `.mensalidade` |
 | Módulos da plataforma | `apresentacao.html` → `.modulos` |
 | Dados de mercado e fontes | `scripts/benchmarks.js` → `DADOS` |
+| Faixas e fórmulas dos estimadores | `scripts/estimadores.js` → `ESTIMADORES` |
+| Salários de referência por perfil | `scripts/estimadores.js` → `SALARIO` |
+| Os 9 processos | `scripts/apresentacao.js` → `PROCESSOS` |
 | As 14 motions de GTM | `scripts/apresentacao.js` → `MOTIONS` |
 | Tamanho recomendado do print | `scripts/apresentacao.js` → `LARGURA_MAX`, `PROPORCAO_ALVO` |
 | Empilhamento padrão | `scripts/apresentacao.js` → `STACK_PADRAO` |

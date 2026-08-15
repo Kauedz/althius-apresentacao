@@ -13,8 +13,8 @@
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
   <!-- ?v= força o navegador a buscar a versão nova depois de cada edição.
        Suba o número ao mexer em CSS/JS. Mesma convenção do site institucional. -->
-  <link href="styles/main.css?v=4" rel="stylesheet" type="text/css">
-  <link href="styles/apresentacao.css?v=4" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=5" rel="stylesheet" type="text/css">
+  <link href="styles/apresentacao.css?v=5" rel="stylesheet" type="text/css">
 </head>
 <body class="deck-body">
 
@@ -93,9 +93,9 @@
     </div>
 
     <p class="text-small text-color-secondary" style="margin-top:28px">
-      Atalhos: <b>→ ←</b> navega · <b>N</b> abre a janela do apresentador ·
-      <b>F</b> tela cheia · <b>H</b> esconde a barra de ferramentas ·
-      <b>P</b> volta a esta tela.
+      Atalhos: <b>→ ←</b> navega · <b>I</b> abre o índice para saltar telas ·
+      <b>C</b> calculadora · <b>N</b> janela do apresentador ·
+      <b>F</b> tela cheia · <b>H</b> esconde a barra · <b>P</b> volta a esta tela.
     </p>
   </div>
 </div>
@@ -131,6 +131,34 @@
 </div>
 
 <div class="rail"><div class="rail_fill" id="railFill"></div></div>
+
+<!-- ============ ESTIMADOR ("não sei") ============ -->
+<div class="est" id="est" hidden role="dialog" aria-modal="true" aria-labelledby="estTitulo">
+  <div class="est_caixa">
+    <div class="est_topo">
+      <div>
+        <p class="eyebrow">Vamos chegar nesse número juntos</p>
+        <h2 class="est_t" id="estTitulo">—</h2>
+      </div>
+      <button type="button" class="calc_x" id="estFechar" aria-label="Fechar">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="est_corpo" id="estCorpo"></div>
+  </div>
+</div>
+
+<!-- ============ ÍNDICE DE TELAS ============ -->
+<div class="indice" id="indice" hidden role="dialog" aria-modal="true">
+  <div class="indice_caixa">
+    <p class="eyebrow">Índice · clique para saltar</p>
+    <div class="indice_lista" id="indiceLista"></div>
+    <p class="text-small text-color-secondary" style="margin-top:18px">
+      As telas marcadas <b style="color:#e0a03c">opcional</b> aprofundam o mercado e o
+      método. Pule-as quando a reunião estiver curta ou o lead já estiver quente.
+    </p>
+  </div>
+</div>
 
 <!-- ============ CALCULADORA FLUTUANTE ============ -->
 <div class="calc" id="calc" hidden role="dialog" aria-label="Calculadora">
@@ -209,22 +237,26 @@
           <div class="xr_head">Entradas</div>
 
           <div class="xr_bloco">Bloco A · a meta</div>
-          <div class="xr_row">
-            <span class="k">Meta de faturamento do trimestre</span>
+          <div class="xr_row" data-campo="metaTrimestre">
+            <span class="k">Meta de faturamento do trimestre <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="metaTrimestre" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="metaTrimestre" data-mask="currency" placeholder="R$ 0" autocomplete="off">
           </div>
-          <div class="xr_row">
-            <span class="k">Ticket médio</span>
+          <div class="xr_row" data-campo="ticketMedio">
+            <span class="k">Ticket médio <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="ticketMedio" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="ticketMedio" data-mask="currency" placeholder="R$ 0" autocomplete="off">
           </div>
 
           <div class="xr_bloco">Bloco B · a máquina atual</div>
-          <div class="xr_row">
-            <span class="k">Reuniões realizadas por semana</span>
+          <div class="xr_row" data-campo="reunioesSemana">
+            <span class="k">Reuniões realizadas por semana <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="reunioesSemana" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="reunioesSemana" data-mask="number" placeholder="0" autocomplete="off">
           </div>
-          <div class="xr_row">
-            <span class="k">Vendas fechadas por mês</span>
+          <div class="xr_row" data-campo="vendasMes">
+            <span class="k">Vendas fechadas por mês <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="vendasMes" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="vendasMes" data-mask="number" placeholder="0" autocomplete="off">
           </div>
           <div class="xr_row is-taxa">
@@ -240,16 +272,19 @@
             <span class="k">Pessoas no comercial</span>
             <input class="f is-num" type="text" data-k="pessoasComercial" data-mask="number" placeholder="0" autocomplete="off">
           </div>
-          <div class="xr_row">
-            <span class="k">Folha bruta mensal</span>
+          <div class="xr_row" data-campo="folhaBruta">
+            <span class="k">Folha bruta mensal <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="folhaBruta" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="folhaBruta" data-mask="currency" placeholder="R$ 0" autocomplete="off">
           </div>
-          <div class="xr_row">
-            <span class="k">Ferramentas/mês</span>
+          <div class="xr_row" data-campo="ferramentasMes">
+            <span class="k">Ferramentas/mês <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="ferramentasMes" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="ferramentasMes" data-mask="currency" placeholder="R$ 0" autocomplete="off">
           </div>
-          <div class="xr_row">
-            <span class="k">Salário da vaga aberta</span>
+          <div class="xr_row" data-campo="salarioNovo">
+            <span class="k">Salário da vaga aberta <span class="selo-est">estimado</span></span>
+            <button type="button" class="nsei" data-nsei="salarioNovo" title="Não sabe? Vamos chegar lá">?</button>
             <input class="f is-num" type="text" data-k="salarioNovo" data-mask="currency" placeholder="R$ 0" autocomplete="off">
           </div>
 
@@ -334,6 +369,14 @@
           </div>
         </div>
       </div>
+
+      <!-- Quantos números são dele e quantos a gente estimou.
+           Não ter os próprios números já é parte do diagnóstico. -->
+      <div class="confianca" id="confianca">
+        <span class="confianca_n" id="confiancaN">—</span>
+        <span class="confianca_t" id="confiancaT"></span>
+        <span class="confianca_barra"><span class="confianca_fill" id="confiancaFill"></span></span>
+      </div>
     </div>
   </section>
 
@@ -406,7 +449,7 @@
   <!-- 5 · DECK 1 · O GAP -------------------------------------------------- -->
   <section class="slide is-centered" data-slide="gap" data-deck="1" data-nome="O gap deles">
     <div class="slide_inner">
-      <p class="slide-tag">O gap<span class="sep">/</span><span class="deck-n">deck 1 de 7</span></p>
+      <p class="slide-tag">O gap<span class="sep">/</span><span class="deck-n">deck 1 de 16</span></p>
       <span class="big" data-out="gapBig">—</span>
       <span class="big-unit" data-out="gapUnidade">reuniões/mês faltando</span>
       <p class="big-eq">
@@ -420,7 +463,7 @@
   <!-- 6 · DECK 2 · O BANHO DE MERCADO -------------------------------------- -->
   <section class="slide" data-slide="mercado" data-deck="2" data-nome="O que o mercado faz">
     <div class="slide_inner">
-      <p class="slide-tag">O mercado<span class="sep">/</span><span class="deck-n">deck 2 de 10</span></p>
+      <p class="slide-tag">O mercado<span class="sep">/</span><span class="deck-n">deck 2 de 16</span></p>
       <h2 class="slide-title">Os números que ninguém te mostrou</h2>
       <p class="slide-sub" style="margin-bottom:24px">
         O seu gap não é um problema seu — é o mercado inteiro. Estudo público,
@@ -434,7 +477,7 @@
   <!-- 7 · DECK 3 · POR QUE O GAP EXISTE ----------------------------------- -->
   <section class="slide is-centered" data-slide="porque" data-deck="3" data-nome="Por que o gap existe">
     <div class="slide_inner is-narrow">
-      <p class="slide-tag">Por que o gap existe<span class="sep">/</span><span class="deck-n">deck 3 de 10</span></p>
+      <p class="slide-tag">Por que o gap existe<span class="sep">/</span><span class="deck-n">deck 3 de 16</span></p>
       <h2 class="slide-title" style="font-size:clamp(2rem,4.6vw,3.5rem);text-transform:none">
         <textarea class="f is-full" rows="3" data-k="fraseGap"
           style="font:inherit;color:var(--white)">Prospecção genérica morreu. Conta certa, no momento certo — ou nada.</textarea>
@@ -445,7 +488,7 @@
   <!-- 8 · DECK 4 · ONDE ESTÁ O SEU MERCADO (TAM/SAM/SOM) ------------------ -->
   <section class="slide" data-slide="som" data-deck="4" data-nome="TAM · SAM · SOM">
     <div class="slide_inner">
-      <p class="slide-tag">Onde está o seu mercado<span class="sep">/</span><span class="deck-n">deck 4 de 10</span></p>
+      <p class="slide-tag">Onde está o seu mercado<span class="sep">/</span><span class="deck-n">deck 4 de 16</span></p>
       <h2 class="slide-title">O funil antes do funil</h2>
       <p class="slide-sub">
         Antes de falar de reunião, é preciso saber com quem falar. Os números abaixo são
@@ -500,51 +543,334 @@
   <!-- 9 · DECK 5 · DADO NÃO VIRA RECEITA ---------------------------------- -->
   <section class="slide" data-slide="orquestracao" data-deck="5" data-nome="Dado × orquestração">
     <div class="slide_inner">
-      <p class="slide-tag">O que muda<span class="sep">/</span><span class="deck-n">deck 5 de 10</span></p>
+      <p class="slide-tag">O que muda<span class="sep">/</span><span class="deck-n">deck 5 de 16</span></p>
       <h2 class="slide-title">Dado não vira receita</h2>
       <p class="slide-sub">
         Uma base de contatos só vira oportunidade quando está ligada a ICP, sinal, persona
         certa, cadência e processo. Essa ligação é o produto.
       </p>
 
-      <div class="contraste">
-        <div class="contraste_lado">
-          <h3>Ferramenta de dados</h3>
-          <ul>
-            <li>Entrega lista</li>
-            <li>Todo mundo recebe a mesma coisa</li>
-            <li>Você decide quem, quando e como</li>
-            <li>Cadência fixa, igual para toda conta</li>
-            <li>O contexto morre na cabeça do vendedor</li>
-          </ul>
-        </div>
-        <div class="contraste_seta" aria-hidden="true">→</div>
-        <div class="contraste_lado is-forte">
-          <h3>Revenue OS</h3>
-          <ul>
-            <li>Entrega conta certa, no momento certo</li>
-            <li>ICP construído sobre quem já fecha com você</li>
-            <li>Sinal define a prioridade da fila</li>
-            <li>Cadência muda conforme a conta reage</li>
-            <li>Processo, SLA e manual de objeções de pé</li>
-          </ul>
-        </div>
-      </div>
+      <table class="versus">
+        <thead>
+          <tr>
+            <th>O que você precisa</th>
+            <th>Ferramenta de dados</th>
+            <th class="marca">Revenue OS Althius</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Construção do ICP</td><td class="nao">Você define sozinho</td><td class="sim">Construímos do zero, com dezenas de variáveis</td></tr>
+          <tr><td>Saber quem está pronto agora</td><td class="nao">Não</td><td class="sim">Sinal define a prioridade da fila</td></tr>
+          <tr><td>Orquestração da operação</td><td class="nao">Só entrega dado</td><td class="sim">Cadência, CRM, integrações e execução</td></tr>
+          <tr><td>Cadência que se adapta</td><td class="nao">Fixa, igual para toda conta</td><td class="sim">Muda conforme a conta reage</td></tr>
+          <tr><td>Múltiplos decisores por conta</td><td class="nao">Contato solto</td><td class="sim">Sócios e decisores mapeados, contato direto</td></tr>
+          <tr><td>Execução das motions de GTM</td><td class="nao">Só software</td><td class="sim">Software + serviço: a gente executa</td></tr>
+        </tbody>
+      </table>
 
-      <p class="eyebrow is-muted" style="margin:34px 0 14px">
+      <p class="eyebrow is-muted" style="margin:28px 0 12px">
         As motions que a operação pode rodar — coordenadas, não soltas
       </p>
       <div class="motions-grid" id="motionsGrid"></div>
-      <p class="text-small text-color-secondary" style="margin-top:16px">
-        Clique para marcar as que fazem sentido no seu cenário.
+    </div>
+  </section>
+
+  <!-- O QUE É A ALTHIUS ---------------------------------------------------- -->
+  <section class="slide" data-slide="aula-oquee" data-deck="6" data-nome="O que é a Althius">
+    <div class="slide_inner">
+      <p class="slide-tag">A definição<span class="sep">/</span><span class="deck-n">deck 6 de 16</span></p>
+      <h2 class="slide-title" style="text-transform:none;font-size:clamp(1.75rem,3.6vw,3rem)">
+        A Althius não é uma plataforma de prospecção.<br>
+        É um <span class="gradient-text">Revenue Operating System</span>.
+      </h2>
+      <p class="slide-sub" style="margin-bottom:26px;max-width:76ch">
+        Plataforma de dados entrega lista e vai embora. Revenue OS estrutura, automatiza e
+        opera a jornada inteira — da definição de mercado e ICP à prospecção, qualificação,
+        fechamento, geração de demanda e expansão de receita. Tecnologia própria mais time
+        executando.
+      </p>
+
+      <p class="eyebrow is-muted" style="margin:0 0 12px">O modelo que a gente combate</p>
+      <ul class="densa">
+        <li>SDR prospectando no escuro, sem saber quem está no momento de compra</li>
+        <li>Closer recebendo oportunidade mal qualificada e queimando agenda</li>
+        <li>Empresa olhando o SOM inteiro sem saber quem priorizar dentro dele</li>
+        <li>Ferramenta que entrega dado estático e não orquestra nada</li>
+        <li>Nenhum ICP definido de verdade</li>
+        <li>Nenhuma persona mapeada</li>
+        <li>Nenhum fluxo de cadência estruturado</li>
+        <li>Nenhum framework de venda em uso</li>
+        <li>Nenhum manual de objeções</li>
+        <li>Nenhum SLA entre marketing e vendas</li>
+        <li>Motions de GTM soltas, sem coordenação</li>
+        <li>Ninguém sabe qual canal gerou qual contrato</li>
+      </ul>
+
+      <p class="text-regular text-color-body" style="margin-top:24px;max-width:78ch">
+        O resultado é sempre o mesmo: <b style="color:var(--white)">CAC alto, ciclo longo,
+        conversão baixa e receita imprevisível</b>. Não porque o time é ruim — porque
+        ninguém montou o sistema embaixo dele.
       </p>
     </div>
   </section>
 
-  <!-- 10 · DECK 6 · A MÁQUINA --------------------------------------------- -->
-  <section class="slide" data-slide="maquina" data-deck="6" data-nome="A máquina — 3 módulos">
+  <!-- DECK 6 · O QUE CONSTRUÍMOS PARA VOCÊ --------------------------------- -->
+  <section class="slide" data-slide="aula-escopo" data-deck="7" data-opcional="1" data-nome="O que construímos">
     <div class="slide_inner">
-      <p class="slide-tag">A máquina<span class="sep">/</span><span class="deck-n">deck 6 de 10</span></p>
+      <p class="slide-tag">O que construímos<span class="sep">/</span><span class="deck-n">deck 7 de 16</span></p>
+      <h2 class="slide-title">Não é uma lista. É a operação inteira.</h2>
+      <p class="slide-sub" style="margin-bottom:22px">
+        Isto é o que entra em pé na <span id="escopoEmpresa">sua empresa</span> — construído
+        do zero se não existir, mapeado e otimizado se já existir.
+      </p>
+
+      <div class="escopo">
+        <div class="escopo_item">
+          <div class="escopo_n">40+</div>
+          <p class="escopo_t">variáveis no ICP<br>e no contexto estratégico</p>
+        </div>
+        <div class="escopo_item">
+          <div class="escopo_n">5</div>
+          <p class="escopo_t">personas mapeadas<br>por conta</p>
+        </div>
+        <div class="escopo_item">
+          <div class="escopo_n">9</div>
+          <p class="escopo_t">processos comerciais<br>estruturados</p>
+        </div>
+        <div class="escopo_item">
+          <div class="escopo_n">14</div>
+          <p class="escopo_t">motions de GTM<br>combinadas</p>
+        </div>
+      </div>
+
+      <div class="blocos-aula">
+        <div class="bloco-aula">
+          <span class="papel">Camada 1</span>
+          <h3>Inteligência</h3>
+          <ul>
+            <li>ICP construído sobre quem já fecha com você</li>
+            <li>Contexto estratégico da conta-alvo</li>
+            <li>Complexidade da solução e motion adequada</li>
+            <li>Personas e processo de compra</li>
+          </ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Camada 2</span>
+          <h3>Operação</h3>
+          <ul>
+            <li>Pipeline, critérios de avanço e métricas</li>
+            <li>Prospecção, scripts e cadência multicanal</li>
+            <li>SLA entre marketing, SDR, closer e CS</li>
+            <li>Framework, objeções, negociação e demo</li>
+          </ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Camada 3</span>
+          <h3>Execução</h3>
+          <ul>
+            <li>Sinal de compra detectado em tempo real</li>
+            <li>Cadência viva, que muda com a resposta</li>
+            <li>Tudo centralizado e integrado ao CRM</li>
+            <li>Motions de GTM rodando em paralelo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECK 7 · O ICP ------------------------------------------------------- -->
+  <section class="slide" data-slide="aula-icp" data-deck="8" data-opcional="1" data-nome="Construção do ICP">
+    <div class="slide_inner">
+      <p class="slide-tag">A inteligência<span class="sep">/</span><span class="deck-n">deck 8 de 16</span></p>
+      <h2 class="slide-title">O ICP não vem pronto. A gente constrói o seu.</h2>
+
+      <p class="eyebrow is-muted" style="margin:0 0 12px">Quem é a empresa que compra de você</p>
+      <ul class="densa">
+        <li>Número de colaboradores, por faixa</li>
+        <li>Segmento de mercado</li>
+        <li>Especialização dentro do segmento</li>
+        <li>Faixa de faturamento anual</li>
+        <li>Região de atuação</li>
+        <li>O que a empresa vende</li>
+        <li>Para quem ela vende</li>
+        <li>Modelo de negócio</li>
+        <li>Maturidade comercial</li>
+        <li>Stack de tecnologia em uso</li>
+        <li>Ferramentas já contratadas</li>
+        <li>Faixa de orçamento disponível</li>
+        <li>Perfis que participam da compra</li>
+        <li>Quem mais entra na decisão</li>
+        <li>O que faz uma conta dar certo com você</li>
+      </ul>
+
+      <p class="eyebrow is-muted" style="margin:26px 0 12px">Por que essa empresa compraria</p>
+      <ul class="densa">
+        <li>Dor macro que trava o crescimento</li>
+        <li>Objetivo real da contratação</li>
+        <li>Urgência da dor</li>
+        <li>Consciência da dor</li>
+        <li>Gravidade se nada for feito</li>
+        <li>Frequência com que o problema aparece</li>
+        <li>Riscos percebidos na compra</li>
+        <li>Alternativas que ela considera</li>
+        <li>Recursos internos para implementar</li>
+        <li>Concorrentes na mesa</li>
+        <li>Custo de manter o status quo</li>
+        <li>Percepção de preço contra valor</li>
+      </ul>
+
+      <p class="text-small text-color-secondary" style="margin-top:22px;max-width:80ch">
+        Cada variável dessas muda a lista, a mensagem e a ordem da fila. É esse cruzamento
+        que separa a conta que fecha da conta que consome três meses e some.
+      </p>
+    </div>
+  </section>
+
+  <!-- DECK 8 · PERSONAS E MATRIZ DE DOR ------------------------------------ -->
+  <section class="slide" data-slide="aula-personas" data-deck="9" data-opcional="1" data-nome="Personas e matriz de dor">
+    <div class="slide_inner">
+      <p class="slide-tag">A conta, não o lead<span class="sep">/</span><span class="deck-n">deck 9 de 16</span></p>
+      <h2 class="slide-title">Cinco pessoas decidem. A gente mapeia as cinco.</h2>
+
+      <div class="blocos-aula" style="grid-template-columns:repeat(5,minmax(0,1fr));gap:10px">
+        <div class="bloco-aula">
+          <span class="papel">Usuário</span>
+          <h3>Quem vai usar</h3>
+          <ul><li>Cargo e time</li><li>Rotina e metas</li><li>Métricas de sucesso</li><li>Autonomia de compra</li></ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Champion</span>
+          <h3>Quem defende</h3>
+          <ul><li>Influência interna</li><li>Ganho pessoal</li><li>Risco pessoal</li><li>Disposição de brigar</li></ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Decisor</span>
+          <h3>Quem assina</h3>
+          <ul><li>Critério de decisão</li><li>Objeções típicas</li><li>Gatilho de aprovação</li><li>Prazo real</li></ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Influenciador</span>
+          <h3>Quem opina</h3>
+          <ul><li>TI, jurídico, compras</li><li>Preocupação específica</li><li>Poder de veto</li><li>Critério de avaliação</li></ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Bloqueador</span>
+          <h3>Quem resiste</h3>
+          <ul><li>Motivo da resistência</li><li>Argumento que usa</li><li>Quem o influencia</li><li>Como neutralizar</li></ul>
+        </div>
+      </div>
+
+      <p class="eyebrow is-muted" style="margin:26px 0 12px">
+        E a dor entra numa matriz de quatro dimensões
+      </p>
+      <div class="matriz">
+        <div class="matriz_c">
+          <span class="d">Urgência</span>
+          <p>Quão rápido precisa resolver.</p>
+          <p class="q">"É crítico agora ou pode esperar?"</p>
+        </div>
+        <div class="matriz_c">
+          <span class="d">Consciência</span>
+          <p>Se ele já sabe que tem o problema.</p>
+          <p class="q">"Já identificou, ou precisa ver o número?"</p>
+        </div>
+        <div class="matriz_c">
+          <span class="d">Gravidade</span>
+          <p>O impacto de não fazer nada.</p>
+          <p class="q">"Quanto custa o status quo?"</p>
+        </div>
+        <div class="matriz_c">
+          <span class="d">Frequência</span>
+          <p>Com que recorrência o problema aparece.</p>
+          <p class="q">"Todo dia, toda semana, todo mês?"</p>
+        </div>
+      </div>
+
+      <p class="text-small text-color-secondary" style="margin-top:18px;max-width:84ch">
+        Dor urgente, consciente, grave e frequente vende sozinha. Dor latente exige educar
+        antes de vender — e é aí que a maioria das operações queima a conta cedo demais.
+      </p>
+    </div>
+  </section>
+
+  <!-- PROCESSO DE COMPRA --------------------------------------------------- -->
+  <section class="slide" data-slide="aula-compra" data-deck="10" data-opcional="1" data-nome="O processo de compra">
+    <div class="slide_inner">
+      <p class="slide-tag">O que quase ninguém mapeia<span class="sep">/</span><span class="deck-n">deck 10 de 16</span></p>
+      <h2 class="slide-title">Como a compra acontece de verdade</h2>
+      <p class="slide-sub" style="margin-bottom:22px;max-width:80ch">
+        Muita empresa não vende por um motivo simples: nunca mapeou isto. Sem esse mapa,
+        a abordagem não consegue ligar o produto à dor — e o vendedor improvisa toda call.
+      </p>
+
+      <div class="blocos-aula" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <div class="bloco-aula">
+          <span class="papel">Objeções</span>
+          <h3>O que ele vai levantar — e a resposta pronta</h3>
+          <ul>
+            <li>Preço: caro, sem budget, concorrente mais barato</li>
+            <li>Implementação: dá trabalho, não temos time, é complexo</li>
+            <li>Timing: não é prioridade, vamos ver no próximo trimestre</li>
+            <li>Risco: e se não funcionar, já me queimei antes</li>
+            <li>Concorrência: já uso X, estou avaliando Y</li>
+            <li>Autoridade: preciso falar com meu sócio</li>
+          </ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Alternativas</span>
+          <h3>Contra o que você está competindo</h3>
+          <ul>
+            <li>Concorrente direto</li>
+            <li>Concorrente indireto, que resolve de outro jeito</li>
+            <li>Fazer internamente, na planilha, no braço</li>
+            <li>Não fazer nada — o mais forte de todos</li>
+          </ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Riscos percebidos</span>
+          <h3>Ninguém compra só benefício</h3>
+          <ul>
+            <li>Vai funcionar na prática?</li>
+            <li>O time vai usar ou vai abandonar?</li>
+            <li>Vale o investimento? Qual o retorno?</li>
+            <li>E se o suporte for ruim?</li>
+            <li>E se der errado e eu ficar mal com meu sócio?</li>
+          </ul>
+        </div>
+        <div class="bloco-aula">
+          <span class="papel">Posicionamento</span>
+          <h3>Preço não é número, é percepção</h3>
+          <ul>
+            <li>Acima da concorrência: premium, mais entrega, mais retorno</li>
+            <li>No mesmo nível: melhor custo-benefício e suporte</li>
+            <li>Abaixo: acessível sem abrir mão de qualidade</li>
+            <li>Mais recursos necessários para implementar</li>
+            <li>Custo real de manter tudo como está</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECK 10 · OS PROCESSOS ----------------------------------------------- -->
+  <section class="slide" data-slide="aula-processos" data-deck="11" data-opcional="1" data-nome="Os 9 processos">
+    <div class="slide_inner">
+      <p class="slide-tag">A operação<span class="sep">/</span><span class="deck-n">deck 11 de 16</span></p>
+      <h2 class="slide-title">Nove processos. Todos de pé.</h2>
+
+      <div class="toggle-modo" id="toggleModo">
+        <button type="button" data-modo="cria" class="is-on">Se você não tem — construímos</button>
+        <button type="button" data-modo="otimiza">Se você já tem — mapeamos e otimizamos</button>
+      </div>
+
+      <div class="processos" id="processosGrid"></div>
+    </div>
+  </section>
+
+  <!-- 10 · DECK 6 · A MÁQUINA --------------------------------------------- -->
+  <section class="slide" data-slide="maquina" data-deck="12" data-nome="A máquina — 3 módulos">
+    <div class="slide_inner">
+      <p class="slide-tag">A máquina<span class="sep">/</span><span class="deck-n">deck 12 de 16</span></p>
       <h2 class="slide-title">Três módulos, na ordem</h2>
 
       <div class="modulos">
@@ -576,9 +902,9 @@
   </section>
 
   <!-- 11 · DECK 7 · O VÍDEO ------------------------------------------------ -->
-  <section class="slide" data-slide="video" data-deck="7" data-nome="O vídeo da plataforma">
+  <section class="slide" data-slide="video" data-deck="13" data-nome="O vídeo da plataforma">
     <div class="slide_inner">
-      <p class="slide-tag">A plataforma<span class="sep">/</span><span class="deck-n">deck 7 de 10</span></p>
+      <p class="slide-tag">A plataforma<span class="sep">/</span><span class="deck-n">deck 13 de 16</span></p>
       <h2 class="slide-title">Por dentro</h2>
 
       <div class="video-frame" id="videoFrame">
@@ -594,9 +920,9 @@
   </section>
 
   <!-- 12 · DECK 8 · TU VIVEU ISSO ------------------------------------------ -->
-  <section class="slide" data-slide="prova" data-deck="8" data-nome="Você viveu isso">
+  <section class="slide" data-slide="prova" data-deck="14" data-nome="Você viveu isso">
     <div class="slide_inner">
-      <p class="slide-tag">A prova<span class="sep">/</span><span class="deck-n">deck 8 de 10</span></p>
+      <p class="slide-tag">A prova<span class="sep">/</span><span class="deck-n">deck 14 de 16</span></p>
       <h2 class="slide-title">Você já viveu isso</h2>
       <p class="slide-sub">Esta reunião existe porque o sistema funcionou — em você, antes de você saber que ele existe.</p>
 
@@ -630,9 +956,9 @@
   </section>
 
   <!-- 13 · DECK 9 · PLANO DE 14 DIAS -------------------------------------- -->
-  <section class="slide" data-slide="plano" data-deck="9" data-nome="Plano de 14 dias">
+  <section class="slide" data-slide="plano" data-deck="15" data-nome="Plano de 14 dias">
     <div class="slide_inner">
-      <p class="slide-tag">Implementação<span class="sep">/</span><span class="deck-n">deck 9 de 10</span></p>
+      <p class="slide-tag">Implementação<span class="sep">/</span><span class="deck-n">deck 15 de 16</span></p>
       <h2 class="slide-title">Os primeiros 14 dias</h2>
 
       <div class="plano">
@@ -666,9 +992,9 @@
   </section>
 
   <!-- 14 · DECK 10 · INVESTIMENTO ------------------------------------------ -->
-  <section class="slide" data-slide="investimento" data-deck="10" data-nome="Investimento">
+  <section class="slide" data-slide="investimento" data-deck="16" data-nome="Investimento">
     <div class="slide_inner">
-      <p class="slide-tag">Investimento<span class="sep">/</span><span class="deck-n">deck 10 de 10</span></p>
+      <p class="slide-tag">Investimento<span class="sep">/</span><span class="deck-n">deck 16 de 16</span></p>
 
       <div class="inv-wrap is-locked" id="invWrap">
 
@@ -746,9 +1072,10 @@
 
 </main>
 
-<script src="scripts/raiox-engine.js?v=4" defer></script>
-<script src="scripts/benchmarks.js?v=4" defer></script>
-<script src="scripts/apresentacao.js?v=4" defer></script>
-<script src="scripts/calculadora.js?v=4" defer></script>
+<script src="scripts/raiox-engine.js?v=5" defer></script>
+<script src="scripts/benchmarks.js?v=5" defer></script>
+<script src="scripts/estimadores.js?v=5" defer></script>
+<script src="scripts/apresentacao.js?v=5" defer></script>
+<script src="scripts/calculadora.js?v=5" defer></script>
 </body>
 </html>

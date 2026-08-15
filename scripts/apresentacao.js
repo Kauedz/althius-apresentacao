@@ -50,6 +50,8 @@
     sinalImagem: '', sinalMeta: '',
     // Taxa veio do benchmark de mercado em vez da boca do lead.
     taxaDoMercado: false,
+    // Campos cujo valor foi estimado junto, e não declarado por ele.
+    estimados: [],
     // Funil de mercado (deck 4) — editável na call.
     somTam: null, somSam: null, somSom: null, somSinal: null,
     motions: []
@@ -211,6 +213,11 @@
 
     sincronizarTaxa();
     atualizarMercado();
+    sincronizarEstimados();
+    atualizarConfianca();
+
+    var eco = document.getElementById('escopoEmpresa');
+    if (eco) eco.textContent = estado.empresa || 'sua empresa';
 
     // O HUD só entra depois do Raio-X: ali os números já estão na tela em
     // tamanho grande, e a barra cobriria a coluna de entradas.
@@ -410,6 +417,381 @@
     video.addEventListener('error', function () { video.remove(); });
 
     frame.appendChild(video);
+  }
+
+  /* -----------------------------------------------------------------
+     ESTIMADORES — o caminho quando ele não sabe o número
+     ----------------------------------------------------------------- */
+  var CAMPOS_DIAGNOSTICO = ['metaTrimestre', 'ticketMedio', 'reunioesSemana', 'vendasMes',
+                            'taxaConversao', 'folhaBruta', 'ferramentasMes'];
+  var campoAberto = null;
+
+  function abrirEstimador(chave) {
+    var cfg = window.Estimadores && window.Estimadores.MAPA[chave];
+    if (!cfg) return;
+    campoAberto = chave;
+
+    document.getElementById('estTitulo').textContent = cfg.titulo;
+    var corpo = document.getElementById('estCorpo');
+    corpo.innerHTML = '';
+
+    cfg.caminhos.forEach(function (caminho, i) {
+      corpo.appendChild(montarCaminho(caminho, i, chave));
+    });
+
+    document.getElementById('est').hidden = false;
+    var primeiro = corpo.querySelector('.est_caminho');
+    if (primeiro) primeiro.classList.add('is-aberto');
+  }
+
+  function fecharEstimador() {
+    document.getElementById('est').hidden = true;
+    campoAberto = null;
+  }
+
+  function montarCaminho(caminho, indice, chaveCampo) {
+    var box = document.createElement('div');
+    box.className = 'est_caminho';
+
+    var cab = document.createElement('button');
+    cab.type = 'button';
+    cab.className = 'est_cab';
+    cab.innerHTML = '<span>' + caminho.rotulo + '</span>';
+    cab.addEventListener('click', function () {
+      var jaAberto = box.classList.contains('is-aberto');
+      box.parentNode.querySelectorAll('.est_caminho').forEach(function (o) {
+        o.classList.remove('is-aberto');
+      });
+      if (!jaAberto) box.classList.add('is-aberto');
+    });
+    box.appendChild(cab);
+
+    var painel = document.createElement('div');
+    painel.className = 'est_painel';
+
+    if (caminho.modo === 'escada') {
+      painel.appendChild(montarEscada(caminho, chaveCampo));
+    } else if (caminho.modo === 'composicao') {
+      painel.appendChild(montarComposicao(caminho, chaveCampo));
+    } else {
+      painel.appendChild(montarDerivar(caminho, chaveCampo));
+    }
+
+    box.appendChild(painel);
+    return box;
+  }
+
+  function montarEscada(caminho, chaveCampo) {
+    var frag = document.createDocumentFragment();
+    if (caminho.pergunta) {
+      var p = document.createElement('p');
+      p.className = 'est_pergunta';
+      p.textContent = caminho.pergunta;
+      frag.appendChild(p);
+    }
+    var linha = document.createElement('div');
+    linha.className = 'est_opcoes';
+    caminho.opcoes.forEach(function (op) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'est_op';
+      b.textContent = op.rotulo;
+      b.addEventListener('click', function () { aplicarEstimativa(chaveCampo, op.valor); });
+      linha.appendChild(b);
+    });
+    frag.appendChild(linha);
+    return frag;
+  }
+
+  function montarComposicao(caminho, chaveCampo) {
+    var frag = document.createDocumentFragment();
+    var p = document.createElement('p');
+    p.className = 'est_pergunta';
+    p.textContent = caminho.pergunta;
+    frag.appendChild(p);
+
+    var grade = document.createElement('div');
+    grade.className = 'est_comp';
+    var quantidades = [];
+
+    caminho.linhas.forEach(function (perfil, i) {
+      quantidades[i] = 0;
+      var linha = document.createElement('div');
+      linha.className = 'est_linha';
+      linha.innerHTML = '<span class="nome">' + perfil.rotulo + '</span>'
+        + '<span class="val">' + E.moeda(perfil.valor) + '</span>';
+      var input = document.createElement('input');
+      input.className = 'f is-num';
+      input.type = 'text';
+      input.style.width = '60px';
+      input.placeholder = '0';
+      input.addEventListener('input', function () {
+        input.value = E.mascaraNumero(input.value);
+        quantidades[i] = E.parseBR(input.value) || 0;
+        atualizar();
+      });
+      linha.appendChild(input);
+      grade.appendChild(linha);
+    });
+    frag.appendChild(grade);
+
+    var previa = document.createElement('div');
+    previa.className = 'est_previa';
+    var res = document.createElement('span');
+    res.className = 'est_res';
+    res.textContent = '—';
+    var exp = document.createElement('span');
+    exp.className = 'est_exp';
+    var usar = document.createElement('button');
+    usar.type = 'button';
+    usar.className = 'button is-primary';
+    usar.innerHTML = '<div class="label">usar este número</div>';
+    usar.disabled = true;
+    previa.appendChild(res); previa.appendChild(exp); previa.appendChild(usar);
+    frag.appendChild(previa);
+
+    var total = 0;
+    function atualizar() {
+      total = caminho.linhas.reduce(function (soma, perfil, i) {
+        return soma + perfil.valor * (quantidades[i] || 0);
+      }, 0);
+      var pessoas = quantidades.reduce(function (a, b) { return a + b; }, 0);
+      res.textContent = total > 0 ? E.moeda(total) : '—';
+      exp.textContent = total > 0
+        ? pessoas + ' pessoa(s) somando ' + E.moeda(total) + ' de folha bruta por mês.'
+        : '';
+      usar.disabled = total <= 0;
+    }
+    usar.addEventListener('click', function () { aplicarEstimativa(chaveCampo, total); });
+
+    return frag;
+  }
+
+  function montarDerivar(caminho, chaveCampo) {
+    var frag = document.createDocumentFragment();
+    var grade = document.createElement('div');
+    grade.className = 'est_campos';
+    var valores = {};
+
+    caminho.campos.forEach(function (campo) {
+      // Se o número já está no diagnóstico, pré-preenche.
+      if (campo.de && estado[campo.de] !== null && estado[campo.de] !== undefined) {
+        valores[campo.k] = estado[campo.de];
+      } else if (campo.padrao !== undefined) {
+        valores[campo.k] = campo.padrao;
+      }
+
+      var wrap = document.createElement('div');
+      wrap.className = 'est_campo';
+      var lab = document.createElement('label');
+      lab.textContent = campo.rotulo;
+      var input = document.createElement('input');
+      input.className = 'f';
+      input.type = 'text';
+      input.placeholder = campo.mask === 'currency' ? 'R$ 0' : '0';
+      if (valores[campo.k] !== undefined) {
+        input.value = campo.mask === 'currency'
+          ? E.mascaraMoeda(String(Math.round(valores[campo.k])))
+          : E.num(valores[campo.k], 2);
+      }
+      input.addEventListener('input', function () {
+        input.value = campo.mask === 'currency'
+          ? E.mascaraMoeda(input.value) : E.mascaraNumero(input.value);
+        valores[campo.k] = E.parseBR(input.value);
+        atualizar();
+      });
+      wrap.appendChild(lab); wrap.appendChild(input);
+      grade.appendChild(wrap);
+    });
+    frag.appendChild(grade);
+
+    var previa = document.createElement('div');
+    previa.className = 'est_previa';
+    var res = document.createElement('span'); res.className = 'est_res'; res.textContent = '—';
+    var exp = document.createElement('span'); exp.className = 'est_exp';
+    var usar = document.createElement('button');
+    usar.type = 'button';
+    usar.className = 'button is-primary';
+    usar.innerHTML = '<div class="label">usar este número</div>';
+    usar.disabled = true;
+    previa.appendChild(res); previa.appendChild(exp); previa.appendChild(usar);
+    frag.appendChild(previa);
+
+    var resultado = null;
+    function atualizar() {
+      resultado = caminho.calcular(valores);
+      var ok = resultado !== null && isFinite(resultado) && resultado > 0;
+      res.textContent = ok
+        ? (chaveCampo === 'reunioesSemana' || chaveCampo === 'vendasMes'
+            ? E.num(resultado, 1) : E.moeda(resultado))
+        : '—';
+      exp.textContent = ok && caminho.explicar ? caminho.explicar(valores, resultado) : '';
+      usar.disabled = !ok;
+    }
+    usar.addEventListener('click', function () {
+      if (resultado !== null) aplicarEstimativa(chaveCampo, resultado);
+    });
+    atualizar();
+
+    return frag;
+  }
+
+  function aplicarEstimativa(chave, valor) {
+    estado[chave] = Math.round(valor * 100) / 100;
+    if (estado.estimados.indexOf(chave) < 0) estado.estimados.push(chave);
+    fecharEstimador();
+    render();
+  }
+
+  function sincronizarEstimados() {
+    document.querySelectorAll('[data-campo]').forEach(function (linha) {
+      var k = linha.getAttribute('data-campo');
+      var estimado = estado.estimados.indexOf(k) >= 0;
+      linha.classList.toggle('is-estimada', estimado);
+      var input = linha.querySelector('[data-k]');
+      if (input) input.classList.toggle('is-estimado', estimado);
+    });
+  }
+
+  /** Quantos números são dele, quantos a gente estimou. */
+  function atualizarConfianca() {
+    var caixa = document.getElementById('confianca');
+    if (!caixa) return;
+
+    var preenchidos = 0, estimados = 0;
+    CAMPOS_DIAGNOSTICO.forEach(function (k) {
+      var v = estado[k];
+      var temValor = v !== null && v !== undefined && v !== '';
+      if (k === 'taxaConversao' && estado.taxaDoMercado) { preenchidos++; estimados++; return; }
+      if (!temValor) return;
+      preenchidos++;
+      if (estado.estimados.indexOf(k) >= 0) estimados++;
+    });
+
+    var proprios = preenchidos - estimados;
+    var pct = preenchidos > 0 ? Math.round(proprios / CAMPOS_DIAGNOSTICO.length * 100) : 0;
+
+    document.getElementById('confiancaFill').style.width = pct + '%';
+    document.getElementById('confiancaN').textContent =
+      proprios + '/' + CAMPOS_DIAGNOSTICO.length;
+
+    var texto;
+    if (preenchidos === 0) {
+      texto = 'Números que vieram de você, contra os que a gente estimou junto.';
+    } else if (estimados === 0) {
+      texto = 'Todos os números do diagnóstico vieram de você. O gap acima é a sua conta, '
+            + 'não a minha.';
+    } else {
+      texto = estimados + ' de ' + preenchidos + ' números a gente estimou junto porque '
+            + 'não estavam na ponta da língua. Isso não invalida a conta — mas já é parte '
+            + 'do diagnóstico: o que não é medido não é gerenciado.';
+    }
+    document.getElementById('confiancaT').textContent = texto;
+    caixa.classList.toggle('is-baixa', preenchidos > 0 && estimados >= preenchidos / 2);
+  }
+
+  function montarEstimadores() {
+    document.querySelectorAll('[data-nsei]').forEach(function (b) {
+      b.addEventListener('click', function () { abrirEstimador(b.getAttribute('data-nsei')); });
+    });
+    document.getElementById('estFechar').addEventListener('click', fecharEstimador);
+    document.getElementById('est').addEventListener('click', function (ev) {
+      if (ev.target.id === 'est') fecharEstimador();
+    });
+  }
+
+  /* -----------------------------------------------------------------
+     OS NOVE PROCESSOS (deck 10)
+     ----------------------------------------------------------------- */
+  var PROCESSOS = [
+    { t: 'Pipeline',
+      cria: 'Etapas, critérios de avanço, campos obrigatórios e métricas por fase.',
+      otimiza: 'Mapeamos as fases atuais, achamos onde o negócio trava e refazemos os critérios.' },
+    { t: 'Prospecção',
+      cria: 'Canais, segmentação, pesquisa de conta, scripts, qualificação e cadência multicanal.',
+      otimiza: 'Auditamos canais e scripts, achamos o que não converte e reescrevemos.' },
+    { t: 'Fechamento',
+      cria: 'Playbook de fechamento, gatilhos de aceleração e handoff para o pós-venda.',
+      otimiza: 'Mapeamos onde o negócio morre no fim e instalamos os gatilhos que faltam.' },
+    { t: 'SLA',
+      cria: 'Responsabilidades, prazos, critérios de qualidade e regras de passagem entre times.',
+      otimiza: 'Achamos o atrito entre marketing, SDR, closer e CS e formalizamos o acordo.' },
+    { t: 'Cadência',
+      cria: 'Fluxo por conta e persona, multicanal, com regra de adaptação por resposta.',
+      otimiza: 'Medimos toque a toque, cortamos o que não engaja e tornamos o fluxo vivo.' },
+    { t: 'Framework de venda',
+      cria: 'Metodologia consultiva escolhida pelo seu ICP e treinada com o time.',
+      otimiza: 'Avaliamos o que vocês usam hoje e ajustamos ou trocamos por outro.' },
+    { t: 'Manual de objeções',
+      cria: 'Objeções por categoria — preço, timing, risco, concorrência, autoridade — com resposta.',
+      otimiza: 'Comparamos o manual com o que aparece nas calls reais e preenchemos os buracos.' },
+    { t: 'Negociação',
+      cria: 'Alçadas de desconto, tratamento de negócio parado e proteção de margem.',
+      otimiza: 'Achamos onde a margem vaza e reescrevemos as alçadas.' },
+    { t: 'Apresentação e demo',
+      cria: 'Roteiro de descoberta, demonstração orientada a valor e próximo passo claro.',
+      otimiza: 'Achamos onde a demo perde atenção e reordenamos em cima da dor.' }
+  ];
+
+  function montarProcessos() {
+    var grid = document.getElementById('processosGrid');
+    var toggle = document.getElementById('toggleModo');
+    if (!grid || !toggle) return;
+
+    function pintar(modo) {
+      grid.innerHTML = PROCESSOS.map(function (p) {
+        return '<div class="processo"><p class="processo_t">' + p.t + '</p>'
+          + '<p class="processo_d">' + p[modo] + '</p></div>';
+      }).join('');
+    }
+    pintar('cria');
+
+    toggle.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-modo]');
+      if (!b) return;
+      toggle.querySelectorAll('button').forEach(function (x) { x.classList.remove('is-on'); });
+      b.classList.add('is-on');
+      pintar(b.getAttribute('data-modo'));
+    });
+  }
+
+  /* -----------------------------------------------------------------
+     ÍNDICE DE TELAS (tecla I)
+     ----------------------------------------------------------------- */
+  function montarIndice() {
+    var caixa = document.getElementById('indice');
+    var lista = document.getElementById('indiceLista');
+    if (!caixa || !lista) return;
+
+    lista.innerHTML = slides.map(function (s, i) {
+      var opcional = s.hasAttribute('data-opcional');
+      return '<button type="button" class="indice_item' + (opcional ? ' is-opcional' : '')
+        + '" data-ir="' + i + '">'
+        + '<span class="num">' + String(i + 1).padStart(2, '0') + '</span>'
+        + '<span>' + (s.getAttribute('data-nome') || s.getAttribute('data-slide')) + '</span>'
+        + '<span class="cap">' + (opcional ? 'opcional' : '') + '</span></button>';
+    }).join('');
+
+    lista.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-ir]');
+      if (!b) return;
+      irPara(parseInt(b.getAttribute('data-ir'), 10));
+      caixa.hidden = true;
+    });
+    caixa.addEventListener('click', function (ev) {
+      if (ev.target === caixa) caixa.hidden = true;
+    });
+  }
+
+  function alternarIndice() {
+    var caixa = document.getElementById('indice');
+    if (!caixa) return;
+    caixa.hidden = !caixa.hidden;
+    if (!caixa.hidden) {
+      caixa.querySelectorAll('.indice_item').forEach(function (b, i) {
+        b.classList.toggle('is-atual', i === indiceAtual);
+      });
+    }
   }
 
   /* -----------------------------------------------------------------
@@ -670,6 +1052,9 @@
         } else {
           estado[k] = el.value;
         }
+        // Digitou por cima de uma estimativa: o número volta a ser dele.
+        var pos = estado.estimados.indexOf(k);
+        if (pos >= 0) estado.estimados.splice(pos, 1);
         render(el);
       });
     });
@@ -743,9 +1128,18 @@
       var alvo = ev.target;
       var digitando = alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA');
 
-      if (ev.key === 'Escape' && digitando) { alvo.blur(); return; }
+      // Escape fecha o que estiver aberto por cima do deck.
+      if (ev.key === 'Escape') {
+        if (!document.getElementById('est').hidden) { fecharEstimador(); return; }
+        if (!document.getElementById('indice').hidden) {
+          document.getElementById('indice').hidden = true; return;
+        }
+        if (digitando) { alvo.blur(); return; }
+      }
       if (digitando) return;
       if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+      // Com um modal aberto, as setas não devem trocar de slide por baixo.
+      if (!document.getElementById('est').hidden) return;
 
       switch (ev.key) {
         case 'ArrowRight': case 'PageDown': case ' ':
@@ -753,6 +1147,7 @@
         case 'ArrowLeft': case 'PageUp':
           ev.preventDefault(); irPara(indiceAtual - 1); break;
         case 'n': case 'N': abrirPresenter(); break;
+        case 'i': case 'I': ev.preventDefault(); alternarIndice(); break;
         case 'h': case 'H': document.body.classList.toggle('is-clean'); break;
         case 'p': case 'P': document.getElementById('precall').classList.remove('is-done'); break;
         case 'f': case 'F':
@@ -792,6 +1187,9 @@
     montarNaoSei();
     montarMercado();
     montarMotions();
+    montarEstimadores();
+    montarProcessos();
+    montarIndice();
     montarFerramentas();
     montarTeclado();
 
