@@ -102,41 +102,55 @@ o lead já está quente.
 
 ## A sequência (21 telas)
 
+Três atos: **diagnóstico** (1–5) · **predisposição** (6) · **Pit 02** (7–21).
+
 | # | Tela | Origem | O que o lead vê |
 |---|---|---|---|
-| 1 | Abertura | playbook 40 | Nome da conta. O acordo sim-ou-não você **fala**. |
+| 1 | Abertura | playbook 40 | Nome da conta. O acordo de resposta clara você **fala**. |
 | 2 | **Raio-X ao vivo** | 36, 41–44 | Entradas que você digita, saídas que calculam sozinhas. |
 | 3 | **Mapa da Máquina** | 38 | 5 colunas. Cada vazamento vira laranja com um clique. |
-| 4 | Pit 01 | 45–46 | Só a pergunta e o dial de 0 a 10. |
-| 5 | O gap | 49 | Número gigante laranja, fundo preto. |
-| 6 | O que o mercado faz | benchmarks | Os números do setor, com fonte em cada um. |
-| 7 | Por que o gap existe | 49 | Uma frase, editável. |
-| 8 | TAM · SAM · SOM | Revenue OS | Anéis concêntricos + as duas frentes saindo do SOM. |
-| 9 | Dado × orquestração | Revenue OS | Comparativo com ferramenta de dados + as 14 motions. |
-| 10 | **O que é a Althius** | Revenue OS | A definição e os 12 itens do modelo que combatemos. |
-| 11 | O que construímos ᵒᵖᶜ | Revenue OS | 40 variáveis · 5 personas · 9 processos · 14 motions. |
-| 12 | Construção do ICP ᵒᵖᶜ | Revenue OS | Quem compra e por que compraria, em 27 variáveis. |
-| 13 | Personas e matriz de dor ᵒᵖᶜ | Revenue OS | Os 5 papéis + urgência/consciência/gravidade/frequência. |
-| 14 | O processo de compra ᵒᵖᶜ | Revenue OS | Objeções, alternativas, riscos percebidos, posicionamento. |
-| 15 | Os 9 processos ᵒᵖᶜ | Revenue OS | Com alternador *construímos* / *otimizamos*. |
-| 16 | A máquina | 47, 49 | ICP → Sinais → Cadência + empilhamento com as palavras dele. |
-| 17 | O vídeo | 48, 49 | Vídeo da plataforma, 2–3 min. |
-| 18 | Você viveu isso | 48, 49 | Detecção → decisores → ligação → hoje, com o print do sinal. |
-| 19 | Plano de 14 dias | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
-| 20 | Investimento | 50, 55, 57 | Degraus **ao lado dos números dele**. |
+| 4 | **O gap** | 43, 49 | Número gigante laranja, fundo preto. Fecha o diagnóstico. |
+| 5 | **O que o mercado faz** | benchmarks | Os números do setor, com fonte em cada um. |
+| 6 | **Pit 01** | 45–46 | Só a pergunta e o dial de 0 a 10. |
+| 7 | Por que o gap existe — deck 1 | 49 | Uma frase, editável. Abre o Pit 02. |
+| 8 | **A máquina** — 2 | 47, 49 | ICP → Sinais → Cadência + empilhamento com as palavras dele. |
+| 9 | O que é a Althius — 3 | Revenue OS | A definição e os 12 itens do modelo que combatemos. |
+| 10 | O que construímos ᵒᵖᶜ — 4 | Revenue OS | 40 variáveis · 5 personas · 9 processos · 14 motions. |
+| 11 | Construção do ICP ᵒᵖᶜ — 5 | Revenue OS | Quem compra e por que compraria, em 27 variáveis. |
+| 12 | Personas e matriz de dor ᵒᵖᶜ — 6 | Revenue OS | Os 5 papéis + urgência/consciência/gravidade/frequência. |
+| 13 | O processo de compra ᵒᵖᶜ — 7 | Revenue OS | Objeções, alternativas, riscos percebidos, posicionamento. |
+| 14 | Os 9 processos ᵒᵖᶜ — 8 | Revenue OS | Com alternador *construímos* / *otimizamos*. |
+| 15 | TAM · SAM · SOM — 9 | Revenue OS | Anéis concêntricos + as duas frentes saindo do SOM. |
+| 16 | Dado × orquestração — 10 | Revenue OS | Comparativo com ferramenta de dados + as 14 motions. |
+| 17 | O vídeo — 11 | 48, 49 | Vídeo da plataforma, 2–3 min. |
+| 18 | Você viveu isso — 12 | 48, 49 | Detecção → decisores → ligação → hoje, com o print do sinal. |
+| 19 | Plano de 14 dias — 13 | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
+| 20 | Investimento — 14 | 50, 55, 57 | Degraus **ao lado dos números dele**. |
 | 21 | Fechamento | 50 | Kickoff, dia e hora. |
 
 ᵒᵖᶜ = marcada como opcional no índice.
 
-Pit 01 vem **antes** do deck porque o deck só existe no Pit 02 (slide 49: *"da abertura
-ao Pit 01, a tela é o Raio-X e o Mapa"*).
+### Por que a ordem é esta
 
-> **Tensão com o playbook, declarada:** o slide 49 pede *"7 slides, nem um a mais"* e o
-> slide 48 avisa que ninguém aguenta tour de 10 minutos. O deck agora tem 16 telas de
-> Pit 02. O aprofundamento ganha o lead que não conhece o próprio mercado nem o próprio
-> processo — mas **é o oposto do que o método prescreve para uma call curta**. Use o
-> índice (`I`) para montar a versão da reunião: o caminho enxuto é pular as cinco
-> opcionais, e a sequência fecha do mesmo jeito.
+**O Pit 01 fica antes de qualquer coisa sobre a Althius.** Nota alta dada *antes* da
+solução é declaração sobre a dor dele — e trava a objeção no fechamento. Nota alta dada
+*depois* é elogio a vocês, e elogio não segura preço. Além disso é válvula: se a nota vier
+baixa, você não gastou 20 minutos de aula com quem não ia avançar (slide 57, regra 1).
+
+**Mas o gap gigante e o banho de mercado vêm antes dele.** Nenhum dos dois fala da
+Althius — um é o número dele em tamanho de impacto, o outro mostra que o buraco é
+estrutural do setor. Os dois aumentam a consciência da dor, que é o que a nota do Pit 01
+deveria estar medindo. Sem eles, ele dá a nota tendo visto o gap só como uma linha na
+coluna de saídas da planilha.
+
+**O Pit 02 abre pelo empilhamento, não pelo institucional.** Você acabou de virar a
+energia; a próxima coisa que ele ouve tem que ser as próprias palavras de volta. A aula
+vem depois, apoiada nessa reconexão — e é ela que pode ser pulada, não o contrário.
+
+> **Tensão com o playbook, declarada:** o slide 49 pede *"7 slides, nem um a mais"*. O
+> deck tem 14. O aprofundamento ganha o lead que não conhece o próprio mercado nem o
+> próprio processo, mas alonga o Pit 02. Use o índice (`I`) para montar a versão da
+> reunião: o caminho enxuto é pular as cinco opcionais (telas 10 a 14).
 
 ### Uma escolha de tom que fiz de propósito
 

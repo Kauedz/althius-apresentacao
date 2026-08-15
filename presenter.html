@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
-  <link href="styles/main.css?v=6" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=7" rel="stylesheet" type="text/css">
   <style>
     /* Janela privada do closer. NUNCA compartilhe esta janela. */
     body { padding: 0; }
@@ -237,7 +237,7 @@
       { t: 'cuidado', p: [
         'Não desenhe a máquina ideal. Desenhe a dele, com os buracos. Se você já mostrar a solução aqui, o Pit 02 fica sem novidade.'] },
       { t: 'ponte', p: [
-        '“Beleza. Eu já tenho o número e já tenho o caminho. Antes de eu te mostrar qualquer coisa nossa, preciso te fazer uma pergunta.”'] }
+        '“Beleza. Eu já tenho o número e já tenho o caminho. Deixa eu te mostrar o que saiu de tudo isso.”'] }
     ]},
 
     pit01: { tempo: '5 min · o ponto de virada', blocos: [
@@ -261,17 +261,18 @@
         'Não avance com nota baixa sem tratar. Se a dor é fraca de verdade, o certo é encerrar bem: “Pelo que você me falou, isso não é prioridade agora. Prefiro ser honesto e não te tomar tempo — quando virar, me chama.” Metade volta atrás na hora.',
         'Não use a palavra "convença". Você está avaliando, não desafiando.'] },
       { t: 'ponte', p: [
-        '“Então tá. Agora inverte: é a minha vez de te mostrar. E eu vou começar pelo número que a gente acabou de achar.”'] }
+        '“Então tá. Agora inverte: é a minha vez de te mostrar. E vou começar explicando por que esse buraco existe.”'] }
     ]},
 
-    gap: { tempo: '2 min', blocos: [
+    gap: { tempo: '2 min · fecha o diagnóstico', blocos: [
       { t: 'fala', p: [
         '“Esse é o seu número. Não é benchmark, não é média de mercado — é a conta que a gente fez juntos, com o que você me passou.”'] },
       { t: 'pausa', p: [
         'Mostre e cale. Este slide não precisa de narração. Deixe ele olhar o número por alguns segundos antes de qualquer coisa.'] },
       { t: 'tecnica', p: [
         'O vilão continua sendo o buraco. Você não está dizendo que ele falhou — está mostrando a distância entre onde a máquina chega e onde a meta exige.',
-        'Se ele reagir defendendo o time, pegue esse gancho: “Não é sobre o time. Um time bom com pouca agenda entrega pouco do mesmo jeito. O problema é o que chega na frente deles.”'] },
+        'Se ele reagir defendendo o time, pegue esse gancho: “Não é sobre o time. Um time bom com pouca agenda entrega pouco do mesmo jeito. O problema é o que chega na frente deles.”',
+        '<b>Esta tela vem antes do Pit 01 de propósito.</b> A nota que ele vai dar precisa ser dada com o tamanho do buraco na frente dele, não com uma linha de planilha na cabeça.'] },
       { t: 'ponte', p: [
         '“E antes de você achar que isso é um problema só de vocês — deixa eu te mostrar onde o mercado inteiro está.”'] }
     ]},
@@ -291,7 +292,8 @@
         'Não cite número sem apontar a fonte. Ela está na tela justamente pra isso. Dado que ele não pode conferir vira desconfiança em vez de autoridade.',
         'Não use esses números pra dizer "todo mundo está mal, inclusive você". O enquadramento é o contrário: "o jogo ficou mais difícil pra todo mundo, e por isso o método mudou".'] },
       { t: 'ponte', p: [
-        '“Agora, por que isso está acontecendo? Tem uma frase que resume.”'] }
+        '“Então esse é o retrato: o seu número e o do mercado. Antes de eu te mostrar qualquer coisa nossa, preciso te fazer uma pergunta.”',
+        '<b>Aqui fecha o diagnóstico.</b> Ele já viu o tamanho do buraco e já sabe que não é falha só da casa dele. É com essa consciência que a nota do Pit 01 deve ser dada.'] }
     ]},
 
     porque: { tempo: '1 min', blocos: [
@@ -301,9 +303,9 @@
       { t: 'tecnica', p: [
         'Uma frase, três segundos de pausa, e segue. Este slide é uma vírgula na narrativa, não um capítulo.'] },
       { t: 'cuidado', p: [
-        'Nada de estatística de mercado aqui, nada de estudo de terceiro. Você acabou de usar dados na tela anterior — repetir dilui.'] },
+        'Nada de estatística de mercado aqui, nada de estudo de terceiro. Os dados já vieram no diagnóstico — repetir dilui.'] },
       { t: 'ponte', p: [
-        '“E pra chegar na conta certa, a gente começa bem antes do que a maioria imagina.”'] }
+        '“E vou te mostrar como a gente resolve exatamente o que você me contou.”'] }
     ]},
 
     som: { tempo: '4 min', blocos: [
@@ -333,7 +335,7 @@
       { t: 'cuidado', p: [
         'Não passe as catorze motions uma a uma. Isso é o cardápio da cozinha, não o prato.'] },
       { t: 'ponte', p: [
-        '“Deixa eu te explicar então o que a gente é de verdade, porque isso muda o resto da conversa.”'] }
+        '“Deixa eu te mostrar isso rodando por dentro. Dois minutos.”'] }
     ]},
 
     'aula-oquee': { tempo: '4 min', blocos: [
@@ -349,7 +351,8 @@
         'A frase que fecha a tela protege a relação: <b>"não porque o time é ruim, mas porque ninguém montou o sistema embaixo dele"</b>. Mantém o vilão no lugar certo e evita que ele entre na defensiva justo agora, que é quando você mais precisa dele aberto.',
         'Se ele citar uma ferramenta aqui: “essas resolvem a primeira linha da lista. As outras onze continuam abertas.” E siga — sem ironia.'] },
       { t: 'ponte', p: [
-        '“Então deixa eu te mostrar, item por item, o que entra em pé na [empresa].”'] }
+        '“Então deixa eu te mostrar, item por item, o que entra em pé na [empresa].”',
+        '<b>A partir daqui começam as cinco telas opcionais.</b> Se a reunião estiver curta ou ele já estiver decidido, aperte <b>I</b> e salte direto para o funil de mercado.'] }
     ]},
 
     'aula-escopo': { tempo: '3 min', blocos: [
@@ -418,9 +421,9 @@
         'Faça a pergunta e use o alternador conforme ele responde. Deixe ele passar item por item, no ritmo dele.'] },
       { t: 'tecnica', p: [
         '<b>O alternador existe pra você não parecer que vende a mesma coisa pra todo mundo.</b> Se ele já tem pipeline e SLA, mostre o modo "otimizamos" — reconhecer o que ele construiu compra credibilidade pro resto da conversa.',
-        'Anote quais faltam. Eles voltam duas vezes: no empilhamento do Pit 02 e na hora de definir o degrau.'] },
+        'Anote quais faltam. Eles voltam na hora de definir o degrau.'] },
       { t: 'ponte', p: [
-        '“Agora deixa eu te mostrar como isso resolve exatamente o que você me falou no começo.”'] }
+        '“E tudo isso opera dentro de um recorte de mercado. Deixa eu te mostrar como a gente enxerga o seu.”'] }
     ]},
 
     maquina: { tempo: '4 min · vira a energia', blocos: [
@@ -429,9 +432,10 @@
       { t: 'tecnica', p: [
         'Os itens da tabela são <b>as palavras dele</b>, colhidas no Mapa e no Bloco B. Use o botão "Puxar dores do Mapa" antes de chegar aqui.',
         'Entregável é característica. Solução é a dor dele com o problema resolvido. O que precisa passar pela cabeça dele é: "isso foi feito pra mim".',
-        'Nunca apresente a plataforma igual duas vezes. A apresentação é montada em cima do diagnóstico daquele lead.'] },
+        'Nunca apresente a plataforma igual duas vezes. A apresentação é montada em cima do diagnóstico daquele lead.',
+        '<b>Esta é a primeira tela do Pit 02 de propósito.</b> Você acabou de virar a energia — a próxima coisa que ele ouve tem que ser as palavras dele de volta. Se você abrisse com institucional, perdia a reconexão.'] },
       { t: 'ponte', p: [
-        '“Deixa eu te mostrar isso rodando por dentro. Dois minutos.”'] }
+        '“E pra isso funcionar de verdade, deixa eu te explicar o que a gente é. Porque não é o que costumam imaginar.”'] }
     ]},
 
     video: { tempo: '3 min', blocos: [
