@@ -13,8 +13,8 @@
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
   <!-- ?v= força o navegador a buscar a versão nova depois de cada edição.
        Suba o número ao mexer em CSS/JS. Mesma convenção do site institucional. -->
-  <link href="styles/main.css?v=6" rel="stylesheet" type="text/css">
-  <link href="styles/apresentacao.css?v=6" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=7" rel="stylesheet" type="text/css">
+  <link href="styles/apresentacao.css?v=7" rel="stylesheet" type="text/css">
 </head>
 <body class="deck-body">
 
@@ -104,6 +104,15 @@
 <div class="deck_brand">
   <img src="assets/img/althius-logo-transparent.png" alt="Althius">
   <span class="deck_empresa" id="brandEmpresa"></span>
+
+  <!-- Os três números acompanham a reunião inteira (playbook, slide 42).
+       Ficam no topo, dentro do respiro que o slide já reserva — no rodapé
+       eles cobriam o conteúdo das telas mais cheias. -->
+  <div class="hud" id="hud">
+    <div class="hud_cell"><div class="hud_k">Custo/reunião</div><div class="hud_v" data-out="custoPorReuniao">—</div></div>
+    <div class="hud_cell"><div class="hud_k">Gap/mês</div><div class="hud_v" data-out="gapExibicao">—</div></div>
+    <div class="hud_cell"><div class="hud_k">Risco/mês</div><div class="hud_v" data-out="receitaExibicao">—</div></div>
+  </div>
 </div>
 
 <div class="tools">
@@ -112,12 +121,6 @@
   <button type="button" class="tool" data-tool="export">Exportar Raio-X</button>
   <button type="button" class="tool" data-tool="fullscreen">Tela cheia</button>
   <button type="button" class="tool" data-tool="precall">Pré-call</button>
-</div>
-
-<div class="hud" id="hud">
-  <div class="hud_cell"><div class="hud_k">Custo por reunião</div><div class="hud_v" data-out="custoPorReuniao">—</div></div>
-  <div class="hud_cell"><div class="hud_k">Gap de reuniões/mês</div><div class="hud_v" data-out="gapExibicao">—</div></div>
-  <div class="hud_cell"><div class="hud_k">Receita em risco/mês</div><div class="hud_v" data-out="receitaExibicao">—</div></div>
 </div>
 
 <div class="deck_nav">
@@ -1090,10 +1093,10 @@
 
 </main>
 
-<script src="scripts/raiox-engine.js?v=6" defer></script>
-<script src="scripts/benchmarks.js?v=6" defer></script>
-<script src="scripts/estimadores.js?v=6" defer></script>
-<script src="scripts/apresentacao.js?v=6" defer></script>
-<script src="scripts/calculadora.js?v=6" defer></script>
+<script src="scripts/raiox-engine.js?v=7" defer></script>
+<script src="scripts/benchmarks.js?v=7" defer></script>
+<script src="scripts/estimadores.js?v=7" defer></script>
+<script src="scripts/apresentacao.js?v=7" defer></script>
+<script src="scripts/calculadora.js?v=7" defer></script>
 </body>
 </html>

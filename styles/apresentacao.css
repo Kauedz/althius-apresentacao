@@ -34,7 +34,9 @@ body.deck-body {
   display: none;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 88px 56px 104px;
+  /* O rodapé reserva a faixa da navegação (52px de base + 44px do botão)
+     para o conteúdo nunca terminar por baixo dela. */
+  padding: 88px 56px 108px;
 }
 .slide.is-active { display: block; animation: slide-in 0.42s var(--ease) both; }
 
@@ -241,6 +243,10 @@ textarea.f { resize: none; line-height: 1.5; }
 .xr_alerta {
   display: none;
   margin-top: 18px;
+  /* É o último elemento da coluna e cai bem onde ficam os botões de
+     navegação. A folga tira ele de baixo deles — é o gancho mais
+     importante do diagnóstico, não pode ficar escondido. */
+  margin-bottom: 56px;
   border: 1px solid rgba(255, 90, 31, 0.45);
   border-radius: 14px;
   background-color: rgba(255, 90, 31, 0.07);
@@ -661,41 +667,39 @@ textarea.f { resize: none; line-height: 1.5; }
    13. HUD — os três números ficam visíveis o resto da reunião
         (slide 42: "esse número fica visível o resto da reunião")
    --------------------------------------------------------------- */
+/* Mora dentro do .deck_brand, na faixa de topo que o slide já reserva
+   com o padding-top. No rodapé ele cobria o conteúdo das telas cheias. */
 .hud {
-  position: fixed;
-  left: 56px;
-  bottom: 52px;
   display: flex;
   gap: 0;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 10px;
   background-color: rgba(8, 8, 10, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   overflow: hidden;
-  z-index: 20;
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateX(-6px);
   pointer-events: none;
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
 }
 .hud.is-on { opacity: 1; transform: none; }
-.hud_cell { padding: 10px 18px; }
+.hud_cell { padding: 5px 13px; }
 .hud_cell + .hud_cell { border-left: 1px solid var(--line); }
 .hud_k {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 0.5625rem;
-  letter-spacing: 0.12em;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary-d);
+  white-space: nowrap;
 }
 .hud_v {
-  font-size: 1.0625rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--orange);
   font-variant-numeric: tabular-nums;
-  margin-top: 3px;
+  margin-top: 1px;
+  white-space: nowrap;
 }
 
 /* ---------------------------------------------------------------
@@ -709,7 +713,7 @@ textarea.f { resize: none; line-height: 1.5; }
   align-items: center;
   gap: 14px;
 }
-.deck_brand img { height: 2.1rem; width: auto; }
+.deck_brand img { height: 2.1rem; width: auto; flex: none; }
 .deck_empresa {
   font-family: var(--font-mono);
   font-weight: 500;
@@ -719,7 +723,12 @@ textarea.f { resize: none; line-height: 1.5; }
   color: var(--text-secondary-d);
   border-left: 1px solid var(--line);
   padding-left: 14px;
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+.deck_empresa:empty { display: none; }
 
 .deck_nav {
   position: fixed;
@@ -1707,6 +1716,9 @@ ul.densa { margin: 0; padding: 0; }
   .mapa { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .modulos { grid-template-columns: 1fr; }
   .prova, .inv { grid-template-columns: 1fr; }
+  /* Abaixo disso o topo não comporta marca + números + ferramentas.
+     Os três números seguem visíveis no Raio-X. */
+  .hud { display: none; }
   .mercado, .frentes { grid-template-columns: 1fr; }
   .contraste { grid-template-columns: 1fr; }
   .contraste_seta { transform: rotate(90deg); justify-self: center; }
@@ -1718,8 +1730,6 @@ ul.densa { margin: 0; padding: 0; }
   .som-svg { max-width: 100%; }
   .stack-row { grid-template-columns: 1fr; }
   .stack-row.is-head { display: none; }
-  .hud { left: 16px; right: 16px; bottom: 76px; }
-  .hud_cell { flex: 1 1 0; padding: 8px 12px; }
   .precall_two { grid-template-columns: 1fr; }
 }
 
