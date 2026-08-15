@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
-  <link href="styles/main.css?v=9" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=10" rel="stylesheet" type="text/css">
   <style>
     /* Janela privada do closer. NUNCA compartilhe esta janela. */
     body { padding: 0; }
@@ -246,17 +246,26 @@
       { t: 'fala', p: [
         '<b>Volta 2 · a inversão</b> — ele vai responder falando da dor dele. Aí você redireciona, com calma: “Perfeito, mas a minha pergunta era outra e eu não fui claro. Não é o quanto vocês querem — é por que eu deveria avançar com vocês. Explico o motivo: quem entrega aqui somos eu e meu sócio, a agenda é curta de verdade, e a gente não pega conta que não vai dar certo. Então me ajuda a entender: o que faz de vocês uma conta que vale essa agenda?”'] },
       { t: 'fala', p: [
-        '<b>Volta 3 · alinhar o fim, agora</b> — “E deixa eu combinar uma coisa contigo, porque já aconteceu da gente avançar e travar no fim por algo que dava pra resolver no começo. Se fizer sentido lá na frente: a decisão é sua ou tem mais alguém que assina junto? … E investimento nessa faixa vocês costumam resolver como, à vista ou parcelado? … Ótimo. Aí a gente já não tem surpresa no fim.”'] },
+        '<b>Volta 3 · alinhar o fim, agora</b> — “E deixa eu combinar uma coisa contigo, porque já aconteceu da gente avançar e travar no fim por algo que dava pra resolver no começo. Se fizer sentido lá na frente: a decisão é sua ou tem mais alguém que assina junto? … E investimento nessa faixa vocês costumam resolver como, à vista ou parcelado?”'] },
+      { t: 'fala', p: [
+        '<b>Volta 4 · a âncora</b> — “Última coisa antes de eu te mostrar qualquer número nosso: para resolver isso, quanto vocês têm disponível para investir hoje?”',
+        'Ele vai hesitar. Espere. Se travar de vez, use a escada: <i>“Só pra eu não te trazer proposta fora da realidade — está mais perto de 5, de 15, de 30?”</i>'] },
+      { t: 'pausa', p: [
+        'Depois da pergunta do investimento, silêncio. Quem fala primeiro entrega a âncora — e aqui quem tem que entregar é ele.'] },
       { t: 'pausa', p: [
         'Depois da Volta 2, silêncio total. Ele vai citar comprometimento, urgência, time bom, momento certo. <b>Cada frase dessas é um prego que ele bate na própria decisão.</b> Não interrompa, não concorde em voz alta, só anote.'] },
       { t: 'tecnica', p: [
         '<b>Por que isso funciona:</b> o cérebro não gosta de se contradizer. Depois que ele argumentou em voz alta por que merece avançar, dizer "não" no fim custa caro pra ele. Você está apertando a mão desde o meio da reunião — o fechamento só confirma.',
         '<b>A inversão é a parte delicada.</b> Não diga "você não entendeu". Assuma você a falha de clareza: "eu não fui claro". Você redireciona sem tirar ele do lugar confortável — e a pergunta continua de pé.',
-        '<b>A Volta 3 é a antecipação.</b> Sócio e forma de pagamento morrem aqui. Objeção antecipada é objeção que não aparece no fechamento.'] },
+        '<b>A Volta 3 é a antecipação.</b> Sócio e forma de pagamento morrem aqui. Objeção antecipada é objeção que não aparece no fechamento.',
+        '<b>A Volta 4 é a âncora, e o lugar dela é aqui — não na tela de preço.</b> Ele declara a faixa antes de ver qualquer número nosso. Isso faz três coisas: define o degrau, evita que você chegue com proposta fora da realidade dele, e tira de você o papel de quem propõe primeiro. Registre na escada; o preço da tela de investimento sai daí.'] },
       { t: 'objecao', p: [
         '<b>Nota 6 ou 7</b> → “Sete é um número honesto, obrigado. O que faltaria pros outros três?” — nota baixa é presente: ou a dor é fraca, ou existe uma trava não dita. Melhor ela aparecer agora, com a reunião inteira pela frente, do que no fim, quando só sobraria desconto.',
         '<b>Nota 10 respondida rápido demais</b> → “Dez é forte. O que exatamente te faz dar dez?” Confirme que é convicção e não gentileza.',
-        '<b>“Achei essa pergunta estranha”</b> → “Justa. Eu pergunto porque a gente entrega junto e não consegue pegar todo mundo. Prefiro escolher bem do que prometer demais.”'] },
+        '<b>“Achei essa pergunta estranha”</b> → “Justa. Eu pergunto porque a gente entrega junto e não consegue pegar todo mundo. Prefiro escolher bem do que prometer demais.”',
+        '<b>“Depende de quanto custa”</b> → “Entendo, mas é o contrário: o escopo é que depende de onde vocês conseguem chegar. Por isso pergunto antes — pra montar o que cabe, e não te empurrar o que não cabe.”',
+        '<b>“Não tenho ideia”</b> → “Sem problema. Está mais perto de 5, de 15 ou de 30? Só pra eu saber por onde começar.”',
+        '<b>Valor muito abaixo do porte da conta</b> → não confronte agora. Anote, siga a apresentação e volte no fechamento com os números dele: o custo por reunião e o risco mensal fazem o argumento sozinhos.'] },
       { t: 'cuidado', p: [
         'Não avance com nota baixa sem tratar. Se a dor é fraca de verdade, o certo é encerrar bem: “Pelo que você me falou, isso não é prioridade agora. Prefiro ser honesto e não te tomar tempo — quando virar, me chama.” Metade volta atrás na hora.',
         'Não use a palavra "convença". Você está avaliando, não desafiando.'] },
@@ -438,15 +447,24 @@
         '“E pra isso funcionar de verdade, deixa eu te explicar o que a gente é. Porque não é o que costumam imaginar.”'] }
     ]},
 
-    video: { tempo: '3 min', blocos: [
+    video: { tempo: '3 min · ao vivo', blocos: [
+      { t: 'fala', p: [
+        '“Não vou te passar vídeo gravado. Deixa eu abrir a plataforma aqui e a gente percorre junto.”'] },
       { t: 'tecnica', p: [
-        '<b>1 ·</b> Você narra, o vídeo ilustra. Nunca dê play e fique quieto — pause em cada ponto que bate numa dor do Raio-X e diga qual é.',
-        '<b>2 ·</b> Dois a três minutos, cortado. Curiosidade é combustível do fechamento; não distribua de graça.',
-        '<b>3 ·</b> O vídeo não sai da reunião. Se o sócio precisa ver, ele vê em outra reunião, com vocês na sala.'] },
+        '<b>O caminho, na ordem — três minutos:</b>',
+        '<b>1 ·</b> A conta dele na lista, com o sinal que a detectou. Comece por aí: é o momento em que ele se vê dentro do sistema.',
+        '<b>2 ·</b> Os decisores mapeados, com o contato direto. Amarre com o dado do banho de mercado: envolver quem assina desde o começo vale 55% a mais de taxa de ganho.',
+        '<b>3 ·</b> A cadência montada, e o que muda quando a conta responde.',
+        '<b>4 ·</b> Volte para a apresentação. Não deixe a plataforma aberta enquanto conversa — a tela vira distração e ele para de ouvir.'] },
+      { t: 'tecnica', p: [
+        'Abre em outra aba. Antes da call, deixe a aba já logada e no lugar certo — procurar login na frente do lead derruba a autoridade que o slide anterior construiu.',
+        'Demonstração ao vivo é mais forte que vídeo justamente porque ele pode pedir para ver outra coisa. Se pedir, mostre — e volte para o roteiro.'] },
       { t: 'objecao', p: [
-        '<b>“Me manda esse vídeo depois”</b> → “Prefiro te mostrar ao vivo, porque fora de contexto ele não diz muita coisa. Se o [sócio] precisar ver, a gente marca vinte minutos com ele — eu mostro e respondo na hora.”'] },
+        '<b>“Me manda um acesso pra eu testar”</b> → “Consigo, mas depois que a gente definir o ICP de vocês. Acesso sem configuração mostra a ferramenta vazia, e aí você julga errado o que ela faz.”',
+        '<b>“Manda um vídeo pro meu time ver”</b> → “Prefiro fazer com eles ao vivo, em vinte minutos. Assim eu respondo as perguntas na hora, em vez de deixar dúvida solta.”'] },
       { t: 'cuidado', p: [
-        'Não mande o vídeo antes "pra ele se preparar" nem depois "pra mostrar pro time". Vídeo solto vira aula grátis pro concorrente e desculpa pro "vou analisar".'] },
+        'Não faça tour de funcionalidade. Cada tela que você abre tem que bater numa dor do Raio-X — se não bate, não abre.',
+        'Não deixe a demonstração passar de três minutos. Curiosidade é combustível do fechamento; saciada, vira "vou analisar".'] },
       { t: 'ponte', p: [
         '“E tem uma parte disso que você já viveu, sem saber.”'] }
     ]},
@@ -484,16 +502,20 @@
       { t: 'fala', p: [
         '<b>1 · a âncora, antes do número, sempre</b> — “Antes de falar de valor, um princípio que a gente segue aqui: é justo que muito custe aquilo que muito vale. Você concorda com isso?”'] },
       { t: 'fala', p: [
-        '<b>2 · o preço ao lado dos números dele</b> — “Você me disse que hoje cada reunião custa [Z]. E que o gap representa [R$] por mês que não entra. Pro cenário de vocês, o caminho certo é o [degrau]: [valor] de implementação e [valor] por mês de plataforma.”'] },
+        '<b>2 · o preço ao lado dos números dele</b> — “Você me disse que hoje cada reunião custa [Z], e que o gap representa [R$] por mês que não entra. Você também me falou que teria [faixa] para resolver isso. Pro cenário de vocês, o escopo certo é o [degrau]: [valor] de estruturação, e a plataforma é R$ 500 por usuário por mês.”'] },
       { t: 'pausa', p: [
         '<b>Silêncio total depois do número.</b> Quem fala primeiro depois do preço, perde. Se o silêncio incomodar, aguente — são poucos segundos e eles decidem a negociação.'] },
       { t: 'tecnica', p: [
-        'A tela fica travada até você registrar a nota do Pit 01. Isso não é enfeite: preço antes da predisposição vira comparação de tabela.',
-        'Os três números dele ficam na coluna da esquerda de propósito. O preço nunca aparece sozinho — aparece do lado da régua que ele mesmo construiu.',
-        'Deixe o degrau de cima visível mesmo que ninguém compre. "Os projetos vão de 5 a 25 dependendo do escopo, e pro seu cenário o certo é o do meio" muda completamente como o número do meio soa.'] },
+        '<b>Um preço na tela, não três.</b> Três valores comparáveis viram cardápio, e o lead ancora no menor — mesmo quando o menor não resolve o problema dele. O número que aparece é o que sai da faixa que ELE declarou no Pit 01; o escopo dos outros degraus fica embaixo, sem valor.',
+        '<b>Se precisar ajustar,</b> use o campo ao lado do número. A frase de apoio recalcula sozinha e avisa se você passou da faixa que ele declarou.',
+        'A tela fica travada até a nota do Pit 01 ser registrada. Não é enfeite: preço antes da predisposição vira comparação de tabela.',
+        'Os três números dele ficam à esquerda de propósito. O preço nunca aparece sozinho — aparece do lado da régua que ele mesmo construiu.'] },
+      { t: 'tecnica', p: [
+        '<b>Como usar os degraus sem dar cardápio:</b> aponte o escopo, não o preço. <i>“O Essencial resolve um ICP. O seu caso pede dois e integração com o CRM, que é o Growth. O Scale é para quem roda multi-segmento — não é o seu momento.”</i> Ele vê que existe algo acima e algo abaixo, sem ter três números para escolher.'] },
       { t: 'objecao', p: [
         '<b>“Está caro”</b> → “Caro comparado com o quê? Com os [Z] por reunião que vocês pagam hoje, ou com os [R$] por mês do gap? Pergunto sério, porque a comparação muda a resposta.”',
         '<b>“Tem desconto?”</b> → “Desconto eu não faço, e vou te explicar o porquê: se eu tirasse 20% mantendo o mesmo escopo, um de nós dois estaria errado sobre o valor. O que eu consigo fazer é ajustar escopo — tiro a integração e o treinamento e a gente fica no Essencial.”',
+        '<b>“Esse valor está acima do que eu falei”</b> → só acontece se você subiu o preço acima da faixa dele, e a tela avisa. Reconheça: “Está mesmo, e eu te digo por quê: [motivo do escopo maior]. Se preferir ficar na faixa, a gente tira [item] e fecha no Essencial. Prefiro te entregar menos e bem do que o escopo cheio sem caber no orçamento.”',
         '<b>“Preciso pensar”</b> → “Claro. Só me ajuda com uma coisa: pensar sobre o quê especificamente? Se for o valor, a gente conversa sobre escopo agora. Se for outra coisa, eu prefiro tratar aqui do que você levar a dúvida pra casa.”',
         '<b>“Preciso falar com meu sócio”</b> → “A gente tratou disso no meio da reunião e você me disse que resolvia. Mudou alguma coisa, ou é mais confortável trazer ele numa conversa de vinte minutos comigo?”',
         '<b>“Vou avaliar outras opções”</b> → “Faz sentido, eu faria igual. Me diz quais você vai olhar que eu te falo com honestidade onde elas são melhores que a gente — tem casos em que são.”'] },

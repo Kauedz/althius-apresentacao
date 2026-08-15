@@ -13,8 +13,8 @@
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
   <!-- ?v= força o navegador a buscar a versão nova depois de cada edição.
        Suba o número ao mexer em CSS/JS. Mesma convenção do site institucional. -->
-  <link href="styles/main.css?v=9" rel="stylesheet" type="text/css">
-  <link href="styles/apresentacao.css?v=9" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=10" rel="stylesheet" type="text/css">
+  <link href="styles/apresentacao.css?v=10" rel="stylesheet" type="text/css">
 </head>
 <body class="deck-body">
 
@@ -477,6 +477,27 @@
         </p>
         <p>Nota <b data-out="notaPit" style="color:var(--white)">—</b><span data-out="notaFalta"></span></p>
       </div>
+
+      <!-- A âncora nasce aqui, não na tela de preço. Ele declara a faixa
+           antes de ver qualquer número nosso — é isso que define o degrau. -->
+      <div class="budget" id="budget">
+        <p class="budget_q">
+          E para resolver isso, quanto vocês têm disponível para investir hoje?
+        </p>
+
+        <div class="budget_escada" id="budgetEscada"></div>
+
+        <div class="budget_reg">
+          <label for="budgetValor">Ou registre o valor que ele deu</label>
+          <input class="f is-num" type="text" id="budgetValor" data-k="budget"
+                 data-mask="currency" placeholder="R$ 0" autocomplete="off">
+        </div>
+
+        <p class="budget_eco" id="budgetEco" hidden>
+          Registrado: <b data-out="budgetFmt">—</b>
+          <span data-out="budgetLeitura"></span>
+        </p>
+      </div>
     </div>
   </section>
 
@@ -926,20 +947,41 @@
   </section>
 
   <!-- 11 · DECK 7 · O VÍDEO ------------------------------------------------ -->
-  <section class="slide" data-slide="video" data-deck="11" data-nome="O vídeo da plataforma">
+  <section class="slide" data-slide="video" data-deck="11" data-nome="A plataforma ao vivo">
     <div class="slide_inner">
       <p class="slide-tag">A plataforma<span class="sep">/</span><span class="deck-n">deck 11 de 14</span></p>
-      <h2 class="slide-title">Por dentro</h2>
+      <h2 class="slide-title">Por dentro, agora</h2>
+      <p class="slide-sub">
+        Sem vídeo gravado. A gente abre a plataforma e percorre junto — com a conta de
+        vocês na tela.
+      </p>
 
-      <div class="video-frame" id="videoFrame">
-        <div class="video-missing" id="videoMissing">
-          <p class="mono">Vídeo da plataforma</p>
-          <p class="text-small text-color-secondary" style="margin:12px 0 0">
-            Coloque o arquivo em <code>assets/video/plataforma.mp4</code><br>
-            ou abra esta página com <code>?video=URL</code>.
-          </p>
+      <div class="demo">
+        <button type="button" class="demo_btn" id="demoAbrir">
+          <span class="demo_ic" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="demo_txt">
+            <span class="demo_t">Abrir a plataforma</span>
+            <span class="demo_d" id="demoUrl">app.althius.com.br</span>
+          </span>
+        </button>
+
+        <div class="demo_roteiro">
+          <p class="eyebrow is-muted" style="margin:0 0 var(--s2)">O caminho de 3 minutos</p>
+          <ol class="demo_passos">
+            <li>A conta dele na lista, com o sinal que a detectou</li>
+            <li>Os decisores mapeados, com o contato direto</li>
+            <li>A cadência montada, e o que acontece quando ele responde</li>
+            <li>Volta para cá — não deixe a plataforma aberta</li>
+          </ol>
         </div>
       </div>
+
+      <p class="nota-tela">
+        Abre em outra aba. Para trocar o endereço, use <code>?app=URL</code> ou ajuste
+        <code>APP_URL</code> em <code>scripts/apresentacao.js</code>.
+      </p>
     </div>
   </section>
 
@@ -1044,33 +1086,49 @@
               <p>É justo que muito custe aquilo que muito vale.</p>
             </div>
 
+            <!-- UM preço na tela. Três números comparáveis viram cardápio,
+                 e o lead ancora no menor. O escopo dos outros degraus
+                 aparece embaixo, sem valor. -->
+            <div class="preco">
+              <div class="preco_linha">
+                <div>
+                  <div class="preco_k">Estruturação · <span data-out="degrauNome">escopo a definir</span></div>
+                  <div class="preco_v" data-out="precoEstrutura">—</div>
+                </div>
+                <div class="preco_edit">
+                  <label for="precoInput">ajustar</label>
+                  <input class="f is-num" type="text" id="precoInput" data-k="precoEstrutura"
+                         data-mask="currency" placeholder="R$ 0" autocomplete="off">
+                </div>
+              </div>
+              <p class="preco_nota" id="precoNota"></p>
+
+              <div class="preco_mensal">
+                <span class="k">Plataforma · por usuário</span>
+                <span class="v" data-out="mensalidade">R$ 500</span>
+              </div>
+            </div>
+
+            <p class="eyebrow is-muted" style="margin:var(--s4) 0 var(--s2)">O que entra</p>
             <div class="degraus" id="degraus">
               <div class="degrau" data-degrau="essencial">
                 <div>
                   <div class="degrau_n">Essencial</div>
                   <p class="degrau_e">1 ICP · 1 segmento · setup de sinais e cadência · acompanhamento 30 dias</p>
                 </div>
-                <div class="degrau_v">R$ 5.000</div>
               </div>
               <div class="degrau" data-degrau="growth">
                 <div>
                   <div class="degrau_n">Growth</div>
                   <p class="degrau_e">2 ICPs · integração com CRM · treinamento do time · acompanhamento 90 dias</p>
                 </div>
-                <div class="degrau_v">R$ 9–12 mil</div>
               </div>
               <div class="degrau" data-degrau="scale">
                 <div>
                   <div class="degrau_n">Scale</div>
                   <p class="degrau_e">Multi-segmento · RevOps completo · recalibragem trimestral</p>
                 </div>
-                <div class="degrau_v">R$ 18–25 mil</div>
               </div>
-            </div>
-
-            <div class="mensalidade">
-              <span class="k">Plataforma · mensalidade a partir de</span>
-              <span class="v">R$ 1.000/mês</span>
             </div>
           </div>
         </div>
@@ -1096,10 +1154,10 @@
 
 </main>
 
-<script src="scripts/raiox-engine.js?v=9" defer></script>
-<script src="scripts/benchmarks.js?v=9" defer></script>
-<script src="scripts/estimadores.js?v=9" defer></script>
-<script src="scripts/apresentacao.js?v=9" defer></script>
-<script src="scripts/calculadora.js?v=9" defer></script>
+<script src="scripts/raiox-engine.js?v=10" defer></script>
+<script src="scripts/benchmarks.js?v=10" defer></script>
+<script src="scripts/estimadores.js?v=10" defer></script>
+<script src="scripts/apresentacao.js?v=10" defer></script>
+<script src="scripts/calculadora.js?v=10" defer></script>
 </body>
 </html>

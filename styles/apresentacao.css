@@ -438,11 +438,64 @@ textarea.f { resize: none; line-height: 1.5; }
 .pit-note {
   border-left: 2px solid var(--orange);
   padding-left: 22px;
-  margin-top: 26px;
+  margin-top: var(--s4);
   display: none;
 }
 .pit-note.is-on { display: block; }
 .pit-note p { margin: 0 0 6px; font-size: 1.0625rem; color: var(--text-d-bg); }
+
+/* ---- A âncora de investimento, ainda no Pit 01 ----
+   Ele declara a faixa ANTES de ver qualquer número nosso. É esse valor
+   que define o degrau lá na frente — por isso a pergunta mora aqui, e
+   não na tela de preço. */
+.budget {
+  display: none;
+  margin-top: var(--s4);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+.budget.is-on { display: block; }
+.budget_q {
+  margin: 0 0 var(--s3);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--white);
+}
+.budget_escada { display: flex; flex-wrap: wrap; gap: var(--s1); margin-bottom: var(--s3); }
+.budget_op {
+  border: 1px solid var(--line);
+  border-radius: 1600px;
+  padding: 9px 18px;
+  background: transparent;
+  color: var(--text-d-bg);
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: var(--t-button);
+}
+.budget_op:hover { border-color: var(--orange); color: var(--orange); }
+.budget_op.is-on {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
+}
+.budget_reg { display: flex; align-items: center; gap: var(--s2); }
+.budget_reg label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.budget_reg .f { width: 160px; }
+.budget_eco {
+  margin: var(--s3) 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-secondary-d);
+}
+.budget_eco b { color: var(--orange); font-weight: 700; }
 
 /* ---------------------------------------------------------------
    8. EMPILHAMENTO (deck 3) — dor → o que mostra → o dia dele
@@ -490,33 +543,54 @@ textarea.f { resize: none; line-height: 1.5; }
 /* ---------------------------------------------------------------
    9. VÍDEO (deck 4)
    --------------------------------------------------------------- */
-.video-frame {
-  border: 1px solid var(--line);
-  border-radius: var(--r3);
-  overflow: hidden;
-  background-color: #08080a;
-  aspect-ratio: 16 / 9;
+/* ---- Demonstração ao vivo, no lugar do vídeo gravado ---- */
+.demo {
   display: grid;
-  place-items: center;
-  position: relative;
-  /* Cabe na altura da janela sem gerar scroll durante a call. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s4);
+  align-items: start;
+}
+.demo_btn {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
   width: 100%;
-  max-width: calc((100dvh - 330px) * 16 / 9);
-  margin-inline: auto;
+  text-align: left;
+  border: 1px solid var(--orange);
+  border-radius: var(--r2);
+  background-color: rgba(255, 90, 31, 0.09);
+  padding: var(--cp3);
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--t-button);
 }
-.video-frame video { width: 100%; height: 100%; object-fit: contain; display: block; }
-.video-missing { text-align: center; padding: 32px; }
-.video-missing .mono {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary-d);
-}
-.video-missing code {
-  color: var(--orange);
+.demo_btn:hover { background-color: rgba(255, 90, 31, 0.18); transform: translateY(-1px); }
+.demo_ic { color: var(--orange); line-height: 0; flex: none; }
+.demo_t { display: block; font-size: 1.25rem; font-weight: 600; }
+.demo_d {
+  display: block;
+  margin-top: 4px;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary-d);
+  word-break: break-all;
 }
+.demo_roteiro {
+  border: 1px solid var(--line);
+  border-radius: var(--r2);
+  background-color: #101114;
+  padding: var(--cp3);
+}
+.demo_passos { margin: 0; padding-left: 20px; }
+.demo_passos li {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-d-bg);
+  margin-bottom: 6px;
+}
+.demo_passos li:last-child { margin-bottom: 0; color: var(--text-secondary-d); }
 
 /* ---------------------------------------------------------------
    10. PROVA VIVA (deck 5) — "tu viveu isso"
@@ -626,7 +700,79 @@ textarea.f { resize: none; line-height: 1.5; }
   color: var(--white);
 }
 
-.degraus { display: grid; gap: 12px; }
+/* ---- O preço: UM número na tela ----
+   Três valores comparáveis viram cardápio e o lead ancora no menor. O
+   número sai da faixa que ele declarou no Pit 01; o escopo dos outros
+   degraus aparece embaixo, sem valor. */
+.preco {
+  border: 1px solid rgba(255, 90, 31, 0.45);
+  border-radius: var(--r2);
+  background-color: rgba(255, 90, 31, 0.07);
+  padding: var(--cp3);
+}
+.preco_linha {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s3);
+  flex-wrap: wrap;
+}
+.preco_k {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.preco_v {
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+}
+.preco_edit { display: flex; align-items: center; gap: var(--s1); }
+.preco_edit label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary-d);
+}
+.preco_edit .f { width: 130px; }
+.preco_nota {
+  margin: var(--s2) 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-d-bg);
+}
+.preco_mensal {
+  margin-top: var(--s3);
+  padding-top: var(--s3);
+  border-top: 1px solid rgba(255, 90, 31, 0.28);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+}
+.preco_mensal .k { font-size: 0.9375rem; color: var(--text-d-bg); }
+.preco_mensal .v {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.preco_mensal .v small {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary-d);
+}
+
+.degraus { display: grid; gap: var(--s1); }
 .degrau {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -1745,7 +1891,7 @@ ul.densa { margin: 0; padding: 0; }
   /* Abaixo disso o topo não comporta marca + números + ferramentas.
      Os três números seguem visíveis no Raio-X. */
   .hud { display: none; }
-  .mercado, .frentes { grid-template-columns: 1fr; }
+  .mercado, .frentes, .demo { grid-template-columns: 1fr; }
   .contraste { grid-template-columns: 1fr; }
   .contraste_seta { transform: rotate(90deg); justify-self: center; }
   .fm_faixa { grid-template-columns: 1fr; gap: 8px; max-width: 100% !important; }

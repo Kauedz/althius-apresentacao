@@ -91,6 +91,51 @@ SVG recalcula ao vivo, inclusive o restante (SOM − sinal).
 
 ---
 
+## O preço: um número, não três
+
+Três valores comparáveis na tela viram cardápio — e o lead ancora no menor, mesmo quando
+o menor não resolve o problema dele. Por isso:
+
+**A âncora nasce no Pit 01.** Depois da nota, aparece a pergunta *"para resolver isso,
+quanto vocês têm disponível para investir hoje?"*, com a escada de faixas
+(até 5 · 5–10 · 10–20 · 20–40 · acima de 40 mil) e campo livre. Ele declara **antes** de
+ver qualquer número nosso.
+
+**A faixa define o degrau e o preço de partida.** Escolheu 10–20 mil → escopo Growth,
+preço sugerido R$ 15.000. O closer ajusta no campo ao lado do número.
+
+**Na tela de investimento aparece um preço só**, ao lado dos números dele, com a frase de
+apoio recalculando sozinha:
+
+> *"Dentro da faixa que você falou (R$ 15.000) e equivale a 4 dias do que hoje deixa de
+> entrar ou a 11 reuniões do custo atual."*
+
+Se o closer subir o preço acima do que ele declarou, a frase troca para **"Acima da faixa
+que você falou"** — não dá para afirmar que cabe quando não cabe.
+
+Os três degraus continuam embaixo, mas **como escopo, sem valor**. Ele vê que existe algo
+acima e algo abaixo sem ter três números para comparar.
+
+**Mensalidade: R$ 500 por usuário.**
+
+Onde mexer: `FAIXAS_BUDGET` e `MENSALIDADE_USUARIO` em
+[`scripts/apresentacao.js`](scripts/apresentacao.js).
+
+---
+
+## A plataforma ao vivo (tela 17)
+
+No lugar do vídeo gravado, um botão que abre
+`https://app.althius.com.br/comando-do-dia` em outra aba, com o roteiro de 3 minutos ao
+lado: a conta dele com o sinal → decisores mapeados → cadência → volta.
+
+Troque o endereço com `?app=URL` ou em `APP_URL` no `apresentacao.js`.
+
+> Deixe a aba já logada antes da call. Procurar login na frente do lead derruba a
+> autoridade que a tela anterior construiu.
+
+---
+
 ## Índice para saltar telas (tecla `I`)
 
 São 21 telas. Nem toda call comporta todas. O índice lista tudo, marca as **opcionais**
@@ -122,10 +167,10 @@ Três atos: **diagnóstico** (1–5) · **predisposição** (6) · **Pit 02** (7
 | 14 | Os 9 processos ᵒᵖᶜ — 8 | Revenue OS | Com alternador *construímos* / *otimizamos*. |
 | 15 | TAM · SAM · SOM — 9 | Revenue OS | Anéis concêntricos + as duas frentes saindo do SOM. |
 | 16 | Dado × orquestração — 10 | Revenue OS | Comparativo com ferramenta de dados + as 14 motions. |
-| 17 | O vídeo — 11 | 48, 49 | Vídeo da plataforma, 2–3 min. |
+| 17 | A plataforma ao vivo — 11 | 48, 49 | Botão que abre o app numa aba + roteiro de 3 min. |
 | 18 | Você viveu isso — 12 | 48, 49 | Detecção → decisores → ligação → hoje, com o print do sinal. |
 | 19 | Plano de 14 dias — 13 | 49 | Kickoff → ICP → sinais → primeiras reuniões. |
-| 20 | Investimento — 14 | 50, 55, 57 | Degraus **ao lado dos números dele**. |
+| 20 | Investimento — 14 | 50, 55, 57 | **Um preço**, calibrado pela faixa que ele declarou. |
 | 21 | Fechamento | 50 | Kickoff, dia e hora. |
 
 ᵒᵖᶜ = marcada como opcional no índice.
@@ -328,11 +373,9 @@ o resultado pronto.
 
 | O quê | Onde | Estado |
 |---|---|---|
-| Vídeo da plataforma (2–3 min, cortado) | `assets/video/plataforma.mp4` | **pendente** — a tela 11 mostra um placeholder. Alternativa: abrir com `?video=URL`. |
 | Print do sinal (a vaga + datas) | subido no pré-call | por conta — troque a cada call. |
 
-O vídeo não quebra a apresentação se faltar. Se o mp4 passar de 100 MB, o GitHub recusa —
-use Git LFS ou hospede o vídeo e passe `?video=`.
+O vídeo gravado deixou de existir: a tela 17 abre a plataforma ao vivo.
 
 ---
 
@@ -412,7 +455,10 @@ assets/video/           coloque plataforma.mp4 aqui
 
 | O quê | Onde |
 |---|---|
-| Degraus e mensalidade | `apresentacao.html` → `#degraus`, `.mensalidade` |
+| Escopo dos degraus | `apresentacao.html` → `#degraus` |
+| Faixas de investimento e preços sugeridos | `scripts/apresentacao.js` → `FAIXAS_BUDGET` |
+| Mensalidade por usuário | `scripts/apresentacao.js` → `MENSALIDADE_USUARIO` |
+| Endereço da plataforma | `scripts/apresentacao.js` → `APP_URL` |
 | Módulos da plataforma | `apresentacao.html` → `.modulos` |
 | Dados de mercado e fontes | `scripts/benchmarks.js` → `DADOS` |
 | Faixas e fórmulas dos estimadores | `scripts/estimadores.js` → `ESTIMADORES` |

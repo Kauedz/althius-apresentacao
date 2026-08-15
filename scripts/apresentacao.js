@@ -42,6 +42,8 @@
     mapaOrigem: '', mapaAbordagem: '', mapaReuniao: '', mapaProposta: '', mapaContrato: '',
     vazamentos: [],
     notaPit: null,
+    // Quanto ele declarou ter para investir (Pit 01) e o preço que sai disso.
+    budget: null, precoEstrutura: null,
     fraseGap: '',
     stack: JSON.parse(JSON.stringify(STACK_PADRAO)),
     degrau: null,
@@ -60,6 +62,25 @@
   var TEXTO = { empresa: 1, dataDeteccao: 1, dataLigacao: 1, dorLiteral: 1, fraseGap: 1,
                 mapaOrigem: 1, mapaAbordagem: 1, mapaReuniao: 1, mapaProposta: 1, mapaContrato: 1,
                 kickoffDia: 1, kickoffHora: 1 };
+
+  /* Endereço da plataforma, aberto ao vivo no lugar do vídeo gravado.
+     Troque aqui ou abra a apresentação com ?app=URL. */
+  var APP_URL = 'https://app.althius.com.br/comando-do-dia';
+
+  /* Mensalidade por usuário. */
+  var MENSALIDADE_USUARIO = 500;
+
+  /* Escada de ancoragem do investimento, perguntada no Pit 01.
+     `ate` é o teto da faixa; `sugerido` é o que vai para a tela de preço. */
+  var FAIXAS_BUDGET = [
+    { rotulo: 'Até R$ 5 mil',      ate: 5000,   sugerido: 5000,  degrau: 'essencial' },
+    { rotulo: 'R$ 5 a 10 mil',     ate: 10000,  sugerido: 8000,  degrau: 'essencial' },
+    { rotulo: 'R$ 10 a 20 mil',    ate: 20000,  sugerido: 15000, degrau: 'growth'    },
+    { rotulo: 'R$ 20 a 40 mil',    ate: 40000,  sugerido: 30000, degrau: 'scale'     },
+    { rotulo: 'Acima de R$ 40 mil', ate: null,  sugerido: 50000, degrau: 'scale'     }
+  ];
+
+  var NOME_DEGRAU = { essencial: 'Essencial', growth: 'Growth', scale: 'Scale' };
 
   /* As 14 motions de Go-to-Market do documento Revenue OS. */
   var MOTIONS = [
@@ -174,6 +195,22 @@
       ? E.num(som - sinal, 0)
       : '7.350';
 
+    // Investimento: a faixa que ele declarou vira degrau e preço de partida.
+    v.budgetFmt = estado.budget !== null ? E.moeda(estado.budget) : '—';
+    v.degrauNome = estado.degrau ? NOME_DEGRAU[estado.degrau] : 'escopo a definir';
+    v.precoEstrutura = estado.precoEstrutura !== null
+      ? E.moeda(estado.precoEstrutura)
+      : '—';
+
+    v.mensalidade = E.moeda(MENSALIDADE_USUARIO) + '/mês';
+
+    v.budgetLeitura = '';
+    if (estado.budget !== null) {
+      var f = faixaDoBudget(estado.budget);
+      if (f) v.budgetLeitura = ' — pelo que ele declarou, o escopo que cabe é o '
+        + NOME_DEGRAU[f.degrau] + '.';
+    }
+
     return v;
   }
 
@@ -223,6 +260,9 @@
     atualizarMercado();
     sincronizarEstimados();
     atualizarConfianca();
+    sincronizarBudget();
+    sincronizarDegraus();
+    atualizarNotaPreco(r);
 
     var eco = document.getElementById('escopoEmpresa');
     if (eco) eco.textContent = estado.empresa || 'sua empresa';
@@ -406,25 +446,105 @@
     });
   }
 
-  function montarVideo() {
-    var url = new URLSearchParams(location.search).get('video') || 'assets/video/plataforma.mp4';
-    var frame = document.getElementById('videoFrame');
-    var faltando = document.getElementById('videoMissing');
+  /** Liga o preço aos números dele: o preço nunca aparece pelado. */
+  function atualizarNotaPreco(r) {
+    var nota = document.getElementById('precoNota');
+    if (!nota) return;
 
-    var video = document.createElement('video');
-    video.controls = true;
-    video.preload = 'metadata';
-    video.playsInline = true;
-    video.src = url;
-    video.hidden = true;
+    if (estado.precoEstrutura === null) {
+      nota.textContent = 'Registre a faixa no Pit 01 — o valor sai dela e você ajusta aqui.';
+      return;
+    }
 
-    video.addEventListener('loadedmetadata', function () {
-      video.hidden = false;
-      faltando.hidden = true;
+    var partes = [];
+    if (estado.budget !== null) {
+      // Se o closer subiu o preço acima do que ele declarou, não dá para
+      // dizer que cabe na faixa — a frase mudaria de verdadeira para falsa.
+      partes.push(estado.precoEstrutura <= estado.budget
+        ? 'Dentro da faixa que você falou (' + E.moeda(estado.budget) + ')'
+        : 'Acima da faixa que você falou (' + E.moeda(estado.budget) + ')');
+    }
+    if (r.receitaExibicao && r.receitaExibicao > 0) {
+      // Abaixo de um mês, "0,1 mês" não diz nada — em dias o número dói.
+      var meses = estado.precoEstrutura / r.receitaExibicao;
+      partes.push(meses < 1
+        ? 'e equivale a ' + E.num(Math.max(meses * 30, 1), 0)
+          + ' dias do que hoje deixa de entrar'
+        : 'e equivale a ' + E.num(meses, 1)
+          + ' ' + (meses < 2 ? 'mês' : 'meses') + ' do que hoje deixa de entrar');
+    }
+    if (r.custoPorReuniao && r.custoPorReuniao > 0) {
+      partes.push('ou a ' + E.num(estado.precoEstrutura / r.custoPorReuniao, 0)
+        + ' reuniões do custo atual');
+    }
+    nota.textContent = partes.length ? partes.join(' ') + '.' : '';
+  }
+
+  /* -----------------------------------------------------------------
+     A ÂNCORA DE INVESTIMENTO — perguntada no Pit 01
+     Ele declara a faixa antes de ver qualquer número nosso. O degrau e o
+     preço sugerido saem daí; o closer ajusta na tela de investimento.
+     ----------------------------------------------------------------- */
+  function faixaDoBudget(valor) {
+    if (valor === null || valor === undefined) return null;
+    for (var i = 0; i < FAIXAS_BUDGET.length; i++) {
+      var f = FAIXAS_BUDGET[i];
+      if (f.ate === null || valor <= f.ate) return f;
+    }
+    return FAIXAS_BUDGET[FAIXAS_BUDGET.length - 1];
+  }
+
+  function montarBudget() {
+    var escada = document.getElementById('budgetEscada');
+    if (!escada) return;
+
+    escada.innerHTML = FAIXAS_BUDGET.map(function (f, i) {
+      return '<button type="button" class="budget_op" data-faixa="' + i + '">'
+        + f.rotulo + '</button>';
+    }).join('');
+
+    escada.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-faixa]');
+      if (!b) return;
+      var f = FAIXAS_BUDGET[parseInt(b.getAttribute('data-faixa'), 10)];
+      estado.budget = f.sugerido;
+      // A faixa define o degrau e o preço de partida; o closer ajusta depois.
+      estado.degrau = f.degrau;
+      estado.precoEstrutura = f.sugerido;
+      render();
     });
-    video.addEventListener('error', function () { video.remove(); });
+  }
 
-    frame.appendChild(video);
+  function sincronizarBudget() {
+    var caixa = document.getElementById('budget');
+    if (!caixa) return;
+    // Só aparece depois da nota: primeiro a predisposição, depois a faixa.
+    caixa.classList.toggle('is-on', estado.notaPit !== null);
+
+    var f = faixaDoBudget(estado.budget);
+    document.querySelectorAll('[data-faixa]').forEach(function (b) {
+      var idx = parseInt(b.getAttribute('data-faixa'), 10);
+      b.classList.toggle('is-on', !!f && FAIXAS_BUDGET[idx] === f);
+    });
+
+    var eco = document.getElementById('budgetEco');
+    if (eco) eco.hidden = estado.budget === null;
+  }
+
+  /* -----------------------------------------------------------------
+     A PLATAFORMA AO VIVO — no lugar do vídeo gravado
+     ----------------------------------------------------------------- */
+  function montarDemo() {
+    var botao = document.getElementById('demoAbrir');
+    if (!botao) return;
+    var url = new URLSearchParams(location.search).get('app') || APP_URL;
+
+    var rotulo = document.getElementById('demoUrl');
+    if (rotulo) rotulo.textContent = url.replace(/^https?:\/\//, '');
+
+    botao.addEventListener('click', function () {
+      window.open(url, 'althius-app', 'noopener');
+    });
   }
 
   /* -----------------------------------------------------------------
@@ -1190,11 +1310,12 @@
     montarStack();
     montarMapa();
     montarDegraus();
-    montarVideo();
     montarUploadSinal();
     montarNaoSei();
     montarMercado();
     montarMotions();
+    montarBudget();
+    montarDemo();
     montarEstimadores();
     montarProcessos();
     montarIndice();
