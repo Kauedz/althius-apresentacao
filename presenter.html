@@ -9,80 +9,144 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="assets/img/althius-mark.png" type="image/x-icon">
-  <link href="styles/main.css?v=4" rel="stylesheet" type="text/css">
+  <link href="styles/main.css?v=6" rel="stylesheet" type="text/css">
   <style>
     /* Janela privada do closer. NUNCA compartilhe esta janela. */
     body { padding: 0; }
-    .pv { padding: 20px 22px 48px; max-width: 720px; margin-inline: auto; }
+    .pv { padding: 18px 20px 56px; max-width: 760px; margin-inline: auto; }
 
     .pv_aviso {
       border: 1px solid rgba(231,100,100,.45);
       background-color: rgba(231,100,100,.08);
       color: #e76464;
       border-radius: 10px;
-      padding: 9px 12px;
+      padding: 8px 12px;
       font-family: var(--font-mono);
       font-weight: 500;
-      font-size: .625rem;
+      font-size: .5625rem;
       letter-spacing: .1em;
       text-transform: uppercase;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .pv_top {
       display: flex; align-items: baseline; justify-content: space-between;
-      gap: 12px; padding-bottom: 14px; margin-bottom: 18px;
+      gap: 12px; padding-bottom: 12px; margin-bottom: 14px;
       border-bottom: 1px solid var(--line);
     }
-    .pv_nome { font-size: 1.375rem; font-weight: 700; color: var(--white); }
-    .pv_pos {
-      font-family: var(--font-mono); font-weight: 500; font-size: .75rem;
-      letter-spacing: .1em; color: var(--text-secondary-d);
+    .pv_nome { font-size: 1.25rem; font-weight: 700; color: var(--white); }
+    .pv_meta {
+      font-family: var(--font-mono); font-weight: 500; font-size: .6875rem;
+      letter-spacing: .1em; color: var(--text-secondary-d); white-space: nowrap;
     }
+    .pv_meta b { color: var(--orange); }
 
-    .pv_nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
-    .pv_num { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+    .pv_nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+    .pv_num { border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; }
     .pv_num .k {
-      font-family: var(--font-mono); font-weight: 500; font-size: .5625rem;
+      font-family: var(--font-mono); font-weight: 500; font-size: .5rem;
       letter-spacing: .1em; text-transform: uppercase; color: var(--text-secondary-d);
     }
-    .pv_num .v { font-size: 1.0625rem; font-weight: 700; color: var(--orange); margin-top: 3px; }
+    .pv_num .v { font-size: 1rem; font-weight: 700; color: var(--orange); margin-top: 2px; }
 
-    .bloco { border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+    .bloco { border-radius: 11px; padding: 12px 15px; margin-bottom: 10px; }
     .bloco .rot {
-      font-family: var(--font-mono); font-weight: 500; font-size: .625rem;
-      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px;
+      font-family: var(--font-mono); font-weight: 500; font-size: .5625rem;
+      letter-spacing: .13em; text-transform: uppercase; margin-bottom: 7px;
     }
-    .bloco p { margin: 0 0 8px; font-size: .9375rem; line-height: 1.55; }
+    .bloco p { margin: 0 0 7px; font-size: .9375rem; line-height: 1.58; }
     .bloco p:last-child { margin-bottom: 0; }
+    .bloco b { font-weight: 600; }
 
-    /* Código de cores do playbook (slide 2) */
+    /* Você fala — texto literal, pode ler assim */
     .b-fala   { background-color: rgba(255,90,31,.1); border: 1px solid rgba(255,90,31,.4); }
     .b-fala .rot { color: var(--orange); }
     .b-fala p { color: var(--white); }
 
+    /* A pergunta que carrega a tela */
+    .b-pergunta { background-color: rgba(255,90,31,.16); border: 1px solid var(--orange); }
+    .b-pergunta .rot { color: var(--orange); }
+    .b-pergunta p { color: var(--white); font-size: 1.0625rem; font-weight: 500; line-height: 1.5; }
+
+    /* Pausa — o ponto de silêncio */
+    .b-pausa { background-color: #0a0d08; border: 1px solid rgba(200,236,133,.35); }
+    .b-pausa .rot { color: #c8ec85; }
+    .b-pausa p { color: var(--text-d-bg); }
+
+    /* Por que funciona */
     .b-tecnica { background-color: rgba(255,255,255,.03); border: 1px solid var(--line); }
     .b-tecnica .rot { color: var(--text-secondary-d); }
     .b-tecnica p { color: var(--text-d-bg); }
 
-    .b-calaboca { background-color: #08080a; border: 1px solid var(--line); }
-    .b-calaboca .rot { color: #c8ec85; }
-    .b-calaboca p { color: var(--text-d-bg); }
+    /* Se ele disser X, você responde Y */
+    .b-objecao { background-color: rgba(89,89,226,.08); border: 1px solid rgba(120,120,230,.35); }
+    .b-objecao .rot { color: #8f8fe8; }
+    .b-objecao p { color: var(--text-d-bg); }
+    .b-objecao b { color: var(--white); }
 
-    .b-nunca { background-color: #08080a; border: 1px solid rgba(231,100,100,.4); }
-    .b-nunca .rot { color: #e76464; }
-    .b-nunca p { color: var(--text-d-bg); }
+    /* Como emendar na próxima tela */
+    .b-ponte { background-color: rgba(255,255,255,.02); border: 1px dashed var(--line); }
+    .b-ponte .rot { color: var(--text-secondary-d); }
+    .b-ponte p { color: var(--text-d-bg); font-style: italic; }
 
-    .pv_off { text-align: center; padding: 60px 20px; color: var(--text-secondary-d); }
+    /* O que derruba a etapa */
+    .b-cuidado { background-color: #08080a; border: 1px solid rgba(231,100,100,.4); }
+    .b-cuidado .rot { color: #e76464; }
+    .b-cuidado p { color: var(--text-d-bg); }
+
+    .pv_off { text-align: center; padding: 56px 20px; color: var(--text-secondary-d); }
+
+    /* Régua de tom, sempre a um clique */
+    .pv_tom {
+      border: 1px solid var(--line); border-radius: 11px; margin-bottom: 14px; overflow: hidden;
+    }
+    .pv_tom summary {
+      cursor: pointer; padding: 10px 14px; list-style: none;
+      font-family: var(--font-mono); font-weight: 500; font-size: .5625rem;
+      letter-spacing: .13em; text-transform: uppercase; color: var(--text-secondary-d);
+    }
+    .pv_tom summary::-webkit-details-marker { display: none; }
+    .pv_tom summary::before { content: "▸ "; color: var(--orange); }
+    .pv_tom[open] summary::before { content: "▾ "; }
+    .pv_tom summary:hover { color: var(--white); }
+    .pv_tom_corpo { padding: 0 14px 14px; }
+    .pv_tom_corpo p { margin: 0 0 8px; font-size: .875rem; line-height: 1.55; color: var(--text-d-bg); }
+    .pv_tom_corpo p:last-child { margin-bottom: 0; }
+    .pv_tom_corpo .nao { color: #e76464; }
+    .pv_tom_corpo .sim { color: #c8ec85; }
   </style>
 </head>
 <body>
   <div class="pv">
     <div class="pv_aviso">Janela privada — não compartilhe esta tela</div>
 
+    <details class="pv_tom">
+      <summary>Régua de tom · Althius</summary>
+      <div class="pv_tom_corpo">
+        <p><b>Incisivo pelo critério, não pelo tom.</b> A firmeza vem de ter régua clara e
+           dizer não quando é não — nunca de falar grosso. Quem precisa subir a voz não tem
+           argumento.</p>
+        <p><b>Confronte o número, nunca a pessoa.</b> "Esses dois números não fecham entre si"
+           funciona. "Você não está entendendo" perde a reunião.</p>
+        <p><b>Enquadre antes de apertar.</b> Toda pergunta dura vem depois do motivo dela:
+           "vou te perguntar uma coisa que pode soar direta, e já explico por quê".</p>
+        <p><b>Saída digna sempre aberta.</b> "Se não fizer sentido, a gente encerra sem
+           problema" tira a pressão e aumenta a decisão. E é verdade — vender errado custa
+           mais caro que não vender.</p>
+        <p><b>Somos dois, e entregamos junto.</b> Isso é autoridade natural: a agenda é
+           curta de verdade, então a gente também escolhe. Diga isso como fato, não como
+           ameaça.</p>
+        <p class="nao">✕ Nunca: "você não entendeu" · "me convence" · "não existe vou
+           pensar" · "a gente desliga essa call agora" · qualquer coisa que soe como
+           desafio pessoal.</p>
+        <p class="sim">✓ Sempre: pergunta em vez de acusação · dado em vez de adjetivo ·
+           silêncio em vez de insistência.</p>
+      </div>
+    </details>
+
     <div class="pv_top">
       <span class="pv_nome" id="pvNome">Aguardando…</span>
-      <span class="pv_pos" id="pvPos"></span>
+      <span class="pv_meta" id="pvMeta"></span>
     </div>
 
     <div class="pv_nums">
@@ -100,198 +164,387 @@
 (function () {
   'use strict';
 
-  /* Notas por slide — Playbook Comercial da Althius, seção 2.
-     fala = literal · tecnica = mecanismo · calaboca = silêncio · nunca = erro */
-  var NOTAS = {
-    capa: [
-      { t: 'fala', p: ['“Eu sei que fui eu que te procurei. Você me falou que o time gera [X] reuniões/semana custando [Y] por mês, e que o vendedor novo entra sem máquina. Se você está aqui, é porque isso incomoda de verdade — então a gente vai seguir um fluxo.',
-                       'Primeiro eu vou te avaliar, porque pode ser que eu nem venda nada aqui pra você. E no fim, o combinado é: você me diz sim ou não. ‘Vou pensar’ não ajuda nem você nem eu. Fechado?”'] },
-      { t: 'tecnica', p: ['Três coisas: (1) retoma a cadeira — você correu atrás na prospecção, aqui quem avalia é você; (2) devolve o que ele falou, nunca “me conta o que te traz aqui”; (3) o acordo sim-ou-não mata o “vou pensar” duas horas antes de ele nascer.'] },
-      { t: 'nunca', p: ['Confirmar o segundo decisor só agora. Sócio/CFO foi antecipado na ligação — se não veio, pergunte na abertura.'] }
-    ],
+  /* =====================================================================
+     ROTEIRO DA REUNIÃO — Althius
+     Estrutura do Método Closer Faixa Preta (Igor Mello), reescrita na
+     linguagem dos sócios: incisiva pelo critério, neutra no tom.
 
-    raiox: [
-      { t: 'fala', p: ['<b>Bloco A · a meta</b> — “Primeira coisa: qual a meta de faturamento do trimestre? … E o ticket médio? … Então pra bater isso precisa de [N] vendas, correto? A planilha faz essa conta com a gente.”',
-                       '<b>Bloco B · a máquina</b> — “E o que te fez abrir essa vaga agora? O que travou pra precisar de mais gente?”',
-                       '<b>Bloco C · o custo</b> — “Vamos pros números, vou preenchendo e você me corrige: quantas pessoas no comercial? Folha? Ferramentas? … Olha o que a planilha está dizendo: cada reunião realizada custa [Z] pra vocês hoje. Esse número faz sentido? Você já tinha visto ele?”',
-                       '<b>Bloco D · o gap</b> — “Pra tua meta precisava de [N] reuniões/mês. Tua máquina gera [M]. Esse buraco é o problema que a gente está aqui pra olhar. Concorda com essa conta ou quer ajustar algum número?”',
-                       '<b>Bloco E</b> — “Já tentaram fechar esse gap antes? O que aconteceu?” · “Se não resolver agora, qual o plano?” · “Por que agora vai dar certo?”'] },
-      { t: 'calaboca', p: ['No Bloco C: ninguém nunca viu o próprio custo por reunião. Deixe ele digerir — o silêncio vale mais que qualquer argumento.',
-                           'No Bloco E: ele vai se justificar, e quem se justifica se compromete.'] },
-      { t: 'tecnica', p: ['“O que te fez abrir a vaga” é o sinal virando pergunta. Anote como ELE fala, não como você resumiria — essas palavras voltam literais no Pit 02.',
-                          'O vilão é o gap, não o time dele. Você nunca disse que a operação é amadora: mostrou um número neutro calculado com os dados dele.',
-                          'Se o alerta de incoerência acender: “Você me disse [A]%, mas os seus próprios números dizem [B]%. Qual dos dois a gente usa?”'] },
-      { t: 'tecnica', p: ['<b>Quando ele não souber o número — e vai acontecer:</b> clique no <b>?</b> ao lado do campo. Cada um tem dois ou três caminhos: faixa para escolher, ou dedução a partir do que ele já respondeu. Nunca deixe um campo vazio travar o diagnóstico.',
-                          'O campo estimado fica laranja tracejado, e o medidor no rodapé conta quantos são.',
-                          '<b>Use o medidor como argumento, com cuidado:</b> “de sete números, quatro a gente estimou junto. Isso não invalida a conta — mas repara que a informação não estava na mão. O que não é medido não é gerenciado.” Dito assim vira constatação. Dito com deboche vira defesa.'] },
-      { t: 'tecnica', p: ['<b>Antecipação total, antes de sair do diagnóstico:</b> “Se fizer sentido avançar, quem assina com você? Sócio, CFO? … E investimento nessa faixa vocês decidem como — à vista, parcelado?” Sócio e forma de pagamento morrem AQUI.'] },
-      { t: 'nunca', p: ['Dar aula. No diagnóstico você coleta — o médico não ensina enquanto examina.'] }
-    ],
+     fala     texto literal, pode ler assim
+     pergunta a pergunta que carrega a tela
+     pausa    onde calar e deixar o silêncio trabalhar
+     tecnica  por que funciona
+     objecao  se ele disser X, você responde Y
+     ponte    como emendar na próxima tela
+     cuidado  o que derruba a etapa
+     ===================================================================== */
+  var ROTEIRO = {
 
-    mapa: [
-      { t: 'fala', p: ['“Agora me desenha junto: como nasce uma reunião no seu comercial hoje? Passo a passo — de onde vem o nome, quem toca, por onde.”'] },
-      { t: 'tecnica', p: ['Cada vazamento que ELE declarar (“aí depende de indicação”, “aqui ninguém faz follow-up”) você marca em laranja. No fim o mapa está cheio de laranja — e quem pintou foi ele. O desenho argumenta sozinho que a máquina tem furo.'] }
-    ],
+    capa: { tempo: '2 min', blocos: [
+      { t: 'fala', p: [
+        '“[Nome], antes de começar: fui eu que procurei vocês, então deixa eu devolver o que você me contou na ligação. Você falou que o time gera [X] reuniões por semana, custando cerca de [Y] por mês, e que o vendedor novo entra sem uma máquina pronta pra abastecer ele. É isso?”',
+        '“Então vou te propor um fluxo pra essa meia hora. Primeiro eu te avalio — e falo com sinceridade: pode ser que no fim eu conclua que não faz sentido pra vocês, e nesse caso eu vou te dizer isso na hora.”',
+        '“Depois, se fizer sentido, eu te mostro como a gente resolve. E aí eu vou te pedir uma resposta clara, sim ou não. Se for não, tudo bem — eu prefiro saber hoje do que ficar te procurando. Combinado assim?”'] },
+      { t: 'tecnica', p: [
+        'Três coisas acontecem nessa abertura. <b>Um:</b> você retoma a cadeira. Correu atrás na prospecção, mas aqui quem conduz é você. <b>Dois:</b> devolve o que ele já falou, em vez de pedir pra ele repetir — quanto mais sênior, menos paciência ele tem pra recontar a história. <b>Três:</b> o acordo de resposta clara mata o "vou pensar" trinta minutos antes de ele nascer.',
+        'Repare que o acordo é apresentado como <b>cortesia com o tempo dele</b>, não como exigência sua. É a mesma trava, com outra embalagem.'] },
+      { t: 'cuidado', p: [
+        'Não abra com "me conta o que te traz aqui". Ele já contou na ligação, e repetir sinaliza que você não anotou.',
+        'Se o sócio ou o financeiro ficou de entrar e não entrou, pergunte agora: “o [nome] ia participar, né? Prefere que a gente espere ou seguimos e eu te mando o resumo pra ele?” Descobrir isso no fim é tarde.'] },
+      { t: 'ponte', p: [
+        '“Então vamos começar pelos números. Vou compartilhar uma planilha e preencher aqui com você — me corrige onde eu errar.”'] }
+    ]},
 
-    pit01: [
-      { t: 'fala', p: ['<b>Volta 1</b> — “De 0 a 10, o quanto você quer resolver esse gap?”',
-                       '<b>Volta 2 · a inversão</b> — ele responde falando da dor. Aí: “Não, você não entendeu a pergunta. Por que [nota] que EU tenho que avançar com você? Porque eu também escolho — quem entrega aqui somos eu e meu sócio, e a agenda é curta. Me convence.”',
-                       '<b>Volta 3 · antecipação nominal</b> — “Eu odeio avançar com o cara que quer agora e no fim tenta se burlar. Então já deixa combinado: não posso ouvir lá na frente ‘preciso falar com meu sócio’ — ele já está aqui. Nem ‘vou pensar’ — o combinado é sim ou não. Tamo junto?”'] },
-      { t: 'calaboca', p: ['Deixe ele argumentar. Cada frase é um prego que ELE bate na própria decisão.'] },
-      { t: 'tecnica', p: ['Resposta rápida = bom sinal. Hesitação longa = dor fraca ou desconfiança.',
-                          'Nota baixa é presente: “Sete? Interessante. O que falta pros outros três?” A trava aparece agora, não no fechamento — quando só sobraria desconto.'] }
-    ],
+    raiox: { tempo: '12–15 min · a parte mais longa', blocos: [
+      { t: 'fala', p: [
+        '<b>Bloco A · a meta</b> — “Começando pelo destino: qual a meta de faturamento de vocês pro trimestre? … E o ticket médio de um contrato? … Então pra bater isso precisa de [N] vendas. A planilha já vai fazendo a conta com a gente.”',
+        '<b>Bloco B · o gatilho</b> — “E me conta uma coisa: o que fez vocês abrirem essa vaga agora? O que travou pra precisar de mais gente?”',
+        '<b>Bloco C · o custo</b> — “Agora os números do time. Quantas pessoas no comercial? Folha? Ferramentas? … Olha o que apareceu aqui: cada reunião realizada está custando [Z] pra vocês hoje. Esse número faz sentido pra você? Já tinha visto ele?”',
+        '<b>Bloco D · o gap</b> — “Fechando o ciclo: pra sua meta seriam [N] reuniões por mês. A máquina de hoje entrega [M]. Esse buraco aqui é o que a gente veio olhar. Em receita, ele representa [R$] por mês que não entra. Você concorda com essa conta, ou quer ajustar algum número?”',
+        '<b>Bloco E · histórico e plano B</b> — “Vocês já tentaram fechar esse gap antes? O que aconteceu?” · “Se isso não se resolver nos próximos meses, qual é o plano?” · “E uma que eu pergunto pra todo mundo: por que agora vai dar certo?”'] },
+      { t: 'pergunta', p: [
+        '“Esse número faz sentido pra você? Já tinha visto ele?”'] },
+      { t: 'pausa', p: [
+        '<b>No Bloco C:</b> praticamente ninguém já viu o próprio custo por reunião. Depois de mostrar, pare. Conte até cinco. O silêncio aqui vale mais do que qualquer argumento que você faria.',
+        '<b>No Bloco E:</b> depois de "por que agora vai dar certo", pare de novo. Ele vai se justificar — e quem se justifica se compromete. Não ajude, não complete a frase.'] },
+      { t: 'tecnica', p: [
+        '<b>O vilão é o buraco, nunca o time.</b> Em nenhum momento você diz que a operação é amadora. Você mostra um número neutro que a planilha calculou com os dados que ele mesmo deu. Ninguém precisa se defender de um número.',
+        '<b>Anote as palavras dele, não o seu resumo.</b> "O que fez abrir a vaga" traz a dor com o vocabulário dele. Essas palavras voltam literais no empilhamento, lá no Pit 02 — e é isso que faz ele pensar "isso foi feito pra mim".',
+        '<b>"Concorda ou quer ajustar?"</b> fecha a porta do "esses números não são bem assim" lá no fechamento. Ele valida agora, a conta vira dele.'] },
+      { t: 'tecnica', p: [
+        '<b>Quando ele não souber o número — e vai acontecer:</b> clique no <b>?</b> ao lado do campo. Cada um tem dois ou três caminhos: faixa pra escolher ou dedução a partir do que ele já respondeu. Nunca deixe um campo em branco travar o diagnóstico.',
+        'O campo estimado fica laranja tracejado e o medidor no rodapé conta quantos são.',
+        '<b>Como usar o medidor sem soar arrogante:</b> “De sete números, quatro a gente estimou junto. Isso não invalida a conta — a gente calibra depois. Mas repara que a informação não estava na mão, e isso costuma ser o primeiro sintoma.” Constatação, não deboche.'] },
+      { t: 'objecao', p: [
+        '<b>Se o alerta de incoerência acender:</b> “Deixa eu te mostrar uma coisa. Você estimou [A]% de conversão, mas pelos números que você me deu — [vendas] vendas em [reuniões] reuniões — dá [B]%. Não é crítica, é comum: a gente tende a lembrar das que fecharam. Qual dos dois você prefere que a gente use na conta?”',
+        '<b>“Esses números são chute”</b> → “Chute seu vale mais que precisão minha. E é por isso que eu perguntei em vez de trazer um estudo genérico.”',
+        '<b>“Isso é muita pergunta”</b> → “É. Se eu te mandasse uma proposta sem isso, ela seria um chute caro. Mais cinco minutos e a gente chega no número.”'] },
+      { t: 'cuidado', p: [
+        'Não dê aula aqui. Neste bloco você coleta — o médico não fica ensinando fisiologia enquanto examina. Toda explicação que você entrega agora é valor que você deixa de cobrar depois.',
+        'Não corrija o número dele em voz alta. Ajuste na planilha e deixe a conta falar.'] },
+      { t: 'ponte', p: [
+        '“Os números eu já tenho. Agora eu quero entender o caminho: como nasce uma reunião no comercial de vocês hoje?”'] }
+    ]},
 
-    gap: [
-      { t: 'tecnica', p: ['Este slide é o número dele, puxado do Raio-X. Não explique o número — deixe ele olhar.',
-                          'O vilão da história é o buraco. Ninguém precisa se defender de um número.'] }
-    ],
+    mapa: { tempo: '8–10 min', blocos: [
+      { t: 'fala', p: [
+        '“Me desenha isso junto comigo. Passo a passo: de onde vem o nome, quem faz o primeiro toque, por onde ele passa até virar reunião, e o que acontece depois da proposta.”'] },
+      { t: 'pergunta', p: [
+        '“E nessa etapa aqui, o que costuma travar?”'] },
+      { t: 'tecnica', p: [
+        'Cada vazamento que <b>ele</b> declarar — "aí a gente depende de indicação", "aqui ninguém faz follow-up", "no-show é alto" — você marca a coluna em laranja. No fim, o mapa está pintado, e quem pintou foi ele.',
+        'O desenho argumenta sozinho que a máquina tem furo. Você não precisou dizer nada.',
+        'Anote as frases literais nos campos: elas voltam no empilhamento do Pit 02.'] },
+      { t: 'cuidado', p: [
+        'Não desenhe a máquina ideal. Desenhe a dele, com os buracos. Se você já mostrar a solução aqui, o Pit 02 fica sem novidade.'] },
+      { t: 'ponte', p: [
+        '“Beleza. Eu já tenho o número e já tenho o caminho. Antes de eu te mostrar qualquer coisa nossa, preciso te fazer uma pergunta.”'] }
+    ]},
 
-    mercado: [
-      { t: 'fala', p: ['“Antes de eu te mostrar o que a gente faz, deixa eu te mostrar onde você está. Esses números não são meus — são de estudo público, com a fonte do lado.”',
-                       '“Uma em cada cinco oportunidades vira contrato no mercado. Em 2024 eram três em dez. E 78% dos vendedores não bateram meta ano passado.”',
-                       '“Repara nesse aqui: quem envolve o decisor desde o começo ganha 55% mais. E quem fecha em até 50 dias ganha 47%, contra 20% de quem arrasta.”'] },
-      { t: 'calaboca', p: ['Depois de mostrar o card do decisor, para. Esse número é o que justifica a plataforma inteira — deixa ele fazer a ligação sozinho.'] },
-      { t: 'tecnica', p: ['O objetivo aqui não é assustar: é tirar o problema do colo dele. O gap não é incompetência do time — é o mercado inteiro apertando. Isso baixa a defesa e libera a conversa.',
-                          'Se ele declarou a própria conversão, ela aparece como primeiro card, comparada com a média. Use: "olha onde você está".',
-                          'Se ele NÃO sabia a conversão e você usou a referência de mercado, diga isso em voz alta: "a gente está usando a média do mercado porque você não tinha o número — e não ter esse número já é parte do diagnóstico".'] },
-      { t: 'nunca', p: ['Citar número sem dizer de onde veio. A fonte está na tela justamente para você poder apontar. Um dado que ele não pode conferir vira desconfiança.'] }
-    ],
+    pit01: { tempo: '5 min · o ponto de virada', blocos: [
+      { t: 'fala', p: [
+        '<b>Volta 1</b> — “De 0 a 10, o quanto vocês querem resolver esse gap?”'] },
+      { t: 'fala', p: [
+        '<b>Volta 2 · a inversão</b> — ele vai responder falando da dor dele. Aí você redireciona, com calma: “Perfeito, mas a minha pergunta era outra e eu não fui claro. Não é o quanto vocês querem — é por que eu deveria avançar com vocês. Explico o motivo: quem entrega aqui somos eu e meu sócio, a agenda é curta de verdade, e a gente não pega conta que não vai dar certo. Então me ajuda a entender: o que faz de vocês uma conta que vale essa agenda?”'] },
+      { t: 'fala', p: [
+        '<b>Volta 3 · alinhar o fim, agora</b> — “E deixa eu combinar uma coisa contigo, porque já aconteceu da gente avançar e travar no fim por algo que dava pra resolver no começo. Se fizer sentido lá na frente: a decisão é sua ou tem mais alguém que assina junto? … E investimento nessa faixa vocês costumam resolver como, à vista ou parcelado? … Ótimo. Aí a gente já não tem surpresa no fim.”'] },
+      { t: 'pausa', p: [
+        'Depois da Volta 2, silêncio total. Ele vai citar comprometimento, urgência, time bom, momento certo. <b>Cada frase dessas é um prego que ele bate na própria decisão.</b> Não interrompa, não concorde em voz alta, só anote.'] },
+      { t: 'tecnica', p: [
+        '<b>Por que isso funciona:</b> o cérebro não gosta de se contradizer. Depois que ele argumentou em voz alta por que merece avançar, dizer "não" no fim custa caro pra ele. Você está apertando a mão desde o meio da reunião — o fechamento só confirma.',
+        '<b>A inversão é a parte delicada.</b> Não diga "você não entendeu". Assuma você a falha de clareza: "eu não fui claro". Você redireciona sem tirar ele do lugar confortável — e a pergunta continua de pé.',
+        '<b>A Volta 3 é a antecipação.</b> Sócio e forma de pagamento morrem aqui. Objeção antecipada é objeção que não aparece no fechamento.'] },
+      { t: 'objecao', p: [
+        '<b>Nota 6 ou 7</b> → “Sete é um número honesto, obrigado. O que faltaria pros outros três?” — nota baixa é presente: ou a dor é fraca, ou existe uma trava não dita. Melhor ela aparecer agora, com a reunião inteira pela frente, do que no fim, quando só sobraria desconto.',
+        '<b>Nota 10 respondida rápido demais</b> → “Dez é forte. O que exatamente te faz dar dez?” Confirme que é convicção e não gentileza.',
+        '<b>“Achei essa pergunta estranha”</b> → “Justa. Eu pergunto porque a gente entrega junto e não consegue pegar todo mundo. Prefiro escolher bem do que prometer demais.”'] },
+      { t: 'cuidado', p: [
+        'Não avance com nota baixa sem tratar. Se a dor é fraca de verdade, o certo é encerrar bem: “Pelo que você me falou, isso não é prioridade agora. Prefiro ser honesto e não te tomar tempo — quando virar, me chama.” Metade volta atrás na hora.',
+        'Não use a palavra "convença". Você está avaliando, não desafiando.'] },
+      { t: 'ponte', p: [
+        '“Então tá. Agora inverte: é a minha vez de te mostrar. E eu vou começar pelo número que a gente acabou de achar.”'] }
+    ]},
 
-    som: [
-      { t: 'fala', p: ['“Deixa eu te mostrar como a gente enxerga o seu mercado. Tudo que existe é o TAM. O que você consegue atender é o SAM. O que dá pra conquistar agora é o SOM.”',
-                       '“Dentro desse SOM, nem todo mundo está no momento de comprar. Alguns estão se mexendo agora — abriram vaga, captaram, trocaram de sistema. Esses são os que entram na fila.”',
-                       '“E os outros? Não são lixo. São o pipeline do ano que vem. Enquanto uma frente captura quem já está pronto, a outra constrói demanda em quem ainda não está.”'] },
-      { t: 'tecnica', p: ['Os quatro números são editáveis — ajuste ao mercado dele antes ou durante a call. Número redondo genérico enfraquece; número que parece o mercado dele convence.',
-                          'A frase que fecha o slide: "a maioria das operações trabalha só a primeira coluna — e no mês em que os sinais secam, a agenda seca junto." É o argumento contra comprar só ferramenta de lista.'] }
-    ],
+    gap: { tempo: '2 min', blocos: [
+      { t: 'fala', p: [
+        '“Esse é o seu número. Não é benchmark, não é média de mercado — é a conta que a gente fez juntos, com o que você me passou.”'] },
+      { t: 'pausa', p: [
+        'Mostre e cale. Este slide não precisa de narração. Deixe ele olhar o número por alguns segundos antes de qualquer coisa.'] },
+      { t: 'tecnica', p: [
+        'O vilão continua sendo o buraco. Você não está dizendo que ele falhou — está mostrando a distância entre onde a máquina chega e onde a meta exige.',
+        'Se ele reagir defendendo o time, pegue esse gancho: “Não é sobre o time. Um time bom com pouca agenda entrega pouco do mesmo jeito. O problema é o que chega na frente deles.”'] },
+      { t: 'ponte', p: [
+        '“E antes de você achar que isso é um problema só de vocês — deixa eu te mostrar onde o mercado inteiro está.”'] }
+    ]},
 
-    orquestracao: [
-      { t: 'fala', p: ['“Dado não vira receita. Uma base de contatos só vira oportunidade quando está ligada a ICP, sinal, persona certa, cadência e processo. Essa ligação é o que a gente faz.”',
-                       '“Ferramenta te dá lista e te deixa sozinho decidindo quem, quando e como. O que a gente monta decide isso com você e muda conforme a conta reage.”'] },
-      { t: 'tecnica', p: ['Este é o slide que responde "já uso Apollo / Lusha / Cortex". Não ataque a ferramenta — mostre a camada que falta.',
-                          'Marque no grid só as motions que fazem sentido pro cenário dele. Marcar as 14 vira catálogo e perde força. Duas ou três, escolhidas na frente dele, viram plano.'] },
-      { t: 'nunca', p: ['Passar as 14 motions uma a uma. Isso é o menu da cozinha, não o prato. Ele escolhe onde olhar.'] }
-    ],
+    mercado: { tempo: '4 min', blocos: [
+      { t: 'fala', p: [
+        '“Esses números não são meus. São de estudo público, com a fonte do lado de cada um — você pode conferir depois.”',
+        '“Uma em cada cinco oportunidades vira contrato hoje. Em 2024 eram três em dez. E 78% dos vendedores não bateram meta no ano passado.”',
+        '“Repara nesses dois aqui. Quem envolve o decisor desde o começo ganha 55% mais. E quem fecha em até 50 dias ganha 47%, contra 20% de quem deixa arrastar.”'] },
+      { t: 'pausa', p: [
+        'Depois do card do decisor, pare. Esse número justifica sozinho o mapeamento de múltiplos decisores — deixe ele fazer a ligação antes de você fazer.'] },
+      { t: 'tecnica', p: [
+        '<b>Esta tela existe pra tirar o problema do colo dele.</b> O gap não é incompetência interna, é o mercado inteiro apertando. Isso baixa a guarda e libera a conversa. Um lead na defensiva não compra.',
+        'Se ele declarou a própria conversão, ela aparece como primeiro card, comparada com a média. Use: “olha onde você está nesse retrato.”',
+        'Se ele não sabia a conversão e você usou a referência, diga em voz alta: “a gente está usando a média do mercado porque o número não estava na mão — e isso, por si só, já diz alguma coisa.”'] },
+      { t: 'cuidado', p: [
+        'Não cite número sem apontar a fonte. Ela está na tela justamente pra isso. Dado que ele não pode conferir vira desconfiança em vez de autoridade.',
+        'Não use esses números pra dizer "todo mundo está mal, inclusive você". O enquadramento é o contrário: "o jogo ficou mais difícil pra todo mundo, e por isso o método mudou".'] },
+      { t: 'ponte', p: [
+        '“Agora, por que isso está acontecendo? Tem uma frase que resume.”'] }
+    ]},
 
-    'aula-oquee': [
-      { t: 'fala', p: ['“Deixa eu te explicar o que a gente é, porque isso muda o resto da conversa. A Althius não é uma plataforma de prospecção. É um Revenue Operating System.”',
-                       '“Plataforma de dados te entrega uma lista e vai embora. A gente estrutura, automatiza e opera a jornada inteira — da definição de mercado e ICP até fechamento, geração de demanda e expansão. Tecnologia própria mais time executando.”',
-                       '“E olha essa lista do lado. Quantos desses itens estão de pé na sua operação hoje?”'] },
-      { t: 'calaboca', p: ['Depois da pergunta, silêncio. A lista faz o trabalho — ele vai correr os olhos e contar quantos faltam. Não conte por ele.'] },
-      { t: 'tecnica', p: ['A frase que fecha o slide protege a relação: "não porque o time é ruim — porque ninguém montou o sistema embaixo dele." Mantém o vilão no lugar certo (o sistema, não as pessoas) e evita que ele entre na defensiva.',
-                          'Se ele citar Apollo, Sales Navigator ou Cortex aqui, não ataque a ferramenta. Diga: "essas resolvem a primeira linha da lista. As outras onze continuam abertas." E siga.'] }
-    ],
+    porque: { tempo: '1 min', blocos: [
+      { t: 'fala', p: [
+        '“Prospecção genérica morreu. Conta certa, no momento certo — ou nada.”',
+        '“Não é que o outbound parou de funcionar. É que abordar todo mundo igual parou de funcionar.”'] },
+      { t: 'tecnica', p: [
+        'Uma frase, três segundos de pausa, e segue. Este slide é uma vírgula na narrativa, não um capítulo.'] },
+      { t: 'cuidado', p: [
+        'Nada de estatística de mercado aqui, nada de estudo de terceiro. Você acabou de usar dados na tela anterior — repetir dilui.'] },
+      { t: 'ponte', p: [
+        '“E pra chegar na conta certa, a gente começa bem antes do que a maioria imagina.”'] }
+    ]},
 
-    'aula-escopo': [
-      { t: 'fala', p: ['“Isso aqui é o que entra em pé na sua empresa. Quarenta variáveis de ICP, cinco personas por conta, nove processos comerciais e catorze motions de mercado.”',
-                       '“Construído do zero se não existir. Mapeado e otimizado se já existir.”'] },
-      { t: 'tecnica', p: ['Os quatro números fazem o trabalho de convencimento sozinhos. Não leia as três camadas item a item — aponte e deixe ele ler.',
-                          'O objetivo não é ele achar que é burro: é ele calcular o tempo que levaria para montar isso internamente. Deixe a conta acontecer na cabeça dele.'] },
-      { t: 'nunca', p: ['Dizer que ele não conseguiria fazer. Quem diz é ele. Se você disser, ele defende.'] }
-    ],
+    som: { tempo: '4 min', blocos: [
+      { t: 'fala', p: [
+        '“Deixa eu te mostrar como a gente enxerga o seu mercado. O círculo de fora é tudo que existe na sua categoria. O do meio é o que vocês realmente conseguem atender. O laranja é o que dá pra conquistar no curto e médio prazo.”',
+        '“E aqui no centro está a parte que quase ninguém olha: dentro desse grupo, quem está se mexendo agora. Abriu vaga comercial, captou, trocou de sistema, expandiu. Esses entram na fila primeiro.”',
+        '“E os outros? Não são descarte. São o pipeline do ano que vem. Enquanto uma frente captura quem já está pronto, a outra constrói demanda em quem ainda não está.”'] },
+      { t: 'pergunta', p: [
+        '“Hoje vocês conseguem separar esses dois grupos, ou a lista é uma só?”'] },
+      { t: 'tecnica', p: [
+        'Os quatro números são editáveis. Ajuste ao mercado dele antes ou durante a call — número redondo genérico enfraquece, número que parece o mercado dele convence.',
+        'A frase que fecha: “a maioria trabalha só a frente de cima, e no mês em que os sinais secam, a agenda seca junto.” É o argumento contra comprar só ferramenta de lista.'] },
+      { t: 'ponte', p: [
+        '“E é aqui que entra a diferença entre ter dado e ter operação.”'] }
+    ]},
 
-    'aula-icp': [
-      { t: 'fala', p: ['“ICP não vem pronto. A gente constrói o seu, e não é o básico de porte e segmento.”',
-                       '“A coluna de cima é QUEM compra. A de baixo é POR QUE compraria — urgência, consciência, gravidade, o que ele considera como alternativa, o custo de não fazer nada.”',
-                       '“Cada uma dessas variáveis muda a lista, muda a mensagem e muda a ordem da fila.”'] },
-      { t: 'tecnica', p: ['Pergunta que abre a ferida sem ofender: "dessas variáveis, quantas estão escritas em algum lugar na sua operação hoje?" Quase sempre a resposta é nenhuma — e ele mesmo diz.',
-                          'Se ele reagir "isso é muita coisa", concorde: "é. Por isso a gente faz, e não te manda um template."'] }
-    ],
+    orquestracao: { tempo: '4 min', blocos: [
+      { t: 'fala', p: [
+        '“Dado sozinho não vira receita. Uma base de contatos só vira oportunidade quando está ligada a ICP, sinal, persona certa, cadência e processo. Essa ligação é o que a gente faz.”',
+        '“Ferramenta te entrega a lista e te deixa sozinho decidindo quem, quando e como. O que a gente monta decide isso com você — e muda conforme a conta reage.”'] },
+      { t: 'tecnica', p: [
+        '<b>Esta é a tela que responde "já uso Apollo / Sales Navigator / Cortex".</b> Não ataque a ferramenta: ele escolheu ela, e criticar a escolha dele é criticar ele. Mostre a camada que falta em cima.',
+        'Marque no grid só as motions que fazem sentido pro cenário dele. Marcar as catorze vira catálogo e perde força. Duas ou três, escolhidas na frente dele, viram plano.'] },
+      { t: 'objecao', p: [
+        '<b>“Já uso Apollo”</b> → “Boa ferramenta. Quantas reuniões por semana saem dela hoje? … Pois é. Ela te dá lista. O que falta é o que fazer com a lista, na ordem certa. É essa camada que a gente opera.”',
+        '<b>“A gente tem um SDR que faz isso”</b> → “Faz sentido. E quando ele sai de férias, o que acontece com a cadência? Processo que mora numa pessoa é risco, não é máquina.”'] },
+      { t: 'cuidado', p: [
+        'Não passe as catorze motions uma a uma. Isso é o cardápio da cozinha, não o prato.'] },
+      { t: 'ponte', p: [
+        '“Deixa eu te explicar então o que a gente é de verdade, porque isso muda o resto da conversa.”'] }
+    ]},
 
-    'aula-personas': [
-      { t: 'fala', p: ['“Cinco pessoas participam de uma decisão B2B. A gente mapeia as cinco — inclusive o bloqueador, que é quem derruba o negócio sem você nunca falar com ele.”',
-                       '“E a dor entra numa matriz: urgência, consciência, gravidade, frequência. Isso define se a venda é fácil ou se é educação antes de venda.”'] },
-      { t: 'tecnica', p: ['Amarre com o card do deck 2: envolver quem assina desde o começo vale +55% de win rate. É o mesmo mapeamento.',
-                          'Muita empresa não vende por causa disso: nunca mapeou o comitê e nunca soube posicionar o produto contra a dor certa. Diga isso como constatação de mercado, não como acusação a ele.'] }
-    ],
+    'aula-oquee': { tempo: '4 min', blocos: [
+      { t: 'fala', p: [
+        '“A Althius não é uma plataforma de prospecção. É um Revenue Operating System — um sistema operacional de receita.”',
+        '“Plataforma de dados te entrega uma lista e vai embora. A gente estrutura, automatiza e opera a jornada inteira: da definição de mercado e do ICP até o fechamento, a geração de demanda e a expansão. Tecnologia própria, mais gente executando junto.”',
+        '“E olha essa lista do lado. Ela é o modelo que a gente combate.”'] },
+      { t: 'pergunta', p: [
+        '“Quantos desses itens estão de pé na operação de vocês hoje?”'] },
+      { t: 'pausa', p: [
+        'Faça a pergunta e pare. Ele vai correr os olhos e contar sozinho. <b>Não conte por ele</b> — o número que importa é o que ele diz em voz alta.'] },
+      { t: 'tecnica', p: [
+        'A frase que fecha a tela protege a relação: <b>"não porque o time é ruim, mas porque ninguém montou o sistema embaixo dele"</b>. Mantém o vilão no lugar certo e evita que ele entre na defensiva justo agora, que é quando você mais precisa dele aberto.',
+        'Se ele citar uma ferramenta aqui: “essas resolvem a primeira linha da lista. As outras onze continuam abertas.” E siga — sem ironia.'] },
+      { t: 'ponte', p: [
+        '“Então deixa eu te mostrar, item por item, o que entra em pé na [empresa].”'] }
+    ]},
 
-    'aula-compra': [
-      { t: 'fala', p: ['“Isto aqui é o que quase ninguém mapeia — e é onde o negócio morre.”',
-                       '“As objeções que vão aparecer, as alternativas contra as quais você compete, os riscos que ele percebe e como o seu preço se posiciona.”',
-                       '“Repara na alternativa mais forte de todas: não fazer nada. É contra ela que você perde a maioria dos negócios, não contra o concorrente.”'] },
-      { t: 'calaboca', p: ['Depois de "não fazer nada", pare. Esse é o insight que mais desarma — e serve para a própria decisão dele no fim desta reunião.'] },
-      { t: 'tecnica', p: ['Este slide fala do processo de compra DO CLIENTE DELE. Mas ele vai se ver nele — porque é exatamente o que está acontecendo nesta call. Não aponte isso; deixe ele perceber.'] }
-    ],
+    'aula-escopo': { tempo: '3 min', blocos: [
+      { t: 'fala', p: [
+        '“Isso aqui é o que a gente constrói. Quarenta variáveis de ICP e contexto, cinco personas mapeadas por conta, nove processos comerciais e catorze motions de mercado.”',
+        '“Construído do zero se não existir. Mapeado e otimizado se já existir — e se já existir, a gente reconhece o que está bom e mexe só no que vaza.”'] },
+      { t: 'tecnica', p: [
+        'Os quatro números fazem o convencimento sozinhos. Aponte e deixe ele ler — não narre as três camadas item a item.',
+        '<b>O objetivo não é ele se sentir pequeno.</b> É ele calcular, sozinho, quanto tempo levaria pra montar isso internamente. Deixe a conta acontecer na cabeça dele: quem chega nessa conclusão sozinho não precisa ser convencido depois.'] },
+      { t: 'objecao', p: [
+        '<b>“Isso é muita coisa”</b> → “É bastante mesmo. Por isso a gente faz junto, e não te manda um template pra você preencher.”',
+        '<b>“Dá pra fazer só uma parte?”</b> → “Dá, e às vezes é o certo. Depende de onde está o gargalo de vocês — a gente define isso no fim.”'] },
+      { t: 'cuidado', p: [
+        'Nunca diga que ele não conseguiria fazer isso. Quem diz é ele. Se você disser, ele defende — e defender vira não comprar.'] },
+      { t: 'ponte', p: [
+        '“Vou abrir os dois primeiros pra você ver o nível de detalhe. Começando pelo ICP.”'] }
+    ]},
 
-    'aula-processos': [
-      { t: 'fala', p: ['“Nove processos. Se você não tem, a gente constrói. Se você tem, a gente mapeia, acha o vazamento e otimiza.”',
-                       '“Qual desses vocês têm escrito e rodando hoje?”'] },
-      { t: 'calaboca', p: ['Faça a pergunta e use o botão de alternar entre "construímos" e "otimizamos" conforme ele responde. Deixe ele passar item por item.'] },
-      { t: 'tecnica', p: ['O botão dos dois modos existe para você não parecer que está vendendo a mesma coisa para todo mundo. Se ele já tem pipeline e SLA, mostre o modo "otimiza" — reconhecer o que ele já fez compra credibilidade para o resto.',
-                          'Anote quais faltam: eles voltam no empilhamento do Pit 02 e na definição do degrau.'] }
-    ],
+    'aula-icp': { tempo: '3 min', blocos: [
+      { t: 'fala', p: [
+        '“ICP não vem pronto. A gente constrói o de vocês, e não é o básico de porte e segmento.”',
+        '“A lista de cima é quem compra. A de baixo é por que compraria: urgência, consciência da dor, gravidade, o que ele considera como alternativa, o custo de não fazer nada.”',
+        '“Cada uma dessas variáveis muda a lista, muda a mensagem e muda a ordem da fila.”'] },
+      { t: 'pergunta', p: [
+        '“Dessas variáveis, quantas estão escritas em algum lugar hoje?”'] },
+      { t: 'pausa', p: [
+        'A resposta quase sempre é "nenhuma" — e é ele quem diz. Espere.'] },
+      { t: 'tecnica', p: [
+        'Se ele responder "a gente tem isso na cabeça", pegue com leveza: “eu entendo, é assim que começa. O problema é que o que está na cabeça não passa pro vendedor novo — e é exatamente o vendedor novo que vocês estão contratando.”',
+        'Amarre com o Bloco B do diagnóstico: a vaga aberta é a prova viva desse argumento.'] },
+      { t: 'ponte', p: [
+        '“E dentro de cada conta, não é uma pessoa que decide.”'] }
+    ]},
 
-    porque: [
-      { t: 'fala', p: ['“Prospecção genérica morreu. Conta certa, no momento certo — ou nada.”'] },
-      { t: 'nunca', p: ['Estatística de mercado, estudo de terceiro, enrolação. Uma frase e segue.'] }
-    ],
+    'aula-personas': { tempo: '3 min', blocos: [
+      { t: 'fala', p: [
+        '“Cinco pessoas participam de uma decisão B2B. A gente mapeia as cinco — inclusive o bloqueador, que é quem derruba o negócio sem você nunca ter falado com ele.”',
+        '“E a dor entra numa matriz: urgência, consciência, gravidade e frequência. É isso que define se a venda é direta ou se precisa de educação antes.”'] },
+      { t: 'tecnica', p: [
+        'Amarre com o card do banho de mercado: envolver quem assina desde o começo vale 55% a mais de taxa de ganho. É exatamente este mapeamento, e o dado é público.',
+        '<b>Muita empresa não vende por causa disso</b> — nunca mapeou o comitê e nunca soube posicionar o produto contra a dor certa. Diga como constatação de mercado, no plural, nunca apontando pra ele.'] },
+      { t: 'objecao', p: [
+        '<b>“No nosso caso quem decide sou eu”</b> → “Ótimo, isso encurta o ciclo. Mesmo assim: alguém dá opinião técnica ou financeira antes de você bater o martelo? É essa pessoa que a gente mapeia.”'] },
+      { t: 'ponte', p: [
+        '“E tem uma camada que quase ninguém escreve, que é onde o negócio realmente morre.”'] }
+    ]},
 
-    maquina: [
-      { t: 'fala', p: ['<b>A transição — marque a virada</b> — “Agora virou o jogo: é a hora que você me diz sim ou não. Vou te mostrar como a gente resolve o [gap de N reuniões], o [vendedor entrando sem máquina] e o [depende só de indicação] que você me falou.”'] },
-      { t: 'tecnica', p: ['Os itens da tabela são as palavras DELE, colhidas no Mapa e no Bloco B. Use o botão “Puxar dores do Mapa”.',
-                          'Entregável é característica. Solução é a dor dele com o problema resolvido. O que ele precisa pensar: “isso foi feito pra mim”.'] }
-    ],
+    'aula-compra': { tempo: '3 min', blocos: [
+      { t: 'fala', p: [
+        '“Isto aqui é o processo de compra do seu cliente. As objeções que vão aparecer, as alternativas contra as quais você compete, os riscos que ele percebe e como o seu preço se posiciona.”',
+        '“Repara na alternativa mais forte de todas: não fazer nada. É contra ela que se perde a maioria dos negócios — não contra o concorrente.”'] },
+      { t: 'pausa', p: [
+        'Depois de "não fazer nada", pare. É o insight que mais desarma — e ele serve, sem você dizer, pra própria decisão que ele vai tomar no fim desta reunião.'] },
+      { t: 'tecnica', p: [
+        'Este slide fala do cliente dele, mas ele vai se ver nele — porque é exatamente o que está acontecendo nesta call. <b>Não aponte isso.</b> Se você verbalizar, vira jogo psicológico e ele fecha. Se ele perceber sozinho, vira decisão.'] },
+      { t: 'ponte', p: [
+        '“E toda essa inteligência precisa virar processo rodando. São nove.”'] }
+    ]},
 
-    video: [
-      { t: 'tecnica', p: ['<b>1 ·</b> Você narra, o vídeo ilustra. Nunca dá play e fica quieto — pause em cada ponto que bate numa dor do Raio-X.',
-                          '<b>2 ·</b> Dois a três minutos, cortado. Curiosidade é combustível do fechamento — não distribua de graça.',
-                          '<b>3 ·</b> O vídeo nunca sai da reunião. O sócio vê em OUTRA reunião, com vocês na sala.'] },
-      { t: 'nunca', p: ['Mandar o vídeo antes “pra ele se preparar” ou depois “pra mostrar pro sócio”. Vídeo solto é aula grátis pro concorrente e desculpa pro “vou analisar”.'] }
-    ],
+    'aula-processos': { tempo: '4 min', blocos: [
+      { t: 'fala', p: [
+        '“Nove processos. Se vocês não têm, a gente constrói. Se já têm, a gente mapeia, acha onde vaza e otimiza — sem mexer no que já funciona.”'] },
+      { t: 'pergunta', p: [
+        '“Quais desses estão escritos e rodando hoje?”'] },
+      { t: 'pausa', p: [
+        'Faça a pergunta e use o alternador conforme ele responde. Deixe ele passar item por item, no ritmo dele.'] },
+      { t: 'tecnica', p: [
+        '<b>O alternador existe pra você não parecer que vende a mesma coisa pra todo mundo.</b> Se ele já tem pipeline e SLA, mostre o modo "otimizamos" — reconhecer o que ele construiu compra credibilidade pro resto da conversa.',
+        'Anote quais faltam. Eles voltam duas vezes: no empilhamento do Pit 02 e na hora de definir o degrau.'] },
+      { t: 'ponte', p: [
+        '“Agora deixa eu te mostrar como isso resolve exatamente o que você me falou no começo.”'] }
+    ]},
 
-    prova: [
-      { t: 'fala', p: ['“E olha — tudo isso que eu te mostrei, você já viveu. [Dia] você abriu a vaga. [Dia] eu te liguei. Essa reunião existe porque o sistema funciona. Você não precisa acreditar em mim — você é a prova.”'] },
-      { t: 'tecnica', p: ['É o golpe final da prova: demonstração de produto sem gastar um crédito. Nenhum concorrente consegue fazer isso.',
-                          'Amarre com o card do deck 2: envolver o decisor cedo vale +55% de win rate. Você chegou direto nele, na semana do sinal. Foi isso que acabou de acontecer.'] },
-      { t: 'nunca', p: ['Chegar aqui sem o print da vaga. Suba no pré-call (tecla P) antes da call — sem a imagem, o slide vira promessa em vez de prova.'] }
-    ],
+    maquina: { tempo: '4 min · vira a energia', blocos: [
+      { t: 'fala', p: [
+        '<b>A transição — marque a virada</b> — “Agora inverte o jogo: daqui pra frente é a hora de você me dizer se faz sentido ou não. Vou te mostrar como a gente resolve o [gap de N reuniões], o [vendedor entrando sem máquina] e o [depender de indicação] que você me contou.”'] },
+      { t: 'tecnica', p: [
+        'Os itens da tabela são <b>as palavras dele</b>, colhidas no Mapa e no Bloco B. Use o botão "Puxar dores do Mapa" antes de chegar aqui.',
+        'Entregável é característica. Solução é a dor dele com o problema resolvido. O que precisa passar pela cabeça dele é: "isso foi feito pra mim".',
+        'Nunca apresente a plataforma igual duas vezes. A apresentação é montada em cima do diagnóstico daquele lead.'] },
+      { t: 'ponte', p: [
+        '“Deixa eu te mostrar isso rodando por dentro. Dois minutos.”'] }
+    ]},
 
-    plano: [
-      { t: 'tecnica', p: ['14 dias é meta perseguida e já entregue — não é cláusula. Se ele pedir garantia: “eu não vendo bola de cristal, vendo máquina. Garanto o que depende de mim: estrutura de pé e rodando.”'] },
-      { t: 'nunca', p: ['Prometer faturamento, ROI garantido ou reuniões em 14 dias como cláusula contratual.'] }
-    ],
+    video: { tempo: '3 min', blocos: [
+      { t: 'tecnica', p: [
+        '<b>1 ·</b> Você narra, o vídeo ilustra. Nunca dê play e fique quieto — pause em cada ponto que bate numa dor do Raio-X e diga qual é.',
+        '<b>2 ·</b> Dois a três minutos, cortado. Curiosidade é combustível do fechamento; não distribua de graça.',
+        '<b>3 ·</b> O vídeo não sai da reunião. Se o sócio precisa ver, ele vê em outra reunião, com vocês na sala.'] },
+      { t: 'objecao', p: [
+        '<b>“Me manda esse vídeo depois”</b> → “Prefiro te mostrar ao vivo, porque fora de contexto ele não diz muita coisa. Se o [sócio] precisar ver, a gente marca vinte minutos com ele — eu mostro e respondo na hora.”'] },
+      { t: 'cuidado', p: [
+        'Não mande o vídeo antes "pra ele se preparar" nem depois "pra mostrar pro time". Vídeo solto vira aula grátis pro concorrente e desculpa pro "vou analisar".'] },
+      { t: 'ponte', p: [
+        '“E tem uma parte disso que você já viveu, sem saber.”'] }
+    ]},
 
-    investimento: [
-      { t: 'fala', p: ['<b>1 · a frase-âncora, antes do número, sempre</b> — “Antes do número, um princípio que eu sigo: é justo que muito custe aquilo que muito vale. Concorda?”',
-                       '<b>2 · o preço ao lado do número dele</b> — “Você me disse que cada reunião custa [Z] hoje, e que o gap te custa [R$ X]/mês. O projeto pro seu cenário é o [degrau]: R$ [valor] de implementação e R$ [valor]/mês pela plataforma.”'] },
-      { t: 'calaboca', p: ['SILÊNCIO TOTAL depois do preço. Quem fala primeiro, perde.'] },
-      { t: 'tecnica', p: ['<b>“Tá caro”</b> → “Caro comparado com o quê — com os [Z] por reunião que você paga hoje? Ou com os [X]/mês do gap?”',
-                          '<b>“Tem desconto?”</b> → “Desconto não existe, existe escopo menor. Tiro a integração e o treinamento e faz o Essencial. O que eu não faço é o mesmo projeto por menos.”',
-                          '<b>“Vou pensar”</b> → “A gente combinou sim ou não lá no começo. O que faltou pra ser sim?”',
-                          '<b>“Preciso falar com meu sócio”</b> → “A gente tratou isso no meio da reunião e você me disse que resolvia. O que mudou?”',
-                          '<b>“Já uso Apollo/Lusha”</b> → “Quantas reuniões por semana saem dele? Você tem ferramenta, não tem máquina.”'] },
-      { t: 'nunca', p: ['Preço antes da predisposição. A tela trava sozinha até a nota do Pit 01 ser registrada.'] }
-    ],
+    prova: { tempo: '2 min · o golpe da prova', blocos: [
+      { t: 'fala', p: [
+        '“Olha só: tudo que eu te mostrei, você já viveu na prática. [Dia] vocês publicaram a vaga. [Dia] eu liguei. Essa reunião existe porque o sistema funcionou — em vocês, antes de vocês saberem que ele existe.”',
+        '“Você não precisa acreditar em mim. Você é o caso de uso.”'] },
+      { t: 'pausa', p: [
+        'Depois de "você é o caso de uso", pare. Essa é a frase mais forte da apresentação inteira. Não emende nada nela.'] },
+      { t: 'tecnica', p: [
+        'Demonstração de produto sem gastar um crédito. Nenhum concorrente consegue abrir uma reunião assim — e ele sabe disso.',
+        'Amarre com o dado do banho de mercado: envolver o decisor cedo vale 55% a mais. Você chegou direto nele, na semana do sinal. Foi isso que acabou de acontecer, na frente dele.'] },
+      { t: 'cuidado', p: [
+        'Não chegue aqui sem o print da vaga. Suba no pré-call, tecla P. Sem a imagem, o slide vira promessa em vez de prova — e o efeito inverte.'] },
+      { t: 'ponte', p: [
+        '“Se a gente começar, é assim que são os primeiros catorze dias.”'] }
+    ]},
 
-    fecho: [
-      { t: 'fala', p: ['“Então está decidido. Kickoff [dia] às [hora] — te mando o contrato e o link de pagamento agora, enquanto a gente está aqui.”'] },
-      { t: 'tecnica', p: ['Cada hora entre o sim e o pagamento é espaço pro arrependimento nascer.',
-                          'Não fechou mas ficou quente: follow-up em 24h devolvendo o Mapa e o Raio-X dele — “seus números, seu desenho”. Nunca o vídeo, nunca proposta genérica. Use “Exportar Raio-X”.'] }
-    ]
+    plano: { tempo: '2 min', blocos: [
+      { t: 'fala', p: [
+        '“Kickoff, ICP fechado, sinais ligados e cadência rodando. Na segunda semana começam as primeiras reuniões.”',
+        '“E vou ser transparente: isso é a meta que a gente persegue e já entregou. Não é cláusula de contrato. O que eu garanto é a estrutura de pé e rodando no prazo.”'] },
+      { t: 'tecnica', p: [
+        'Antecipar a limitação antes de ele perguntar constrói mais confiança do que prometer certeza. Quem promete tudo perde o benefício da dúvida no resto.'] },
+      { t: 'objecao', p: [
+        '<b>“Vocês garantem reuniões em 14 dias?”</b> → “Não vendo bola de cristal, vendo máquina. Garanto o que depende de mim: estrutura montada e rodando. O volume depende também do mercado de vocês, e a gente calibra junto nas primeiras semanas.”'] },
+      { t: 'cuidado', p: [
+        'Não prometa faturamento, ROI garantido ou número de reuniões como cláusula. Garantia que você não controla te faz refém depois.'] },
+      { t: 'ponte', p: [
+        '“Então vamos falar de investimento.”'] }
+    ]},
+
+    investimento: { tempo: '5 min · a parte leve', blocos: [
+      { t: 'fala', p: [
+        '<b>1 · a âncora, antes do número, sempre</b> — “Antes de falar de valor, um princípio que a gente segue aqui: é justo que muito custe aquilo que muito vale. Você concorda com isso?”'] },
+      { t: 'fala', p: [
+        '<b>2 · o preço ao lado dos números dele</b> — “Você me disse que hoje cada reunião custa [Z]. E que o gap representa [R$] por mês que não entra. Pro cenário de vocês, o caminho certo é o [degrau]: [valor] de implementação e [valor] por mês de plataforma.”'] },
+      { t: 'pausa', p: [
+        '<b>Silêncio total depois do número.</b> Quem fala primeiro depois do preço, perde. Se o silêncio incomodar, aguente — são poucos segundos e eles decidem a negociação.'] },
+      { t: 'tecnica', p: [
+        'A tela fica travada até você registrar a nota do Pit 01. Isso não é enfeite: preço antes da predisposição vira comparação de tabela.',
+        'Os três números dele ficam na coluna da esquerda de propósito. O preço nunca aparece sozinho — aparece do lado da régua que ele mesmo construiu.',
+        'Deixe o degrau de cima visível mesmo que ninguém compre. "Os projetos vão de 5 a 25 dependendo do escopo, e pro seu cenário o certo é o do meio" muda completamente como o número do meio soa.'] },
+      { t: 'objecao', p: [
+        '<b>“Está caro”</b> → “Caro comparado com o quê? Com os [Z] por reunião que vocês pagam hoje, ou com os [R$] por mês do gap? Pergunto sério, porque a comparação muda a resposta.”',
+        '<b>“Tem desconto?”</b> → “Desconto eu não faço, e vou te explicar o porquê: se eu tirasse 20% mantendo o mesmo escopo, um de nós dois estaria errado sobre o valor. O que eu consigo fazer é ajustar escopo — tiro a integração e o treinamento e a gente fica no Essencial.”',
+        '<b>“Preciso pensar”</b> → “Claro. Só me ajuda com uma coisa: pensar sobre o quê especificamente? Se for o valor, a gente conversa sobre escopo agora. Se for outra coisa, eu prefiro tratar aqui do que você levar a dúvida pra casa.”',
+        '<b>“Preciso falar com meu sócio”</b> → “A gente tratou disso no meio da reunião e você me disse que resolvia. Mudou alguma coisa, ou é mais confortável trazer ele numa conversa de vinte minutos comigo?”',
+        '<b>“Vou avaliar outras opções”</b> → “Faz sentido, eu faria igual. Me diz quais você vai olhar que eu te falo com honestidade onde elas são melhores que a gente — tem casos em que são.”'] },
+      { t: 'cuidado', p: [
+        'Não justifique o preço antes de ele reagir. Fale o número e pare.',
+        'Não desconte para fechar hoje. Desconto por pressa ensina o cliente a esperar pressa.'] },
+      { t: 'ponte', p: [
+        '“Então: faz sentido pra vocês?”'] }
+    ]},
+
+    fecho: { tempo: '2 min', blocos: [
+      { t: 'fala', p: [
+        '“Então tá fechado. Kickoff [dia] às [hora]. Eu te mando o contrato e o link de pagamento agora, enquanto a gente ainda está aqui — assim já garantimos a data na agenda.”'] },
+      { t: 'tecnica', p: [
+        'Cada hora entre o sim e o pagamento é espaço pro arrependimento nascer. Mande na hora, com ele na chamada.',
+        '<b>Não fechou mas ficou quente:</b> follow-up em 24h devolvendo o Raio-X dele — "seus números, seu desenho". Use o botão Exportar Raio-X. Nunca mande o vídeo, nunca mande proposta genérica.',
+        '<b>Não fechou e esfriou:</b> encerre bem. “Sem problema. Se mudar o cenário, me chama — e se eu ver algum sinal por aqui, eu te aviso.” Porta aberta vale mais que insistência.'] },
+      { t: 'objecao', p: [
+        '<b>“Me manda a proposta que eu vejo e te retorno”</b> → “Mando sim. Só que proposta sem data marcada costuma virar limbo pros dois lados. Deixa eu te propor: eu mando agora e a gente já deixa vinte minutos na quinta pra você me dar o retorno, mesmo que seja não. Serve?”'] },
+      { t: 'cuidado', p: [
+        'Não encerre sem próximo passo com data. "Te retorno" não é data.'] }
+    ]}
   };
 
-  var ROTULOS = { fala: 'Você fala', tecnica: 'Técnica', calaboca: '🤐 Cala a boca', nunca: 'Nunca' };
+  var ROTULOS = {
+    fala:     'Você fala',
+    pergunta: '◆ A pergunta',
+    pausa:    'Pausa · deixe o silêncio',
+    tecnica:  'Por que funciona',
+    objecao:  'Se ele disser',
+    ponte:    'Ponte para a próxima',
+    cuidado:  'Cuidado'
+  };
 
   var elNome  = document.getElementById('pvNome');
-  var elPos   = document.getElementById('pvPos');
+  var elMeta  = document.getElementById('pvMeta');
   var elNotas = document.getElementById('pvNotas');
 
   function render(msg) {
     elNome.textContent = msg.nome || '—';
-    elPos.textContent  = msg.idx + ' / ' + msg.total;
+
+    var roteiro = ROTEIRO[msg.slide];
+    elMeta.innerHTML = (roteiro && roteiro.tempo ? '<b>' + roteiro.tempo + '</b> · ' : '')
+      + msg.idx + ' / ' + msg.total;
 
     var v = msg.valores || {};
     document.getElementById('nCusto').textContent = v.custoPorReuniao || '—';
     document.getElementById('nGap').textContent   = v.gapExibicao || '—';
     document.getElementById('nRisco').textContent = v.receitaExibicao || '—';
 
-    var notas = NOTAS[msg.slide];
-    if (!notas) {
-      elNotas.innerHTML = '<div class="pv_off">Sem notas para este slide.</div>';
+    if (!roteiro) {
+      elNotas.innerHTML = '<div class="pv_off">Sem roteiro para esta tela.</div>';
       return;
     }
-    elNotas.innerHTML = notas.map(function (b) {
+    elNotas.innerHTML = roteiro.blocos.map(function (b) {
       return '<div class="bloco b-' + b.t + '">'
         + '<div class="rot">' + ROTULOS[b.t] + '</div>'
         + b.p.map(function (p) { return '<p>' + p + '</p>'; }).join('')

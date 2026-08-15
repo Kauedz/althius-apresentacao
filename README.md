@@ -152,6 +152,42 @@ Nada do que você fala. Sem script, sem técnica, sem "quem é o decisor", sem a
 de objeção. Isso vive no `presenter.html`, em **janela separada** — compartilhe só a
 janela da apresentação.
 
+### O roteiro do apresentador
+
+As 21 telas têm roteiro completo, com tempo estimado e sete tipos de bloco:
+
+| Bloco | Para quê |
+|---|---|
+| **Você fala** | Texto literal — pode ler assim, trocando nome e número |
+| **◆ A pergunta** | A pergunta que carrega a tela |
+| **Pausa** | Onde calar e deixar o silêncio trabalhar |
+| **Por que funciona** | O mecanismo por trás |
+| **Se ele disser** | Objeção prevista e a resposta |
+| **Ponte** | Como emendar na próxima tela |
+| **Cuidado** | O que derruba a etapa |
+
+A estrutura é o Método Closer Faixa Preta; a **linguagem é a dos sócios**: incisiva pelo
+critério, neutra no tom. A régua completa fica no topo da janela do apresentador, num
+bloco recolhível. Em resumo:
+
+- **Firmeza vem de ter critério e dizer não quando é não** — nunca de falar grosso.
+- **Confronte o número, nunca a pessoa.** *"Esses dois números não fecham entre si"*
+  funciona; *"você não está entendendo"* perde a reunião.
+- **Enquadre antes de apertar.** Toda pergunta dura vem depois do motivo dela.
+- **Saída digna sempre aberta** — reduz a pressão e aumenta a decisão.
+- **Somos dois e entregamos junto**: a agenda é curta de verdade, então vocês também
+  escolhem. Dito como fato, não como ameaça.
+
+Exemplos do que mudou em relação ao registro original do método:
+
+| Antes | Agora |
+|---|---|
+| *"'Vou pensar' não ajuda nem você nem eu"* | *"Se for não, tudo bem — prefiro saber hoje do que ficar te procurando"* |
+| *"Você não entendeu a pergunta"* | *"A minha pergunta era outra e eu não fui claro"* |
+| *"Me convence"* | *"Me ajuda a entender o que faz de vocês uma conta que vale essa agenda"* |
+| *"Odeio o cara que tenta se burlar no fim"* | *"Já aconteceu da gente travar no fim por algo que dava pra resolver no começo"* |
+| *"Desconto não existe"* | *"Desconto eu não faço, e vou te explicar o porquê…"* |
+
 Fora também, por regra do slide 49: slide de "quem somos", linha do tempo institucional,
 logos de tecnologia. A autoridade é provada na tela 9, pelo produto.
 
@@ -371,7 +407,8 @@ assets/video/           coloque plataforma.mp4 aqui
 | As 14 motions de GTM | `scripts/apresentacao.js` → `MOTIONS` |
 | Tamanho recomendado do print | `scripts/apresentacao.js` → `LARGURA_MAX`, `PROPORCAO_ALVO` |
 | Empilhamento padrão | `scripts/apresentacao.js` → `STACK_PADRAO` |
-| Notas do closer | `presenter.html` → objeto `NOTAS` |
+| Roteiro do closer | `presenter.html` → objeto `ROTEIRO` |
+| Régua de tom | `presenter.html` → bloco `.pv_tom` |
 | Chips da calculadora | `scripts/calculadora.js` → `montarChips()` |
 | Constantes do modelo | `scripts/raiox-engine.js` → topo |
 | Limiar do alerta | `raiox-engine.js` → `razao >= 1.25 \|\| razao <= 0.8` |
